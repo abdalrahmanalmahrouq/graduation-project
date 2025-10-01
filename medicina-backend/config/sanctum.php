@@ -43,7 +43,7 @@ return [
     |
     */
 
-    'expiration' => null,
+    'expiration' => 480, // 8 hours (480 minutes) for medical application security
 
     /*
     |--------------------------------------------------------------------------

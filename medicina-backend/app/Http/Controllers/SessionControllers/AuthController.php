@@ -21,7 +21,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $token=$user->createToken('auth_token')->plainTextToken;
+        $token=$user->createToken('auth_token', ['*'], now()->addMinutes(config('sanctum.expiration', 480)))->plainTextToken;
 
         return response()->json([
             'access_token'=>$token,
