@@ -258,18 +258,6 @@ docker compose exec backend php artisan optimize:clear
 docker compose up --build
 ```
 
-## 📝 Useful Aliases (Optional)
-
-Add these to your `~/.bashrc` or `~/.zshrc` for faster commands:
-
-```bash
-# Medicina project aliases
-alias med-up="cd /home/aboodlinux/projects/graduation-project && docker compose up -d"
-alias med-down="cd /home/aboodlinux/projects/graduation-project && docker compose down"
-alias med-restart="cd /home/aboodlinux/projects/graduation-project && docker compose restart"
-alias med-logs="cd /home/aboodlinux/projects/graduation-project && docker compose logs -f"
-alias med-build="cd /home/aboodlinux/projects/graduation-project && docker compose up --build"
-```
 
 ## 🌐 Service URLs
 
