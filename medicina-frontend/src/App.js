@@ -15,11 +15,9 @@ import './assets/css/custom.css'
 
 const App = () => {
   return (
-    <div>
-      <HashRouter>
-        <AppRouter />
-      </HashRouter>
-    </div>
+    <HashRouter>
+      <AppRouter />
+    </HashRouter>
   );
 };
 

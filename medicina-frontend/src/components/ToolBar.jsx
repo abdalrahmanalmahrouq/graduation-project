@@ -12,30 +12,27 @@ const ToolBar = ({ token }) => {
   });
 
   useEffect(() => {
-    if (!user && token) {
+    // Always check token validity when component mounts or token changes
+    const token = localStorage.getItem('token');
+    if (token) {
       loadUser();
     }
-  }, [token]);
+  }, []);
 
   const loadUser = () => {
     const token = localStorage.getItem('token');
     if (!token) return;
     
+    // Use axios without custom headers to let interceptors handle token expiration
     axios
-      .get('/profile', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get('/profile')
       .then((res) => {
         setUser(res.data);
         localStorage.setItem('user', JSON.stringify(res.data));
       })
       .catch((err) => {
         console.error('Failed to load user profile in ToolBar:', err);
-        if (err.response?.status === 401) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setUser(null);
-        }
+        // The global axios interceptor will handle 401 errors and clear tokens
       });
   };
 

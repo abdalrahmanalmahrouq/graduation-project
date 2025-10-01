@@ -34,9 +34,7 @@ export default function Sidebar() {
       setUser(JSON.parse(savedUser));
     } else if (token) {
       axios
-        .get("/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get("/profile")
         .then((res) => {
           setUser(res.data);
           localStorage.setItem("user", JSON.stringify(res.data));

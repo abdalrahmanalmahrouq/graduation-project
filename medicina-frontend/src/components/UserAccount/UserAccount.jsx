@@ -31,9 +31,7 @@ const UserAccount = ({ token }) => {
       setIsLoading(false);
     } else {
       axios
-        .get('/profile', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        })
+        .get('/profile')
         .then((res) => {
           setUser(res.data);
           localStorage.setItem('user', JSON.stringify(res.data));

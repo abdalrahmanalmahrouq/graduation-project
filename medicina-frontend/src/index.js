@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
 
-axios.defaults.baseURL ='http://localhost:8000/api';
+axios.defaults.baseURL = 'http://localhost:8000/api';
 
 // Set up axios interceptor to handle token updates
 axios.interceptors.request.use(
@@ -27,11 +27,27 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Clear invalid token and user data
+      // Check if this is a login request - don't redirect for login failures
+      const isLoginRequest = error.config?.url?.includes('/login');
+      
+      if (isLoginRequest) {
+        // For login requests, just let the component handle the error
+        return Promise.reject(error);
+      }
+      
+      // Clear invalid token and user data for other 401 errors
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      // Optionally redirect to login page
-      // window.location.href = '/login/patient';
+      
+      // Check if it's a token expiration (vs other auth errors)
+      const errorMessage = error.response?.data?.message || '';
+      if (errorMessage.includes('expired') || errorMessage.includes('invalid')) {
+        // Show user-friendly message for expired tokens
+        alert('Your session has expired. Please log in again.');
+      }
+      
+      // Redirect to home page only for non-login 401 errors
+      window.location.href = '/';
     }
     return Promise.reject(error);
   }

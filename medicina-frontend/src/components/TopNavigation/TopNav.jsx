@@ -50,22 +50,11 @@ const TopNav = ({ token }) => {
     const savedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     
-    if (savedUser && token) {
-      try {
-        setUser(JSON.parse(savedUser));
-        setAuthToken(token); // Update token state
-      } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('user');
-        setUser(null);
-        setAuthToken(null);
-      }
-    } else if (token) {
-      // Only make API request if we have a token
+    if (token) {
+      // Always make API request when token exists to check if it's expired
+      // Use axios without custom headers to let interceptors handle it
       axios
-        .get('/profile', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get('/profile')
         .then((res) => {
           setUser(res.data);
           setAuthToken(token); // Update token state
@@ -73,13 +62,7 @@ const TopNav = ({ token }) => {
         })
         .catch((err) => {
           console.error('Failed to load user profile:', err);
-          // Clear invalid token and user data
-          if (err.response?.status === 401) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            setUser(null);
-            setAuthToken(null);
-          }
+          // The global axios interceptor will handle 401 errors and clear tokens
         });
     } else {
       // No token, ensure user and token states are null
