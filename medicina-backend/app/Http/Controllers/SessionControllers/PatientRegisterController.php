@@ -35,12 +35,25 @@ class PatientRegisterController extends Controller
             'address' => $validated['address'],
         ]);
 
+        // Send email verification notification (will fail silently if no mail config)
+        try {
+            $user->sendEmailVerificationNotification();
+            $emailVerificationSent = true;
+            $message = 'Registration successful! Please check your email to verify your account.';
+        } catch (\Exception $e) {
+            // Email sending failed (no credentials), continue without email verification
+            $emailVerificationSent = false;
+            $message = 'Registration successful! (Email verification disabled for development)';
+        }
+
         $token = $user->createToken('auth_token', ['*'], now()->addMinutes(config('sanctum.expiration', 480)))->plainTextToken;
 
         return response()->json([
             'access_token' => $token,
             'user' => $user,
             'role' => $user->role,
+            'message' => $message,
+            'email_verification_sent' => $emailVerificationSent,
         ]);
     }
 }

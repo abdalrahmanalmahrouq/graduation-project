@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionControllers\PatientRegisterController;
 use App\Http\Controllers\SessionControllers\ClinicRegisterController;
 use App\Http\Controllers\SessionControllers\DoctorRegisterController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,20 @@ Route::middleware('auth.rate.limit:5,1')->post('/login',[AuthController::class,'
 
 // Logout endpoint (less restrictive since user is already authenticated)
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+// Email Verification Routes
+Route::middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
+    // Resend verification email
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return response()->json(['message' => 'Verification email sent successfully']);
+    })->name('verification.send');
+    
+    // Check verification status
+    Route::get('/email/verify-status', function (Request $request) {
+        return response()->json([
+            'verified' => $request->user()->hasVerifiedEmail(),
+            'email' => $request->user()->email
+        ]);
+    })->name('verification.status');
+});

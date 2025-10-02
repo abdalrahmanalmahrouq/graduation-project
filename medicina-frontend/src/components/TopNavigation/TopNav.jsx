@@ -135,8 +135,11 @@ const TopNav = ({ token }) => {
           {/* Nav */}
           <nav id="navmenu" className="navmenu">
             <ul onClick={handleNavClick}>
-              <li><NavLink to="/" onClick={() => window.scrollTo(0, 0)}>الصفحة الرئيسية</NavLink></li>
-              <li><NavLink to="/about" onClick={() => window.scrollTo(0, 0)}>من نحن</NavLink></li>
+                <li><NavLink to="/" onClick={() => window.scrollTo(0, 0)}>الصفحة الرئيسية</NavLink></li>
+              {(!user) && (
+                <li><NavLink to="/about" onClick={() => window.scrollTo(0, 0)}>من نحن</NavLink></li>
+              )}
+             
               {/* Only show clinics link for patients or when not logged in */}
               {(!user || user.role === 'patient') && (
                 <li><NavLink to="/clinics" onClick={() => window.scrollTo(0, 0)}>العيادات</NavLink></li>

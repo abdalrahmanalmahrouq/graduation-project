@@ -30,6 +30,7 @@ import DoctorList from '../components/DoctorCard'
 import ManageDoctorsPage from '../pages/ManageDoctorsPage'
 import UpComingAppointmentPage from '../pages/UpComingAppointmentPage'
 import PastAppointmentPage from '../pages/PastAppointmentPage'
+import EmailVerificationSuccess from '../components/EmailVerificationSuccess'
 
 const AppRouter = () => {
   useEffect(() => {
@@ -110,6 +111,8 @@ const AppRouter = () => {
         <Route path='/sidebar' element={<SideBar/>}/>
 
         <Route path="/:role/account" element={<RoleAccountRoute />} />
+        <Route path="/email-verified" element={<EmailVerificationSuccess />} />
+        <Route path="/email-verification-failed" element={<EmailVerificationSuccess />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/404" element={<NotFound />} />
 

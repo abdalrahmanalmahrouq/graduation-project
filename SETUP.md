@@ -120,6 +120,11 @@ Once all containers are running, you can access:
   - Username: `root`
   - Password: `root`
 
+### Step 4: Configure Email Features (Optional)
+📧 **Want email verification and password reset features?** 
+
+See the [Email Configuration section](#-email-configuration-optional) below for Mailtrap setup instructions. This is completely optional - the application works perfectly without email configuration.
+
 ## 🔧 Detailed Setup Instructions
 
 ### Backend Setup (Laravel)
@@ -277,4 +282,119 @@ The application uses the following environment variables (configured in docker-c
 ### Frontend Environment
 - `CHOKIDAR_USEPOLLING=true` (for file watching in Docker)
 
+## 📧 Email Configuration (Optional)
+
+The Medicina application includes email verification and password reset features. To enable these features, you need to configure email settings using Mailtrap for development.
+
+### 🔧 Mailtrap Setup (Optional)
+
+**Note**: Email features are **optional**. The application works perfectly without email configuration - users can register and use all features normally. Email verification and password reset will simply be disabled.
+
+#### Why Use Mailtrap?
+- **Safe Testing**: No real emails are sent during development
+- **Email Preview**: View and test all email templates
+- **Free Tier**: Generous free plan for development
+- **Easy Integration**: Simple SMTP configuration
+
+#### Step 1: Create Mailtrap Account
+1. Go to [mailtrap.io](https://mailtrap.io)
+2. Sign up for a free account
+3. Verify your email address
+
+#### Step 2: Get SMTP Credentials
+1. Login to your Mailtrap dashboard
+2. Go to **Email Testing** → **Inboxes**
+3. Click on your default inbox (or create a new one)
+4. Go to **SMTP Settings** tab
+5. Copy the credentials:
+   - **Host**: `sandbox.smtp.mailtrap.io`
+   - **Port**: `2525`
+   - **Username**: `your_username_here`
+   - **Password**: `your_password_here`
+
+#### Step 3: Configure Backend Environment
+Add the following to your backend `.env` file:
+
+```bash
+# Access the backend container
+docker exec -it backend bash
+
+# Edit the .env file
+nano .env
+
+# Add these email configuration lines:
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_mailtrap_username
+MAIL_PASSWORD=your_mailtrap_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="noreply@medicina.com"
+MAIL_FROM_NAME="Medicina"
+```
+
+#### Step 4: Restart Backend
+```bash
+# Exit the container
+exit
+
+# Restart the backend to apply email configuration
+docker restart backend
+```
+
+#### Step 5: Test Email Features
+Once configured, you can test:
+- **User Registration** → Email verification sent to Mailtrap
+- **Password Reset** → Reset emails sent to Mailtrap
+- **Email Verification** → Verification links work properly
+
+### 📋 Email Features Available
+
+When email is configured, the following features are enabled:
+
+#### ✅ Email Verification
+- New users receive verification emails after registration
+- Users must verify their email to access certain features
+- Verification links redirect to a beautiful success page
+
+#### ✅ Password Reset
+- Users can request password reset emails
+- Secure reset links with expiration
+- Password reset flow with email confirmation
+
+#### ✅ Notifications
+- Account-related notifications
+- Security alerts and updates
+- System notifications
+
+### 🚫 Without Email Configuration
+
+If you choose not to configure email (recommended for quick development):
+
+- ✅ **Registration works normally** - Users can register and login
+- ✅ **All features accessible** - No restrictions on app functionality  
+- ✅ **Faster development** - No email delays during testing
+- ✅ **No external dependencies** - Fully self-contained setup
+- ⚠️ **Email verification disabled** - Users are not required to verify emails
+- ⚠️ **Password reset unavailable** - Users cannot reset passwords via email
+
+### 🔄 Enabling/Disabling Email Features
+
+You can easily toggle email features:
+
+**To Disable Email (for development):**
+```bash
+docker exec backend sed -i 's/MAIL_HOST=.*/MAIL_HOST=/' .env
+docker exec backend sed -i 's/MAIL_USERNAME=.*/MAIL_USERNAME=/' .env  
+docker exec backend sed -i 's/MAIL_PASSWORD=.*/MAIL_PASSWORD=/' .env
+docker restart backend
+```
+
+**To Enable Email (for production):**
+```bash
+docker exec backend sed -i 's/MAIL_HOST=/MAIL_HOST=sandbox.smtp.mailtrap.io/' .env
+docker exec backend sed -i 's/MAIL_USERNAME=/MAIL_USERNAME=your_username/' .env
+docker exec backend sed -i 's/MAIL_PASSWORD=/MAIL_PASSWORD=your_password/' .env
+docker restart backend
+```
 
