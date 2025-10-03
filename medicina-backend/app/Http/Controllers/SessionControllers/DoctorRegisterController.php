@@ -15,7 +15,8 @@ class DoctorRegisterController extends Controller
             'email'=>'required|email|unique:users',
             'password'=>'required|min:6|confirmed',
             'full_name'=>'required|string',
-            'phone_number'=>'required|string|unique:doctors'
+            'phone_number'=>'required|string|unique:doctors',
+            'specialization'=>'required|string',
         ]);
 
         $user=User::create([
@@ -28,6 +29,7 @@ class DoctorRegisterController extends Controller
             'user_id' => $user->id,
             'full_name'=>$validated['full_name'],
             'phone_number'=>$validated['phone_number'],
+            'specialization'=>$validated['specialization'],
         ]);
 
         // Send email verification notification (will fail silently if no mail config)
