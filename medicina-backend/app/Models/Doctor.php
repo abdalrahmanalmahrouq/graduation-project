@@ -8,5 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Doctor extends Model
 {
     use HasFactory;
-    protected $guarded=[];
+    
+    protected $guarded = [];
+    
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'user_id' => 'string',
+    ];
 }
