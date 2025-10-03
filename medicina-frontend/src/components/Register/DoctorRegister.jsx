@@ -9,6 +9,7 @@ export default function DoctorRegister() {
         const [email,setEmail]=useState('');
         const [phone_number,setPhoneNumber]=useState('');
         const [password,setPassword]=useState('');
+        const [specialization,setSpecialization]=useState('');
         const [password_confirmation,setConfirmPassword]=useState('');
         const [message,setMessage]=useState('');
         const [errors,setErrors]=useState('');
@@ -31,7 +32,8 @@ export default function DoctorRegister() {
                       email,
                       phone_number,
                       password,
-                      password_confirmation
+                      password_confirmation,
+                      specialization
                     };
 
                 axios.post('/register/doctor',data)
@@ -77,7 +79,21 @@ export default function DoctorRegister() {
                         {errors.phone_number && <div className="text-sm text-danger">{errors.phone_number[0]}</div>}
 
                 </div>
-                
+                <div className="form-group mt-4">
+                        <label htmlFor="specialization">التخصص</label>
+                        <select className="form-control" name='specialization' required onChange={(e)=>setSpecialization(e.target.value)} searchable={true}>
+                        <option value="">اختر التخصص</option>
+                        <option value="اخصائي طب عام">اخصائي طب عام</option>
+                        <option value="اخصائي طب نفسي">اخصائي طب نفسي</option>
+                        <option value="اخصائي قلب">اخصائي قلب</option>
+                        <option value="اخصائي عظام">اخصائي عظام</option>
+                        <option value="اخصائي جلدية">اخصائي جلدية</option>
+                        <option value="اخصائي جراحة">اخصائي جراحة</option>
+                        <option value="اخصائي طب عقلي">اخصائي طب عقلي</option>
+                        <option value="اخصائي اسنان">اخصائي اسنان</option>
+                        
+                      </select>
+                </div>
                 <div className="form-group mt-4">
                         <label htmlFor="password">كلمة المرور</label>
                         <input type="password" className="form-control" name='password' placeholder="أدخل كلمة المرور" required
