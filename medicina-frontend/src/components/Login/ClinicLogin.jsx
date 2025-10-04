@@ -95,7 +95,7 @@ export default function ClinicLogin() {
         </button>
         <br />
         <div className="mt-2">
-          نسيت كلمة المرور؟ <Link to="/forget/password" className="links-buttons-underline">نسيت</Link>
+          نسيت كلمة المرور؟ <Link to="/forgot-password" className="links-buttons-underline">نسيت</Link>
         </div>
         <div className="pb-3 mt-1">
           مستخدم جديد؟ <Link to="/register/clinic" className="links-buttons-underline">إنشاء حساب</Link>

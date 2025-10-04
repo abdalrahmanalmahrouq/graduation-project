@@ -21,12 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
+    protected $guarded = [];
 
     /**
      * The primary key type.
@@ -101,6 +96,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'password_reset_token',
     ];
 
     /**
@@ -110,6 +106,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password_reset_token_expires_at' => 'datetime',
         'password' => 'hashed',
     ];
 }

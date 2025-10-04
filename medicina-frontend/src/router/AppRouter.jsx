@@ -31,6 +31,8 @@ import ManageDoctorsPage from '../pages/ManageDoctorsPage'
 import UpComingAppointmentPage from '../pages/UpComingAppointmentPage'
 import PastAppointmentPage from '../pages/PastAppointmentPage'
 import EmailVerificationSuccess from '../components/EmailVerificationSuccess'
+import ForgotPassword from '../components/ForgotPassword'
+import ResetPassword from '../components/ResetPassword'
 
 const AppRouter = () => {
   useEffect(() => {
@@ -110,9 +112,11 @@ const AppRouter = () => {
      
         <Route path='/sidebar' element={<SideBar/>}/>
 
-        <Route path="/:role/account" element={<RoleAccountRoute />} />
         <Route path="/email-verified" element={<EmailVerificationSuccess />} />
         <Route path="/email-verification-failed" element={<EmailVerificationSuccess />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/:role/account" element={<RoleAccountRoute />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/404" element={<NotFound />} />
 

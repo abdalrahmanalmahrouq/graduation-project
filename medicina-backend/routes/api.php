@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionControllers\PatientRegisterController;
 use App\Http\Controllers\SessionControllers\ClinicRegisterController;
 use App\Http\Controllers\SessionControllers\DoctorRegisterController;
+use App\Http\Controllers\SessionControllers\PasswordResetController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -62,4 +63,17 @@ Route::middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
             'email' => $request->user()->email
         ]);
     })->name('verification.status');
+});
+
+// Password Reset Routes
+Route::middleware('throttle:5,1')->group(function () {
+    
+    // Request password reset
+    Route::post('/password/forgot', [PasswordResetController::class, 'sendResetLinkEmail']);
+    
+    // Verify reset token
+    Route::post('/password/verify-token', [PasswordResetController::class, 'verifyResetToken']);
+    
+    // Reset password
+    Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
 });
