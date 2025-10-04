@@ -13,32 +13,45 @@ class DoctorSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get doctor users
+        // Get doctor users and create matching doctor records
         $doctorUsers = User::where('role', 'doctor')->get();
 
-        $doctorData = [
-            [
-                'user_id' => $doctorUsers[0]->id,
-                'full_name' => 'Dr. Omar',
-                'phone_number' => '+1987654321',
-                'specialization' => 'Cardiology',
-            ],
-            [
-                'user_id' => $doctorUsers[1]->id,
-                'full_name' => 'Dr. Ali',
-                'phone_number' => '+1987654322',
-                'specialization' => 'Neurology',
-            ],
-            [
-                'user_id' => $doctorUsers[2]->id,
-                'full_name' => 'Dr. Fatima Al-Zahra',
-                'phone_number' => '+1987654323',
-                'specialization' => 'Pediatrics',
-            ],
-        ];
-
-        foreach ($doctorData as $doctor) {
-            Doctor::create($doctor);
+        foreach ($doctorUsers as $user) {
+            $doctorData = [];
+            
+            // Match doctor data based on email
+            switch ($user->email) {
+                case 'omar@example.com':
+                    $doctorData = [
+                        'user_id' => $user->id,
+                        'full_name' => 'Dr. Omar',
+                        'phone_number' => '+1987654321',
+                        'specialization' => 'Cardiology',
+                    ];
+                    break;
+                    
+                case 'ali@example.com':
+                    $doctorData = [
+                        'user_id' => $user->id,
+                        'full_name' => 'Dr. Ali',
+                        'phone_number' => '+1987654322',
+                        'specialization' => 'Neurology',
+                    ];
+                    break;
+                    
+                case 'fatima@example.com':
+                    $doctorData = [
+                        'user_id' => $user->id,
+                        'full_name' => 'Dr. Fatima Al-Zahra',
+                        'phone_number' => '+1987654323',
+                        'specialization' => 'Pediatrics',
+                    ];
+                    break;
+            }
+            
+            if (!empty($doctorData)) {
+                Doctor::create($doctorData);
+            }
         }
 
      
