@@ -1060,7 +1060,7 @@ main {
 
 .primary-btn {
   background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
-  color: white;
+  color: var(--accent-color);
   box-shadow: 0 4px 15px rgba(97, 152, 233, 0.4);
 }
 
@@ -2957,4 +2957,140 @@ background: #f9f9f9; /* optional */
 }
 
 /* ===== END DOCTOR CARD COMPONENT STYLES ===== */
+
+/* ===== TOOLBAR PROFILE IMAGE STYLES ===== */
+.profile-pic img {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--contrast-color);
+  transition: all 0.3s ease;
+}
+
+.profile-pic img:hover {
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.profile-pic a {
+  display: inline-block;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* ===== END TOOLBAR PROFILE IMAGE STYLES ===== */
         
+
+/* User Account Editable Styles */
+
+/* Input Fields */
+.field-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #343a40;
+  background: white;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.field-input:focus {
+  border-color: var(--contrast-color, #007bff);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.field-input::placeholder {
+  color: #adb5bd;
+  font-weight: 400;
+}
+
+/* Non-editable fields */
+.field-value.non-editable {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Avatar Upload Overlay */
+.avatar-upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.profile-avatar:hover .avatar-upload-overlay {
+  opacity: 1;
+}
+
+.avatar-upload-overlay:hover {
+  opacity: 1;
+}
+
+.avatar-upload-input {
+  display: none;
+}
+
+.avatar-upload-label {
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.avatar-upload-label:hover {
+  transform: scale(1.2);
+}
+
+/* Message Display */
+.message {
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Button States */
+.modern-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modern-btn:disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsive adjustments for editable fields */
+@media (max-width: 768px) {
+  .field-input {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}

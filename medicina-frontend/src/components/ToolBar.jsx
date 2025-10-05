@@ -36,7 +36,7 @@ const ToolBar = ({ token }) => {
       });
   };
 
-  const { role, profile } = user || {};
+  const { role, profile, profile_image_url } = user || {};
   const { full_name, clinic_name } = profile || {};
 
   const toggleMobileSidebar = () => {
@@ -89,7 +89,15 @@ const ToolBar = ({ token }) => {
           <div className="profile-pic">
             {user ? (
               <Link to={`/${role}/account`}>
-                <img src={profileimg} alt="" style={{width:'30px', height:'30px'}}/>
+                <img 
+                  src={profile_image_url || profileimg} 
+                  alt="Profile" 
+                  style={{width:'30px', height:'30px'}}
+                  onError={(e) => {
+                    // Fallback to default image if profile image fails to load
+                    e.target.src = profileimg;
+                  }}
+                />
               </Link>
             ) : (
               <img src={profileimg} alt="" style={{width:'30px', height:'30px', opacity:0.5}}/>

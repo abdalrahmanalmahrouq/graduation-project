@@ -32,7 +32,7 @@ Route::middleware('throttle:30,1')->get('/test', function () {
 
 
 // Profile endpoint with rate limiting (60 requests per minute for authenticated users)
-Route::middleware(['auth:sanctum', 'throttle:60,1'])->get('/profile', [ProfileController::class, 'show']);
+Route::middleware(['auth:sanctum'])->get('/profile', [ProfileController::class, 'show']);
 
 
 // Registration endpoints with custom rate limiting (3 attempts per minute)
@@ -77,3 +77,4 @@ Route::middleware('throttle:5,1')->group(function () {
     // Reset password
     Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
 });
+Route::middleware(['auth:sanctum'])->post('/profile', [ProfileController::class, 'update']);
