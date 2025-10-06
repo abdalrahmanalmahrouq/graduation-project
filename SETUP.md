@@ -103,6 +103,7 @@ cd ..
 docker compose up --build
 ```
 
+
 This command will:
 - Build the Docker images for both frontend and backend
 - Start MySQL database
@@ -110,7 +111,15 @@ This command will:
 - Start React frontend
 - Start phpMyAdmin for database management
 
-### Step 3: Access the Application
+### Step 4: Run Database Migrations
+```bash
+# After the containers are running, migrate the database
+docker compose exec backend php artisan migrate
+```
+
+This will create all the necessary database tables for the application.
+
+### Step 5: Access the Application
 Once all containers are running, you can access:
 
 - **Frontend (React App)**: http://localhost:3000
