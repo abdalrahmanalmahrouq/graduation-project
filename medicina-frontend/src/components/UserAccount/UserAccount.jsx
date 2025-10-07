@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/img/profpic.png';
 import axios from 'axios';
 import idbanner from '../../assets/img/theme/id.png';
@@ -10,8 +11,10 @@ import editbanner from '../../assets/img/theme/edit.png';
 import settingbanner from '../../assets/img/theme/setting.png';
 import clinicbanner from '../../assets/img/theme/clinic.png';
 import doctorbanner from '../../assets/img/theme/doctor.png';
+import lockbanner from '../../assets/img/theme/locked.png';
 
 const UserAccount = ({ token }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -525,6 +528,16 @@ const UserAccount = ({ token }) => {
                 <img src={editbanner} alt="Save" style={{width: '20px', height: '20px'}}/>
               </span>
               {isSaving ? 'Saving...' : 'Save Profile'}
+            </button>
+            
+            <button 
+              onClick={() => navigate(`/${user.role}/change-password`)} 
+              className="modern-btn secondary-btn"
+            >
+              <span className="btn-icon pb-1">
+                <img src={lockbanner} alt="Lock" style={{width: '20px', height: '20px'}}/>
+              </span>
+              Change Password
             </button>
            
           </div>

@@ -21,6 +21,7 @@ import DoctorRegisterPage from '../pages/RegisterPages/DoctorRegisterPage'
 import LabLoginPage from '../pages/LoginPages/LabLoginPage'
 import LabRegisterPage from '../pages/RegisterPages/LabRegisterPage'
 import UserAccountPage from '../pages/AccountPages/UserAccountPage'
+import ChangePasswordPage from '../pages/AccountPages/ChangePasswordPage'
 import SideBar from '../components/SideBar'
 import ProtectedRoute from '../components/ProtectedRoute'
 import Unauthorized from '../pages/Unauthorized'
@@ -117,6 +118,11 @@ const AppRouter = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/:role/account" element={<RoleAccountRoute />} />
+        <Route path="/:role/change-password" element={
+          <ProtectedRoute allowedRoles={['patient', 'doctor', 'clinic', 'lab']}>
+            <ChangePasswordPage />
+          </ProtectedRoute>
+        } />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/404" element={<NotFound />} />
 

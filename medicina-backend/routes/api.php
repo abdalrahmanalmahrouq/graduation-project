@@ -78,3 +78,4 @@ Route::middleware('throttle:5,1')->group(function () {
     Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
 });
 Route::middleware(['auth:sanctum'])->post('/profile', [ProfileController::class, 'update']);
+Route::middleware(['auth:sanctum'])->post('/change-password', [ProfileController::class, 'changePassword']);

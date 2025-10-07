@@ -84,12 +84,13 @@ const TopNav = ({ token }) => {
             <i className="bi bi-chevron-down toggle-dropdown"></i>
           </NavLink>
           <ul className="dropdown-active">
-            <li>
-              <NavLink to="/" onClick={logout}>تسجيل الخروج</NavLink>
-            </li>
+            
             <li>
               {/* ✅ Dynamic role-based account link */}
               <NavLink to={`/${role}/account`}>حسابي</NavLink>
+            </li>
+            <li>
+              <NavLink to="/" onClick={logout}>تسجيل الخروج</NavLink>
             </li>
           </ul>
         </li>
