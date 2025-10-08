@@ -13,11 +13,11 @@ class PatientRegisterController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email,NULL,id,role,patient',
             'password' => 'required|min:6|confirmed',
             'full_name' => 'required|string',
             'date_of_birth' => 'required|date',
-            'phone_number' => 'required|string|unique:patients',
+            'phone_number' => 'required|string|unique:patients,phone_number',
             'address' => 'nullable|string',
         ]);
 

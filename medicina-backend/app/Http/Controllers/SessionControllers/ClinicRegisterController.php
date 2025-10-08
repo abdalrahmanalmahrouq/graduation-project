@@ -8,14 +8,15 @@ use App\Models\User;
 use App\Models\Clinic;
 use Illuminate\Support\Facades\Hash;
 
+
 class ClinicRegisterController extends Controller
 {
     public function register(Request $request){
         $validated=$request->validate([
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email,NULL,id,role,clinic',
             'password' => 'required|min:6|confirmed',
             'clinic_name' => 'required|string',
-            'phone_number' => 'required|string|unique:clinics',
+            'phone_number' => 'required|string|unique:clinics,phone_number',
             'address' => 'nullable|string',
         ]);
 

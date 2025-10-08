@@ -24,23 +24,17 @@ export default function DoctorLogin() {
             const data = {
               email,
               password,
+              role: 'doctor',
             };
         
             axios.post('/login',data)
               .then((response)=>{
-                // ✅ Fetch complete profile data FIRST (without storing token yet)
+                // ✅ Fetch complete profile data
                 axios.get('/profile', {
                   headers: { Authorization: `Bearer ${response.data.access_token}` }
                 })
                 .then((profileResponse) => {
-                  // ✅ Validate role matches the login form BEFORE storing anything
-                  if (profileResponse.data.role !== 'doctor') {
-                    setMessage(`يجب تسجيل الدخول من صفحة ${profileResponse.data.role === 'patient' ? 'المريض' : profileResponse.data.role === 'clinic' ? 'العيادة' : profileResponse.data.role === 'lab' ? 'المختبر' : profileResponse.data.role}`);
-                    setLoading(false);
-                    return;
-                  }
-                  
-                  // ✅ Only store data if role is correct
+                  // ✅ Store data (backend already validated role)
                   localStorage.setItem('token', response.data.access_token);
                   localStorage.setItem('user', JSON.stringify(profileResponse.data));
                   navigate('/doctor/account');

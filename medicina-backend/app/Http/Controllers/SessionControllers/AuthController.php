@@ -12,12 +12,48 @@ class AuthController extends Controller
     public function login(Request $request){
         $request->validate([
             'email'=>'required|email',
-            'password'=>'required'
+            'password'=>'required',
+            'role'=>'required|in:patient,doctor,clinic,admin'
         ]);
 
-        $user=User::where('email',$request->email)->first();
+        // First check if user exists with this email
+        $userWithEmail = User::where('email', $request->email)->first();
+        
+        if (!$userWithEmail) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        // Check if user exists with this email and role
+        $user = User::where('email', $request->email)
+                   ->where('role', $request->role)
+                   ->first();
+
+        if (!$user) {
+            // User exists with this email but not with this role
+            $availableRoles = User::where('email', $request->email)
+                                 ->pluck('role')
+                                 ->toArray();
+            $availableRoleNames = [];
+           foreach($availableRoles as $role){
+            if($role =="patient"){
+                $availableRoleNames[] = 'المريض';
+            }elseif($role =="clinic"){
+                $availableRoleNames[] = 'العيادة';
+            }elseif($role =="doctor"){
+                $availableRoleNames[] = 'الطبيب';
+            }elseif($role =="admin"){
+                $availableRoleNames[] = 'المدير';
+            }elseif($role =="lab"){
+                $availableRoleNames[] = 'المختبر';
+            }
+           }
+            
+            $message = 'يجب تسجيل الدخول من صفحة ' . implode(' أو ', $availableRoleNames);
+            return response()->json(['message' => $message], 401);
+        }
+
+        // Check password
+        if (!Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 

@@ -8,14 +8,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
 class DoctorRegisterController extends Controller
 {
     public function register(Request $request){
         $validated=$request->validate([
-            'email'=>'required|email|unique:users',
+            'email'=>'required|email|unique:users,email,NULL,id,role,doctor',
             'password'=>'required|min:6|confirmed',
             'full_name'=>'required|string',
-            'phone_number'=>'required|string|unique:doctors',
+            'phone_number'=>'required|string|unique:doctors,phone_number',
             'specialization'=>'required|string',
         ]);
 

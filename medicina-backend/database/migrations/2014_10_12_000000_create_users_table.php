@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->string('id', 7)->primary();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->enum('role', ['patient', 'doctor', 'clinic', 'admin']);
             $table->timestamps();
+
+            //unique constraint for email and role combination
+            $table->unique(['email', 'role']);
         });
     }
 
