@@ -19,4 +19,9 @@ class Clinic extends Model
     protected $casts = [
         'user_id' => 'string',
     ];
+
+    //Each clinic can have multiple doctors
+    public function doctors(){
+        return $this->belongsToMany(Doctor::class,'clinic_doctor', 'clinic_id', 'doctor_id', 'user_id', 'user_id');
+    }
 }

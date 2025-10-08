@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClinicDoctorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionControllers\AuthController;
 use Illuminate\Http\Request;
@@ -79,3 +80,10 @@ Route::middleware('throttle:5,1')->group(function () {
 });
 Route::middleware(['auth:sanctum'])->post('/profile', [ProfileController::class, 'update']);
 Route::middleware(['auth:sanctum'])->post('/change-password', [ProfileController::class, 'changePassword']);
+
+
+Route::middleware(['auth:sanctum'])->group(function(){
+    Route::post('clinics/add-doctor', [ClinicDoctorController::class, 'addDoctor']);
+    Route::get('clinics/available-doctors', [ClinicDoctorController::class, 'getAvailableDoctors']);
+    Route::get('clinics/doctors', [ClinicDoctorController::class, 'getClinicDoctors']);
+});

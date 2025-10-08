@@ -19,4 +19,16 @@ class Doctor extends Model
     protected $casts = [
         'user_id' => 'string',
     ];
+
+    // Relationship with User
+    // each doctor has one user
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    //Each doctor can belong to multiple clinics
+    public function clinics(){
+        return $this->belongsToMany(Clinic::class,'clinic_doctor', 'doctor_id', 'clinic_id', 'user_id', 'user_id');
+    }
 }
