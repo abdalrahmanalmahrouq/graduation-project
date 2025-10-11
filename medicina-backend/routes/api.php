@@ -9,7 +9,7 @@ use App\Http\Controllers\SessionControllers\PatientRegisterController;
 use App\Http\Controllers\SessionControllers\ClinicRegisterController;
 use App\Http\Controllers\SessionControllers\DoctorRegisterController;
 use App\Http\Controllers\SessionControllers\PasswordResetController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 
 /*
 |--------------------------------------------------------------------------

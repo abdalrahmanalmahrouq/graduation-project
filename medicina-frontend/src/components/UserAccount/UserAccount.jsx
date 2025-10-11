@@ -8,7 +8,6 @@ import phonebanner from '../../assets/img/theme/phone.png';
 import datebanner from '../../assets/img/theme/date-of-birth.png';
 import locationbanner from '../../assets/img/theme/location.png';
 import editbanner from '../../assets/img/theme/edit.png';
-import settingbanner from '../../assets/img/theme/setting.png';
 import clinicbanner from '../../assets/img/theme/clinic.png';
 import doctorbanner from '../../assets/img/theme/doctor.png';
 import lockbanner from '../../assets/img/theme/locked.png';

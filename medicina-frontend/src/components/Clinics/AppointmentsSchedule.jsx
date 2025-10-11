@@ -1,7 +1,7 @@
 import React, {  Fragment } from 'react'
 import { Card, Container, Row } from 'react-bootstrap'
 import { clinicsData } from '../../data/clinicsData'; 
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AppointmentTable from './AppointmentTable';
 
 

@@ -11,7 +11,7 @@ const PatientRegisterPage = () => {
     <div>
       <TopNav />
       <PatientRegister/>
-      {/* <Footer/> */}
+     
     </div>
   );
 };

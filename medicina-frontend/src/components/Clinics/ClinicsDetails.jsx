@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Button, Card, Col, Container, Row } from 'react-bootstrap'
 import kid_img from '../../assets/img/clinics/kids.jpg'
 import eyes_img from '../../assets/img/clinics/eyes.jpg'

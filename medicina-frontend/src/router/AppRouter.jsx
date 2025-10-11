@@ -1,16 +1,14 @@
 import React, { useEffect, Fragment } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 import HomePage from '../pages/HomePage'
 import AboutPage from '../pages/AboutPage'
 import ContactPage from '../pages/ContactPage'
 import ClinicsPage from '../pages/ClinicsPage'
-
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
 import PatientRegisterPage from '../pages/RegisterPages/PatientRegisterPage'
 import PatientLoginPage from '../pages/LoginPages/PatientLoginPage'
-
 import AllClinicsPage from '../pages/AllClinicsPage'
 import DoctorProfilePage from '../pages/DoctorProfilePage'
 import AppointmentsSchedulePage from '../pages/AppointmentsSchedulePage'
@@ -20,14 +18,12 @@ import DoctorLoginPage from '../pages/LoginPages/DoctorLoginPage'
 import DoctorRegisterPage from '../pages/RegisterPages/DoctorRegisterPage'
 import LabLoginPage from '../pages/LoginPages/LabLoginPage'
 import LabRegisterPage from '../pages/RegisterPages/LabRegisterPage'
-import UserAccountPage from '../pages/AccountPages/UserAccountPage'
 import ChangePasswordPage from '../pages/AccountPages/ChangePasswordPage'
 import SideBar from '../components/SideBar'
 import ProtectedRoute from '../components/ProtectedRoute'
 import Unauthorized from '../pages/Unauthorized'
 import NotFound from '../pages/NotFound'
 import RoleAccountRoute from '../components/RoleAccountRoute'
-import DoctorList from '../components/DoctorCard'
 import ManageDoctorsPage from '../pages/ManageDoctorsPage'
 import UpComingAppointmentPage from '../pages/UpComingAppointmentPage'
 import PastAppointmentPage from '../pages/PastAppointmentPage'
