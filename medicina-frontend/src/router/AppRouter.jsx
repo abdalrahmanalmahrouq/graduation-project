@@ -19,6 +19,7 @@ import DoctorRegisterPage from '../pages/RegisterPages/DoctorRegisterPage'
 import LabLoginPage from '../pages/LoginPages/LabLoginPage'
 import LabRegisterPage from '../pages/RegisterPages/LabRegisterPage'
 import ChangePasswordPage from '../pages/AccountPages/ChangePasswordPage'
+import DoctorBioPage from '../pages/AccountPages/DoctorBioPage'
 import SideBar from '../components/SideBar'
 import ProtectedRoute from '../components/ProtectedRoute'
 import Unauthorized from '../pages/Unauthorized'
@@ -117,6 +118,11 @@ const AppRouter = () => {
         <Route path="/:role/change-password" element={
           <ProtectedRoute allowedRoles={['patient', 'doctor', 'clinic', 'lab']}>
             <ChangePasswordPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/doctor/bio" element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <DoctorBioPage />
           </ProtectedRoute>
         } />
         <Route path="/unauthorized" element={<Unauthorized />} />

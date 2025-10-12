@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('phone_number');
             $table->string('specialization');
+            $table->text('bio')->nullable();
             $table->timestamps();
         });
     }

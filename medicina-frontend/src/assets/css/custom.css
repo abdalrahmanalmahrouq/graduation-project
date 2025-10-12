@@ -3185,10 +3185,66 @@ background: #f9f9f9; /* optional */
   box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
 }
 
+/* Bio Form Container */
+.bio-form-container {
+  width: 100%;
+  max-width: none;
+}
+
+/* Bio Field Full Width */
+.bio-field-full-width {
+  width: 100%;
+  max-width: none;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+}
+
+.bio-field-full-width .field-icon {
+  align-self: flex-start;
+  margin-bottom: 1rem;
+  
+}
+
+.bio-field-full-width .field-content {
+  width: 100%;
+  flex: 1;
+}
+
+/* Bio Textarea Styles */
+.bio-textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.character-count {
+  font-size: 0.8rem;
+  color: #6b7280;
+  text-align: right;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
 /* Responsive adjustments for editable fields */
 @media (max-width: 768px) {
   .field-input {
     padding: 0.5rem;
     font-size: 0.9rem;
+  }
+  
+  .bio-textarea {
+    min-height: 100px;
+  }
+  
+  .bio-field-full-width {
+    padding: 1rem;
+  }
+  
+  .bio-field-full-width .field-icon {
+    margin-bottom: 0.75rem;
   }
 }

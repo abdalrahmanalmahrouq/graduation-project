@@ -11,6 +11,7 @@ import editbanner from '../../assets/img/theme/edit.png';
 import clinicbanner from '../../assets/img/theme/clinic.png';
 import doctorbanner from '../../assets/img/theme/doctor.png';
 import lockbanner from '../../assets/img/theme/locked.png';
+import biobanner from '../../assets/img/theme/bio.png';
 
 const UserAccount = ({ token }) => {
   const navigate = useNavigate();
@@ -538,6 +539,18 @@ const UserAccount = ({ token }) => {
               </span>
               Change Password
             </button>
+            
+            {user.role === 'doctor' && (
+              <button 
+                onClick={() => navigate(`/${user.role}/bio`)} 
+                className="modern-btn secondary-btn"
+              >
+                <span className="btn-icon pb-1">
+                  <img src={biobanner} alt="" style={{width: '20px', height: '20px'}}/>
+                </span>
+                Bio
+              </button>
+            )}
            
           </div>
         </div>
