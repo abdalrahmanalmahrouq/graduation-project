@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClinicDoctorController;
 use App\Http\Controllers\DoctorBioController;
+use App\Http\Controllers\DoctorClinicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionControllers\AuthController;
 use Illuminate\Http\Request;
@@ -94,3 +95,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('doctors/get-bio',[DoctorBioController::class,'getBio']);    
     Route::post('doctors/update-bio',[DoctorBioController::class,'updateBio']);
 });
+
+
+Route::get('doctors/by-specialization/{specialization}',[DoctorClinicController::class,'getDoctorsBySpecialization']);
+Route::get('doctors/profile/{id}',[DoctorClinicController::class,'getDoctorProfile']);

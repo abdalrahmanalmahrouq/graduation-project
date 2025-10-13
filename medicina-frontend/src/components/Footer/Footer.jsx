@@ -91,19 +91,40 @@ const Footer = () => {
               <h4>عياداتنا</h4>
               <ul>
                 <li>
-                  <a href="#clinics/teeth">عيادة الأسنان</a>
+                  <a href="#clinics/Dentistry">عيادة الأسنان</a>
                 </li>
                 <li>
-                  <a href="#clinics/kids">عيادة الأطفال</a>
+                  <a href="#clinics/Pediatrics">عيادة الأطفال</a>
                 </li>
                 <li>
-                  <a href="#clinics/skin">عيادة الجلدية</a>
+                  <a href="#clinics/Dermatology">عيادة الجلدية</a>
                 </li>
                 <li>
-                  <a href="#clinics/eyes">عيادة العيون</a>
+                  <a href="#clinics/Ophthalmology">عيادة العيون</a>
                 </li>
                 <li>
-                  <a href="#clinics/heart">عيادة القلب</a>
+                  <a href="#clinics/Cardiology">عيادة القلب</a>
+                </li>
+                <li>
+                  <a href="#clinics/Gynecology">عيادة النساء</a>
+                </li>
+                <li>
+                  <a href="#clinics/ENT">عيادة الأنف والأذن</a>
+                </li>
+                <li>
+                  <a href="#clinics/Orthopedics">عيادة العظام</a>
+                </li>
+                <li>
+                  <a href="#clinics/Neurology">عيادة الأعصاب</a>
+                </li>
+                <li>
+                  <a href="#clinics/Gastroenterology">عيادة الباطنة</a>
+                </li>
+                <li>
+                  <a href="#clinics/Pulmonology">عيادة الجهاز التنفسي</a>
+                </li>
+                <li>
+                  <a href="#clinics/Gastroenterology">عيادة الجهاز الهضمي</a>
                 </li>
               </ul>
             </div>

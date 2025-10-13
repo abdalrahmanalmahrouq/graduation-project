@@ -3229,6 +3229,42 @@ background: #f9f9f9; /* optional */
   font-weight: 500;
 }
 
+/* Modern Clinic Selection Styles */
+.clinic-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid #e9ecef;
+  background: #ffffff;
+}
+
+.clinic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15) !important;
+  border-color: var(--accent-color);
+}
+
+.clinic-card.selected-clinic {
+  transform: translateY(-2px);
+  border-color: var(--accent-color) !important;
+  background: rgba(61, 131, 192, 0.05) !important;
+  box-shadow: 0 8px 25px rgba(61, 131, 192, 0.15) !important;
+}
+
+.modern-select:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(61, 131, 192, 0.1) !important;
+  outline: none !important;
+}
+
+.modern-select:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Transition animations */
+.transition-all {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Responsive adjustments for editable fields */
 @media (max-width: 768px) {
   .field-input {
@@ -3246,5 +3282,14 @@ background: #f9f9f9; /* optional */
   
   .bio-field-full-width .field-icon {
     margin-bottom: 0.75rem;
+  }
+  
+  /* Mobile clinic card adjustments */
+  .clinic-card {
+    margin-bottom: 1rem;
+  }
+  
+  .clinic-card:hover {
+    transform: translateY(-2px);
   }
 }

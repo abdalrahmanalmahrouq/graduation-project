@@ -234,16 +234,16 @@ export const clinicsData = {
 };
 
 export const titles = {
-    kids: 'عيادات الأطفال',
-    eyes: 'عيادات العيون',
-    teeth: 'عيادات الأسنان',
-    women: 'عيادات النساء',
-    heart: 'عيادات القلب',
-    skin: 'عيادات الجلدية',
-    neurology: 'عيادات الأعصاب',
-    orthopedic: 'عيادات العظام',
-    ear: 'عيادات الأنف والأذن',
-    interior: 'عيادات الباطنة',
-    chest: 'عيادات الجهاز التنفسي',
-    digestive: 'عيادات الجهاز الهضمي',
+    Pediatrics: 'عيادات الأطفال',
+    Ophthalmology: 'عيادات العيون',
+    Dentistry: 'عيادات الأسنان',
+    Gynecology: 'عيادات النساء',
+    Cardiology: 'عيادات القلب',
+    Dermatology: 'عيادات الجلدية',
+    Neurology: 'عيادات الأعصاب',
+    Orthopedics: 'عيادات العظام',
+    ENT: 'عيادات الأنف والأذن',
+    Gastroenterology: 'عيادات الباطنة',
+    Pulmonology: 'عيادات الجهاز التنفسي',
+    Gastroenterology: 'عيادات الجهاز الهضمي',
 };

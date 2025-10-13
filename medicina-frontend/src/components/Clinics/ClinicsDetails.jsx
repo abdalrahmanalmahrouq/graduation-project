@@ -20,43 +20,43 @@ const ClinicsDetails = () => {
       title: "عيادات الأسنان",
       description: "نقدم خدمات شاملة للعناية بالأسنان باستخدام أحدث التقنيات.",
       image: teeth_img,
-      directory: 'teeth'
+      directory: 'Dentistry'
     },
     {
       title: "عيادات العيون",
       description: "فحص شامل للعيون وعلاج مشاكل الرؤية بأحدث الأجهزة.",
       image: eyes_img,
-      directory: 'eyes'
+      directory: 'Ophthalmology'
     },
     {
       title: "عيادات الأطفال",
       description: "رعاية طبية متكاملة للأطفال من جميع الأعمار.",
       image: kid_img,
-      directory: 'kids'
+      directory: 'Pediatrics'
     },
     {
       title: "عيادات الجلدية",
       description: "علاج مشاكل البشرة والشعر بأحدث التقنيات.",
       image: skin_img,
-      directory: 'skin'
+      directory: 'Dermatology'
     },
     {
       title: "عيادات القلب",
       description: "تشخيص وعلاج أمراض القلب بأيدي أطباء متخصصين.",
       image: heart_img,
-      directory: 'heart'
+      directory: 'Cardiology'
     },
     {
       title: "عيادات النساء",
       description: "خدمات طبية شاملة للنساء في جميع المراحل العمرية.",
       image: women_img,
-      directory: 'women'
+      directory: 'Gynecology'
     },
     {
       title: "عيادات الأنف والأذن والحنجرة",
       description: "تشخيص وعلاج أمراض الأنف والأذن والحنجرة.",
       image: ears_img,
-      directory: 'ear'
+      directory: 'ENT'
     },
     {
       title: "عيادات العظام",
@@ -80,13 +80,13 @@ const ClinicsDetails = () => {
       title: "عيادات الجهاز التنفسي",
       description: "علاج أمراض الجهاز التنفسي والرئة.",
       image: chest_img,
-      directory: 'chest'
+      directory: 'Pulmonology'
     },
     {
       title: "عيادات الباطنية",
       description: "تقديم خدمات طبية شاملة للأمراض الباطنية.",
       image: interior_img,
-      directory: 'interior'
+      directory: 'Gastroenterology'
     },
   ];
 
