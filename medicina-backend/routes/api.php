@@ -51,6 +51,10 @@ Route::middleware('auth.rate.limit:5,1')->post('/login',[AuthController::class,'
 // Logout endpoint (less restrictive since user is already authenticated)
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
+// Delete Account endpoint
+Route::middleware('auth:sanctum')->post('/delete-account', [AuthController::class, 'deleteAccount']);
+
+
 // Email Verification Routes
 Route::middleware(['auth:sanctum', 'throttle:6,1'])->group(function () {
     // Resend verification email

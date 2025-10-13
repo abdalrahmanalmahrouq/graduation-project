@@ -10,9 +10,9 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 ### User Types & Permissions
 
 **Patient**
-- Auth (CRUD)
+- Auth (CRUD)✅
 - Book, reschedule, cancel appointments (CRUD)
-- View doctors and clinics
+- View doctors and clinics✅
 - Read-only access to medical history & past appointments
 - Notifications (appointments, updates, reminders)
 - Search & filter clinics/doctors by:
@@ -20,8 +20,8 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
   - Supported insurance company
 
 **Clinic**
-- Auth (CRUD)
-- Assign doctors to clinic
+- Auth (CRUD)✅
+- Assign doctors to clinic✅
 - Manage doctor schedules (CRUD)
 - Manage appointments (CRUD)
 - Read clinic-related patient logs and profiles
@@ -33,7 +33,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
   - Blacklisted patients
 
 **Doctor**
-- Auth (CRUD)
+- Auth (CRUD)✅
 - Access clinic appointments
 - Create/Read patient medical records
 - Update past medical records with version control

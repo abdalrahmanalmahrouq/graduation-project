@@ -12,6 +12,7 @@ import clinicbanner from '../../assets/img/theme/clinic.png';
 import doctorbanner from '../../assets/img/theme/doctor.png';
 import lockbanner from '../../assets/img/theme/locked.png';
 import biobanner from '../../assets/img/theme/bio.png';
+import deletebanner from '../../assets/img/theme/delete-user.png';
 
 const UserAccount = ({ token }) => {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ const UserAccount = ({ token }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
   useEffect(() => {
     loadUser();
@@ -261,6 +264,65 @@ const UserAccount = ({ token }) => {
     }
   };
 
+  const handleDeleteAccount = () => {
+    setShowDeleteModal(true);
+    setDeleteConfirmation('');
+    setMessage('');
+  };
+
+  const confirmDeleteAccount = () => {
+    if (deleteConfirmation !== 'حذف') {
+      setMessage({ type: 'error', text: 'يرجى كتابة "حذف" بالضبط للتأكيد' });
+      return;
+    }
+
+    // Show loading state
+    setIsSaving(true);
+    setMessage('');
+    setShowDeleteModal(false);
+    
+    axios.post('/delete-account')
+      .then((res) => {
+        console.log('Account deleted successfully:', res);
+        
+        // Show success message
+        setMessage({ type: 'success', text: 'تم حذف حسابك بنجاح' });
+        
+        // Clear all user data
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Show success message for a moment before redirecting
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
+      })
+      .catch((err) => {
+        console.error('Error deleting account:', err);
+        setIsSaving(false);
+        
+        // Handle different error types
+        if (err.response?.status === 401) {
+          setMessage({ type: 'error', text: 'انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى' });
+          setTimeout(() => {
+            localStorage.clear();
+            navigate('/');
+          }, 2000);
+        } else if (err.response?.status === 403) {
+          setMessage({ type: 'error', text: 'ليس لديك صلاحية لحذف هذا الحساب' });
+        } else if (err.response?.status >= 500) {
+          setMessage({ type: 'error', text: 'حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقاً' });
+        } else {
+          setMessage({ type: 'error', text: 'حدث خطأ أثناء حذف الحساب. يرجى المحاولة مرة أخرى' });
+        }
+      });
+  };
+
+  const cancelDeleteAccount = () => {
+    setShowDeleteModal(false);
+    setDeleteConfirmation('');
+    setMessage('');
+  };
 
   // Loading component with modern design
   if (isLoading) {
@@ -453,8 +515,77 @@ const UserAccount = ({ token }) => {
     </div>
   );
 
+  // Delete Account Modal Component
+  const DeleteAccountModal = () => {
+    if (!showDeleteModal) return null;
+
+    return (
+      <div className="delete-account-modal-overlay">
+        <div className="delete-account-modal">
+          <div className="delete-account-modal-header">
+            <h3 className="delete-account-modal-title">حذف الحساب نهائياً</h3>
+            <button 
+              className="delete-account-modal-close"
+              onClick={cancelDeleteAccount}
+            >
+              ✕
+            </button>
+          </div>
+          
+          <div className="delete-account-modal-body">
+            <div className="delete-account-warning">
+              <div className="warning-icon">⚠️</div>
+              <div className="warning-content">
+                <h4>تحذير: هذا الإجراء لا يمكن التراجع عنه!</h4>
+                <p>سيتم حذف جميع بياناتك بشكل دائم، بما في ذلك:</p>
+                <ul>
+                  <li>معلومات الملف الشخصي</li>
+                  <li>جميع المواعيد والجلسات</li>
+                  <li>السجلات الطبية</li>
+                  <li>جميع البيانات المرتبطة بحسابك</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="delete-account-confirmation">
+              <label htmlFor="delete-confirmation-input">
+                للتأكيد، يرجى كتابة <strong>"حذف"</strong> في المربع أدناه:
+              </label>
+              <input
+                id="delete-confirmation-input"
+                type="text"
+                value={deleteConfirmation}
+                onChange={(e) => setDeleteConfirmation(e.target.value)}
+                placeholder="اكتب 'حذف' هنا"
+                className="delete-confirmation-input"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+          
+          <div className="delete-account-modal-footer">
+            <button 
+              className="delete-account-cancel-btn"
+              onClick={cancelDeleteAccount}
+            >
+              إلغاء
+            </button>
+            <button 
+              className="delete-account-confirm-btn"
+              onClick={confirmDeleteAccount}
+              disabled={deleteConfirmation !== 'حذف' || isSaving}
+            >
+              {isSaving ? 'جاري الحذف...' : 'حذف الحساب نهائياً'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="user-account-container">
+      <DeleteAccountModal />
       <div className="user-account-wrapper">
         <div className="modern-profile-card" id="profileCard">
           {/* Profile Header */}
@@ -519,6 +650,9 @@ const UserAccount = ({ token }) => {
       
           {/* Action Buttons */}
           <div className="profile-actions">
+          
+            <div className="profile-actions-right">
+
             <button 
               onClick={handleSave} 
               className="modern-btn primary-btn"
@@ -539,7 +673,7 @@ const UserAccount = ({ token }) => {
               </span>
               Change Password
             </button>
-            
+
             {user.role === 'doctor' && (
               <button 
                 onClick={() => navigate(`/${user.role}/bio`)} 
@@ -552,6 +686,24 @@ const UserAccount = ({ token }) => {
               </button>
             )}
            
+            
+            
+            
+            
+            </div>
+
+            <div className="profile-actions-left">
+              <button 
+                onClick={() => handleDeleteAccount()} 
+                className="modern-btn danger-btn"
+              >
+                <span className="btn-icon pb-1">
+                  <img src={deletebanner} alt="Delete" style={{width: '20px', height: '20px'}}/>
+                </span>
+                Delete Account
+              </button>
+          </div>
+            
           </div>
         </div>
       </div>

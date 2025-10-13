@@ -280,3 +280,6 @@ docker compose up --build
    ```bash
    sudo chown -R $USER:$USER /home/aboodlinux/projects/graduation-project
    ```
+
+// to give an edit permission    
+sudo chown -R aboodlinux:aboodlinux .
