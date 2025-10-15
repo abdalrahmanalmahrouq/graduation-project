@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ClinicDoctorController;
 use App\Http\Controllers\DoctorBioController;
 use App\Http\Controllers\DoctorClinicController;
@@ -103,3 +104,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
 Route::get('doctors/by-specialization/{specialization}',[DoctorClinicController::class,'getDoctorsBySpecialization']);
 Route::get('doctors/profile/{id}',[DoctorClinicController::class,'getDoctorProfile']);
+
+Route::post('appointments/create',[AppointmentController::class,'createAppointment']);
+Route::get('appointments/available/{doctor_id}/{clinic_id}',[AppointmentController::class,'getAvailableDoctorClinicAppointments']);
+Route::put('appointments/{appointment_id}',[AppointmentController::class,'updateAppointment']);
+Route::delete('appointments/{appointment_id}',[AppointmentController::class,'deleteAppointment']);
