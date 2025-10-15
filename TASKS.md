@@ -11,7 +11,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 
 **Patient**
 - Auth (CRUD)✅
-- Book, reschedule, cancel appointments (CRUD)
+- Book, reschedule, cancel appointments (CRUD)⏳
 - View doctors and clinics✅
 - Read-only access to medical history & past appointments
 - Notifications (appointments, updates, reminders)
@@ -22,9 +22,9 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 **Clinic**
 - Auth (CRUD)✅
 - Assign doctors to clinic✅
-- Manage doctor schedules (CRUD)
-- Manage appointments (CRUD)
-- Read clinic-related patient logs and profiles
+- Manage doctor schedules (CRUD)✅
+- Manage appointments (CRUD)⏳
+- Read clinic-related patient logs and profiles⏳
 - Manage collaborated insurance companies (CRUD)
 - Dashboard includes:
   - Number of doctors
@@ -34,7 +34,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 
 **Doctor**
 - Auth (CRUD)✅
-- Access clinic appointments
+- Access clinic appointments⏳
 - Create/Read patient medical records
 - Update past medical records with version control
   - New record created per update using same `appointment_id`

@@ -119,7 +119,7 @@ const ChangePassword = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="profile-actions">
+          <div className="profile-actions" style={{justifyContent: 'center'}}>
             <button 
               onClick={handleSubmit} 
               className="modern-btn primary-btn"
