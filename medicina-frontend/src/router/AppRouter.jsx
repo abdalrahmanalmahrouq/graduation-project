@@ -26,6 +26,7 @@ import Unauthorized from '../pages/Unauthorized'
 import NotFound from '../pages/NotFound'
 import RoleAccountRoute from '../components/RoleAccountRoute'
 import ManageDoctorsPage from '../pages/ManageDoctorsPage'
+import DoctorManagementPage from '../pages/DoctorManagementPage'
 import UpComingAppointmentPage from '../pages/UpComingAppointmentPage'
 import PastAppointmentPage from '../pages/PastAppointmentPage'
 import EmailVerificationSuccess from '../components/EmailVerificationSuccess'
@@ -133,6 +134,12 @@ const AppRouter = () => {
           <ManageDoctorsPage/>
           </ProtectedRoute>
           }/>
+        <Route path="/manage/doctor/:doctorId/:clinicId" element={
+          <ProtectedRoute allowedRoles={['clinic']}>
+          <DoctorManagementPage/>
+          </ProtectedRoute>
+          }/>
+        
         
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />

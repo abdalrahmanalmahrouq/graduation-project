@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import defaultImage from '../assets/img/profpic.png';
 import axios from 'axios';
 
 
 const DoctorCard = ({ doctor, onManage }) => {
+  const navigate = useNavigate();
   // Use real profile image if available, otherwise use default
   const profileImage = doctor.profile_image_url || '/default-doctor.jpg';
+  
+  const handleManage = async () => {
+    try {
+      // Get clinic_id from the authenticated user's profile
+      const profileResponse = await axios.get('/profile');
+      const clinicId = profileResponse.data.id;
+      
+      // Navigate to doctor management page
+      navigate(`/manage/doctor/${doctor.doctorId}/${clinicId}`);
+    } catch (error) {
+      console.error('Error getting clinic ID:', error);
+      // Fallback to just doctor ID if profile fetch fails
+      navigate(`/manage/doctor/${doctor.doctorId}`);
+    }
+  };
   
   return (
     <div className="doctor-card">
@@ -16,7 +34,7 @@ const DoctorCard = ({ doctor, onManage }) => {
             className="doctor-image"                                                                                                                      
               onError={(e) => {
               // Fallback to default image if profile image fails to load
-              e.target.src = '/default-doctor.jpg';
+              e.target.src = defaultImage;
             }}
           />
           <div className="doctor-status">
@@ -29,7 +47,7 @@ const DoctorCard = ({ doctor, onManage }) => {
       <p className="doctor-specialty">{doctor.specialty || doctor.clinic}</p>
       
       <button 
-        onClick={() => onManage(doctor)}
+        onClick={handleManage}
         className="doctor-manage-btn"
       >
         إدارة الطبيب
@@ -75,7 +93,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
         id: Date.now(), // Temporary ID
         name: `طبيب ${doctorId}`, // Temporary name, will be updated when we refresh
         clinic: 'غير محدد',
-        img: '/default-doctor.jpg', // Default image
+        img: defaultImage, // Default image
         profile_image_url: null, // Will be updated when we refresh
         specialty: 'غير محدد',
         doctorId: doctorId
@@ -178,7 +196,8 @@ const DoctorList = () => {
         img: doctor.profile_image_url || '/default-doctor.jpg', // Use real profile image or default
         profile_image_url: doctor.profile_image_url, // Store the profile image URL
         specialty: doctor.specialization,
-        doctorId: doctor.user_id
+        doctorId: doctor.user_id,
+        clinicId: doctor.pivot.clinic_id
       }));
       setDoctors(clinicDoctors);
     } catch (error) {
