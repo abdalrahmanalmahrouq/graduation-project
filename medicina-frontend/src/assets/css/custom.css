@@ -1378,7 +1378,7 @@ main {
 /* Desktop Optimizations */
 @media (min-width: 1024px) {
   .user-account-container {
-    padding-top: 10rem; /* More space for larger screens */
+    padding-top: 3rem; /* More space for larger screens */
   }
   
   .user-account-wrapper {
@@ -1434,7 +1434,7 @@ main {
 /* Responsive Design */
 @media (max-width: 1023px) {
   .user-account-container {
-    padding-top: 5rem; /* Reduced padding for medium screens */
+    padding-top: 2rem; /* Reduced padding for medium screens */
   }
   
   .profile-header {
@@ -1451,7 +1451,7 @@ main {
 @media (max-width: 768px) {
   .user-account-container {
     padding: 1rem;
-    padding-top: 4rem; /* Adequate spacing for mobile toolbar */
+    padding-top: 2rem; /* Adequate spacing for mobile toolbar */
   }
   
   .modern-profile-card {
@@ -1500,7 +1500,7 @@ main {
 @media (max-width: 480px) {
   .user-account-container {
     padding: 0.5rem;
-    padding-top: 3.5rem; /* Compact spacing for small mobile screens */
+    padding-top: 2rem; /* Compact spacing for small mobile screens */
   }
   
   .profile-header {
@@ -1567,8 +1567,7 @@ main {
 /* Main content area */
 .app-container .content-area {
   grid-area: content;
-  overflow-y: auto;
-  padding-top: 4rem; /* Base padding for toolbar clearance */
+  
   background-color: #ecf0f1;
 }
 
@@ -2035,7 +2034,7 @@ background: #f9f9f9; /* optional */
   }
   
   .content-area {
-    padding-top: 5rem; /* Reduce top padding on mobile */
+    padding-top: 2rem; /* Reduce top padding on mobile */
   }
 }
 
@@ -3591,7 +3590,8 @@ background: #f9f9f9; /* optional */
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding-top: 100px;
+  padding: 2rem; /* Side and bottom padding only */
+  padding-top: 2rem; /* FALLBACK: In case JavaScript fails - NO !important */
   
   direction: rtl;
 }
@@ -4273,5 +4273,1027 @@ background: #f9f9f9; /* optional */
   .delete-cancel-btn,
   .delete-confirm-btn {
     width: 100%;
+  }
+}
+
+
+/* PastAppointment.css */
+.past-appointments {
+  padding-top: 3rem;
+  max-width: 1400px; /* BALANCED: Reasonable max-width for better readability */
+  width: 95%; /* BALANCED: Good viewport usage without being too wide */
+  margin: 0 auto;
+  direction: rtl;
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+}
+
+.past-appointments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e8f5e8;
+}
+
+.past-appointments-header h2 {
+  color: #2e7d32;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.past-appointments-count {
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.past-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.past-appointment-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e8f5e8;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  min-width: 600px; /* MINIMUM: Ensures cards don't get too narrow */
+  max-width: 900px; /* INCREASED: Allow wider cards */
+  width: 100%;
+  margin: 0 auto;
+}
+
+.past-appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-color: #c8e6c9;
+}
+
+.past-appointment-card.status-completed {
+  border-left: 4px solid #4caf50;
+}
+
+.past-appointment-card.status-cancelled {
+  border-left: 4px solid #f44336;
+  background: #fafafa;
+}
+
+.past-appointment-content {
+  display: flex;
+  align-items: center;
+  padding: 25px 30px; /* INCREASED: More balanced padding */
+  gap: 25px; /* INCREASED: Better spacing between elements */
+  width: 100%;
+  min-height: 120px;
+}
+
+.past-doctor-image {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #e8f5e8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.past-doctor-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.past-appointment-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 0;
+}
+
+.past-doctor-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.past-doctor-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.past-clinic-name {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+}
+
+.past-appointment-status {
+  margin-top: 5px;
+}
+
+.past-status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.past-status-badge.status-completed {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.past-status-badge.status-cancelled {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.past-appointment-datetime {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.past-date-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.past-date {
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+.past-time-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.past-time {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.past-period {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.past-appointment-diagnosis {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #2e7d32;
+}
+
+.past-diagnosis-text {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+  font-style: italic;
+}
+
+.past-appointment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 140px;
+}
+
+.past-appointment-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-height: 40px;
+}
+
+.past-btn-view-report {
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.past-btn-view-report:hover {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+}
+
+.past-btn-book-again {
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  color: white;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.past-btn-book-again:hover {
+  background: linear-gradient(135deg, #1565c0, #1976d2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+}
+
+.past-no-appointments {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.past-no-appointments p {
+  font-size: 18px;
+  margin: 0;
+  color: #999;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Desktop and Extra Large Screens */
+@media (min-width: 1025px) {
+  .past-appointments {
+    padding-top: 3rem;
+    width: 90%; /* DESKTOP: More conservative width for better readability */
+    max-width: 1600px; /* INCREASED: Allow more width on very large screens */
+  }
+  
+  .past-appointment-card {
+    min-width: 700px; /* INCREASED: Minimum width for desktop */
+    max-width: 1200px; /* INCREASED: More width for desktop cards */
+  }
+  
+  .past-appointment-content {
+    padding: 30px 40px; /* INCREASED: More generous padding on desktop */
+    gap: 30px; /* INCREASED: More spacing between elements */
+  }
+  
+  .past-doctor-image {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .past-doctor-name {
+    font-size: 22px;
+  }
+  
+  .past-clinic-name {
+    font-size: 17px;
+  }
+  
+  .past-appointment-actions {
+    min-width: 160px;
+  }
+}
+
+/* Extra Large Desktop Screens */
+@media (min-width: 1600px) {
+  .past-appointments {
+    width: 85%; /* LARGE DESKTOP: Even more conservative width */
+    max-width: 1800px; /* MAXIMUM: Cap for very large screens */
+    padding-top: 3rem;
+  }
+  
+  .past-appointment-card {
+    min-width: 800px; /* LARGE: Minimum width for extra large screens */
+    max-width: 1400px; /* LARGE: Maximum width for extra large screens */
+  }
+  
+  .past-appointment-content {
+    padding: 35px 45px; /* LARGE: More padding for extra large screens */
+    gap: 35px; /* LARGE: More spacing for extra large screens */
+  }
+}
+
+/* Medium Screens (Tablets) */
+@media (max-width: 1024px) and (min-width: 601px) {
+    .past-appointments {
+    padding-top: 3rem;
+    width: 95%; /* TABLET: Use more width on tablets */
+    max-width: 1200px; /* TABLET: Appropriate max-width for tablets */
+  }
+  
+  .past-appointment-card {
+    min-width: 500px; /* TABLET: Minimum width for tablets */
+    max-width: 800px; /* TABLET: Maximum width for tablets */
+  }
+  
+  .past-appointment-content {
+    padding: 20px 25px; /* TABLET: Balanced padding for tablets */
+    gap: 20px; /* TABLET: Appropriate spacing for tablets */
+  }
+  
+  .past-doctor-image {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .past-doctor-name {
+    font-size: 19px;
+  }
+  
+  .past-clinic-name {
+    font-size: 15px;
+  }
+  
+  .past-appointment-actions {
+    min-width: 130px;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 600px) {
+  .past-appointments {
+    padding-top: 2rem;
+    width: 100%; /* MOBILE: Full width for mobile */
+    max-width: none; /* MOBILE: No max-width restriction */
+  }
+  
+  .past-appointment-card {
+    min-width: 0; /* MOBILE: Allow cards to shrink */
+    max-width: none; /* MOBILE: No max-width restriction */
+    width: 100%; /* MOBILE: Full width */
+  }
+  
+  .past-appointment-content {
+    flex-direction: column; /* MOBILE: Stack elements vertically */
+    padding: 20px 15px; /* MOBILE: Compact padding */
+    gap: 15px; /* MOBILE: Smaller gaps */
+    text-align: center; /* MOBILE: Center align content */
+  }
+  
+  .past-doctor-image {
+    width: 70px;
+    height: 70px;
+    align-self: center; /* MOBILE: Center the image */
+  }
+  
+  .past-appointment-info {
+    align-items: center; /* MOBILE: Center align info */
+    text-align: center; /* MOBILE: Center text */
+  }
+  
+  .past-appointment-datetime {
+    align-items: center; /* MOBILE: Center align datetime */
+  }
+  
+  .past-appointment-actions {
+    flex-direction: row; /* MOBILE: Horizontal buttons */
+    justify-content: center; /* MOBILE: Center buttons */
+    gap: 10px; /* MOBILE: Space between buttons */
+    min-width: 0; /* MOBILE: Remove min-width */
+    width: 100%; /* MOBILE: Full width for actions */
+  }
+  
+  .past-appointment-actions button {
+    flex: 1; /* MOBILE: Equal width buttons */
+    max-width: 120px; /* MOBILE: Limit button width */
+  }
+  
+  .past-doctor-name {
+    font-size: 18px;
+  }
+  
+  .past-clinic-name {
+    font-size: 14px;
+  }
+  
+  .past-appointments-header {
+    flex-direction: column; /* MOBILE: Stack header elements */
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .past-appointments-header h2 {
+    font-size: 24px;
+  }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+  .past-appointments {
+    padding-top: 2rem;
+    width: 100%;
+  }
+  
+  .past-appointment-content {
+    padding: 15px 10px; /* SMALL MOBILE: Even more compact padding */
+    gap: 12px; /* SMALL MOBILE: Smaller gaps */
+  }
+  
+  .past-doctor-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .past-doctor-name {
+    font-size: 16px;
+  }
+  
+  .past-clinic-name {
+    font-size: 13px;
+  }
+  
+  .past-appointment-actions button {
+    padding: 8px 12px;
+    font-size: 12px;
+    max-width: 100px;
+  }
+  
+  .past-appointments-header h2 {
+    font-size: 20px;
+  }
+  
+  .past-appointments-count {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+/* Extra Small Mobile Screens */
+@media (max-width: 360px) {
+  .past-appointments {
+    padding-top: 2rem;
+  }
+  
+  .past-appointment-content {
+    padding: 12px 8px;
+    gap: 10px;
+  }
+  
+  .past-doctor-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .past-doctor-name {
+    font-size: 15px;
+  }
+  
+  .past-clinic-name {
+    font-size: 12px;
+  }
+  
+  .past-time {
+    font-size: 16px;
+  }
+  
+  .past-appointment-actions button {
+    padding: 6px 10px;
+    font-size: 11px;
+    max-width: 90px;
+  }
+}
+
+/* Mobile Landscape Mode */
+@media (max-height: 500px) and (orientation: landscape) and (max-width: 768px) {
+  .past-appointments {
+    padding-top: 2rem;
+    min-height: auto; /* LANDSCAPE: Remove min-height constraint */
+  }
+  
+  .past-appointment-content {
+    flex-direction: row; /* LANDSCAPE: Keep horizontal layout */
+    padding: 15px 20px;
+    gap: 15px;
+    min-height: 80px; /* LANDSCAPE: Reduce minimum height */
+  }
+  
+  .past-doctor-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .past-appointment-info {
+    text-align: right; /* LANDSCAPE: Right align for better space usage */
+  }
+  
+  .past-appointment-actions {
+    flex-direction: column; /* LANDSCAPE: Vertical buttons to save space */
+    gap: 8px;
+    min-width: 100px;
+  }
+  
+  .past-appointment-actions button {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+
+/* UpComingAppointment.css */
+.upcoming-appointments {
+  padding-top: 3rem;
+  max-width: 1400px; /* BALANCED: Reasonable max-width for better readability */
+  width: 95%; /* BALANCED: Good viewport usage without being too wide */
+  margin: 0 auto;
+  direction: rtl;
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+}
+
+.upcoming-appointments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.upcoming-appointments-header h2 {
+  color: #1976d2;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.upcoming-appointments-count {
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.upcoming-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.upcoming-appointment-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e1f5fe;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  width: 100%; /* CONTROL: Card takes full container width */
+  max-width: none; /* REMOVED: No max-width limit - cards can be as wide as container */
+  min-width: 600px; /* REDUCED: More reasonable minimum width for better responsiveness */
+  margin: 0 auto;
+}
+
+.upcoming-appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: #81c784;
+}
+
+.upcoming-appointment-content {
+  display: flex;
+  align-items: center;
+  padding: 25px 40px; /* INCREASED: More horizontal padding for wider look */
+  gap: 30px; /* INCREASED: More space between elements */
+  min-height: 120px;
+  width: 100%; /* ENSURE: Content takes full card width */
+}
+
+.upcoming-doctor-image {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 3px solid #e8f5e8;
+  background: #f5f5f5;
+}
+
+.upcoming-doctor-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.upcoming-appointment-card:hover .upcoming-doctor-image img {
+  transform: scale(1.05);
+}
+
+.upcoming-appointment-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upcoming-doctor-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upcoming-doctor-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.upcoming-clinic-name {
+  font-size: 16px;
+  color: #546e7a;
+  margin: 0;
+  font-weight: 400;
+}
+
+.upcoming-appointment-datetime {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.upcoming-date-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.upcoming-date {
+  font-size: 14px;
+  color: #1976d2;
+  font-weight: 500;
+  background: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.upcoming-time-info {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  background: #f1f8e9;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border-right: 3px solid #4caf50;
+}
+
+.upcoming-time {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.upcoming-period {
+  font-size: 14px;
+  color: #388e3c;
+  font-weight: 500;
+}
+
+.upcoming-appointment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.upcoming-appointment-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  font-family: 'Tajawal', sans-serif;
+}
+
+.upcoming-btn-reschedule {
+  background: var(--accent-color);
+  color: white;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.upcoming-btn-reschedule:hover {
+  background: linear-gradient(135deg, #45a049, #5cb85c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.upcoming-btn-cancel {
+  background: linear-gradient(135deg, #f44336, #ef5350);
+  color: white;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+.upcoming-btn-cancel:hover {
+  background: linear-gradient(135deg, #d32f2f, #e53935);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+}
+
+.upcoming-no-appointments {
+  text-align: center;
+  padding: 60px 20px;
+  color: #90a4ae;
+  font-size: 18px;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 2px dashed #e0e0e0;
+}
+
+/* Responsive Design */
+
+/* Standard Desktop and larger */
+@media (min-width: 1025px) {
+  .upcoming-appointments {
+   padding-top: 3rem;
+    max-width: 1600px;
+    width: 90%;
+  }
+  
+  .upcoming-appointment-card {
+    min-width: 700px; /* BALANCED: Good width for desktop */
+  }
+  
+  .upcoming-appointment-content {
+    flex-direction: row; /* ENSURE: Horizontal layout */
+    padding: 30px 40px;
+    gap: 30px;
+  }
+  
+  .upcoming-appointment-actions {
+    flex-direction: column; /* Stack buttons for cleaner look */
+    gap: 10px;
+  }
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1600px) {
+  .upcoming-appointments {
+    max-width: 1800px;
+    width: 85%;
+    padding: 120px 50px 50px 50px; /* INCREASED: More top padding for extra large desktop */
+  }
+  
+  .upcoming-appointment-card {
+    min-width: 900px;
+  }
+  
+  .upcoming-appointment-content {
+    padding: 35px 50px;
+    gap: 40px;
+    min-height: 150px;
+  }
+  
+  .upcoming-doctor-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .upcoming-doctor-name {
+    font-size: 22px;
+  }
+  
+  .upcoming-clinic-name {
+    font-size: 18px;
+  }
+}
+
+/* Medium Screens (Tablet/Small Desktop) */
+@media (max-width: 1024px) and (min-width: 601px) {
+  .upcoming-appointments {
+    padding-top: 3rem;
+    max-width: 100%;
+    width: 98%;
+  }
+  
+  .upcoming-appointment-card {
+    min-width: 500px; /* ADJUSTED: Smaller but still horizontal layout */
+  }
+  
+  .upcoming-appointment-content {
+    padding: 20px 25px;
+    gap: 20px;
+    flex-direction: row; /* ENSURE: Keep horizontal layout */
+  }
+  
+  .upcoming-appointment-actions {
+    flex-direction: column; /* Stack buttons vertically to save space */
+    gap: 8px;
+  }
+  
+  .upcoming-appointment-actions button {
+    min-width: 100px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Mobile Only - Strict mobile breakpoint */
+@media (max-width: 600px) {
+  .upcoming-appointments {
+    padding-top: 2rem;
+    width: 100%;
+  }
+  
+  .upcoming-appointment-card {
+    min-width: auto; /* RESET: Remove minimum width for mobile */
+    margin: 0 5px;
+  }
+  
+  .upcoming-appointment-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 20px;
+    min-height: auto;
+  }
+  
+  .upcoming-appointment-info {
+    order: 1;
+    width: 100%;
+  }
+  
+  .upcoming-doctor-image {
+    order: 0;
+    align-self: center;
+    width: 90px;
+    height: 90px;
+  }
+  
+  .upcoming-appointment-actions {
+    order: 2;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .upcoming-appointment-actions button {
+    flex: 1;
+    min-width: 0;
+    max-width: 150px;
+  }
+  
+  .upcoming-appointment-datetime {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .appointments-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .appointments-header h2 {
+    font-size: 24px;
+  }
+  
+  .upcoming-appointment-card {
+    min-width: auto; /* RESET: Remove minimum width for mobile */
+    margin: 0 5px;
+  }
+}
+
+/* Mobile Small */
+@media (max-width: 480px) {
+  .upcoming-appointments {
+    padding-top: 2rem;
+    width: 100%;
+  }
+  
+  .upcoming-appointment-card {
+    min-width: auto; /* RESET: Remove minimum width for small mobile */
+  }
+  
+  .upcoming-appointment-content {
+    padding: 15px;
+    gap: 15px;
+  }
+  
+  .upcoming-appointment-actions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .upcoming-appointment-actions button {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  .upcoming-doctor-image {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .upcoming-doctor-name {
+    font-size: 18px;
+  }
+  
+  .upcoming-clinic-name {
+    font-size: 14px;
+  }
+  
+  .appointments-header h2 {
+    font-size: 20px;
+  }
+  
+  .appointments-count {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .upcoming-time {
+    font-size: 16px;
+  }
+  
+  .upcoming-period {
+    font-size: 12px;
+  }
+  
+  .upcoming-date {
+    font-size: 12px;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+  .upcoming-appointments {
+    padding-top: 2rem;
+    width: 100%;
+  }
+  
+  .upcoming-appointment-card {
+    min-width: auto; /* RESET: Remove minimum width for extra small mobile */
+    margin: 0;
+  }
+  
+  .upcoming-appointment-content {
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .upcoming-doctor-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .upcoming-doctor-name {
+    font-size: 16px;
+  }
+  
+  .upcoming-clinic-name {
+    font-size: 13px;
+  }
+  
+  .appointments-header h2 {
+    font-size: 18px;
+  }
+}
+
+/* Landscape orientation adjustments for mobile devices */
+@media (max-height: 500px) and (orientation: landscape) and (max-width: 768px) {
+  .upcoming-appointments {
+    padding-top: 2rem;
+  }
+  
+  .upcoming-appointment-card {
+    min-height: auto; /* Reduce height in landscape */
+  }
+  
+  .upcoming-appointment-content {
+    min-height: auto; /* Reduce content height in landscape */
+    padding: 15px 20px; /* Smaller padding for landscape */
   }
 }

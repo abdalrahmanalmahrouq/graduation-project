@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../assets/css/UpComingAppointment.css';
+
 
 const UpComingAppointment = () => {
   // Hardcoded data - will be replaced with database data later
