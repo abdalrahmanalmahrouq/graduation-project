@@ -12,12 +12,19 @@ const DoctorManagement = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [activeFilter, setActiveFilter] = useState('available');
 
   useEffect(() => {
     console.log('Managing doctor:', doctorId, 'for clinic:', clinicId);
     fetchDoctorData();
     fetchAppointments();
   }, [doctorId, clinicId]);
+
+  useEffect(() => {
+    if (doctor) {
+      fetchAppointments();
+    }
+  }, [activeFilter]);
 
   const fetchDoctorData = async () => {
     try {
@@ -45,18 +52,19 @@ const DoctorManagement = () => {
     }
   };
 
-  const fetchAppointments = async () => {
+  const fetchAppointments = async (filterType = activeFilter) => {
     try {
       let response;
-      if (clinicId) {
-        // Use clinic-specific endpoint
-        response = await axios.get(`/appointments/available/${doctorId}/${clinicId}`);
-      } else {
+      let currentClinicId = clinicId;
+      
+      if (!currentClinicId) {
         // Fallback: get clinic ID from profile and use it
         const profileResponse = await axios.get('/profile');
-        const currentClinicId = profileResponse.data.id;
-        response = await axios.get(`/appointments/available/${doctorId}/${currentClinicId}`);
+        currentClinicId = profileResponse.data.id;
       }
+      
+      // Use the appropriate endpoint based on filter type
+      response = await axios.get(`/appointments/${filterType}/${doctorId}/${currentClinicId}`);
       setAppointments(response.data.appointments);
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -64,6 +72,11 @@ const DoctorManagement = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleFilterChange = (filterType) => {
+    setActiveFilter(filterType);
+    setIsLoading(true);
   };
 
   const handleAddAppointment = async (appointmentData) => {
@@ -166,7 +179,7 @@ const DoctorManagement = () => {
   if (isLoading) {
     return (
       <div className="doctor-management-loading">
-        <div className="loading-spinner">جاري تحميل بيانات الطبيب...</div>
+        <div className="loading-spinner"></div>
       </div>
     );
   }
@@ -222,25 +235,51 @@ const DoctorManagement = () => {
             <p className="doctor-experiance">ID: {doctor.id}</p>
           </div>
         </div>
-        <div className="add-appointment-section">
-          <button 
-            onClick={() => setIsAddDialogOpen(true)}
-            className="add-appointment-btn"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            إضافة موعد
-          </button>
-        </div>
+        {activeFilter === 'available' && (
+          <div className="add-appointment-section">
+            <button 
+              onClick={() => setIsAddDialogOpen(true)}
+              className="add-appointment-btn"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              إضافة موعد
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Filter Dropdown */}
+      <div className="appointment-filter-container">
+        <select 
+          className="appointment-filter-dropdown"
+          value={activeFilter}
+          onChange={(e) => handleFilterChange(e.target.value)}
+        >
+          <option value="available">المواعيد المتاحة</option>
+          <option value="booked">المواعيد المحجوزة</option>
+          <option value="completed">المواعيد المكتملة</option>
+          <option value="cancelled">المواعيد الملغية</option>
+        </select>
       </div>
 
       {/* Appointments List */}
       <div className="appointments-section">
-        <h3 className="manage-section-title">المواعيد المتاحة</h3>
+        <h3 className="manage-section-title">
+          {activeFilter === 'available' && 'المواعيد المتاحة'}
+          {activeFilter === 'booked' && 'المواعيد المحجوزة'}
+          {activeFilter === 'completed' && 'المواعيد المكتملة'}
+          {activeFilter === 'cancelled' && 'المواعيد الملغية'}
+        </h3>
         {appointments.length === 0 ? (
           <div className="no-appointments">
-            <p>لا توجد مواعيد متاحة حالياً</p>
+            <p>
+              {activeFilter === 'available' && 'لا توجد مواعيد متاحة حالياً'}
+              {activeFilter === 'booked' && 'لا توجد مواعيد محجوزة حالياً'}
+              {activeFilter === 'completed' && 'لا توجد مواعيد مكتملة حالياً'}
+              {activeFilter === 'cancelled' && 'لا توجد مواعيد ملغية حالياً'}
+            </p>
           </div>
         ) : (
           <div className="appointments-list">
@@ -250,6 +289,7 @@ const DoctorManagement = () => {
                 appointment={appointment}
                 onDelete={handleDeleteAppointment}
                 onModify={handleModifyAppointment}
+                showActions={activeFilter === 'available'}
               />
             ))}
           </div>
@@ -274,7 +314,7 @@ const DoctorManagement = () => {
 };
 
 // Appointment Card Component
-const AppointmentCard = ({ appointment, onDelete, onModify }) => {
+const AppointmentCard = ({ appointment, onDelete, onModify, showActions = true }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     date: appointment.appointment_date,
@@ -374,26 +414,36 @@ const AppointmentCard = ({ appointment, onDelete, onModify }) => {
             <div className="appointment-time">
               <strong>الوقت:</strong> {appointment.starting_time} - {appointment.ending_time}
             </div>
+            {appointment.patient && (
+              <div className="appointment-patient">
+                <strong>المريض:</strong> {appointment.patient.full_name}
+              </div>
+            )}
             <div className="appointment-status">
               <span className={`status-badge status-${appointment.status}`}>
-                {appointment.status === 'available' ? 'متاح' : appointment.status}
+                {appointment.status === 'available' && 'متاح'}
+                {appointment.status === 'booked' && 'محجوز'}
+                {appointment.status === 'completed' && 'مكتمل'}
+                {appointment.status === 'cancelled' && 'ملغي'}
               </span>
             </div>
           </div>
-          <div className="appointment-actions">
-            <button 
-              onClick={() => setIsEditing(true)}
-              className="modify-btn"
-            >
-              تعديل
-            </button>
-            <button 
-              onClick={() => onDelete(appointment.id)}
-              className="delete-btn"
-            >
-              حذف
-            </button>
-          </div>
+          {showActions && (
+            <div className="appointment-actions">
+              <button 
+                onClick={() => setIsEditing(true)}
+                className="modify-btn"
+              >
+                تعديل
+              </button>
+              <button 
+                onClick={() => onDelete(appointment.id)}
+                className="delete-btn"
+              >
+                حذف
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

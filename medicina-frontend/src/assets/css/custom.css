@@ -79,7 +79,7 @@
 }
 
 .nav-back-scroll .navmenu ul li a:hover {
-  color: #3d83c0 !important;
+  color: var(--accent-color-hover) !important;
 }
 
 .button-feature{
@@ -286,7 +286,7 @@ direction: rtl;
 }
 
 .about-button:hover {
-  background-color: #1e40af;
+  background-color: var(--accent-color-hover);
   transform: scale(1.05);
 }
 
@@ -690,7 +690,7 @@ main {
         }
 
         #editBtn:hover {
-            background-color: #69b8d4;
+            background-color: var(--accent-color-hover);
             transform: translateY(-2px);
         }
         
@@ -1626,10 +1626,27 @@ main {
 /* ✅ Active/Selected navigation item */
 .nav-list li a.active,
 .nav-list li a[aria-current="page"] {
-  background-color: rgba(61, 131, 192, 0.12);
+  background-color: rgba(61, 131, 192, 0.15);
   color: var(--accent-color);
-  border-left-color: var(--accent-color);
+  border-left: 4px solid var(--accent-color);
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(61, 131, 192, 0.3);
+  transform: translateX(4px);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+}
+
+/* Add a subtle glow effect for active items */
+.nav-list li a.active::before,
+.nav-list li a[aria-current="page"]::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent-color), rgba(61, 131, 192, 0.5));
+  border-radius: 0 2px 2px 0;
 }
 
 .nav-item-collapsible > a::after {
@@ -1661,8 +1678,32 @@ main {
 
 .sub-list li a {
   padding-left: 3rem; /* Indent sub-items */
-  font-size: 0.9em;
-  color: var(--default-color);
+}
+
+/* Active state for sub-list items */
+.sub-list li a.active,
+.sub-list li a[aria-current="page"] {
+  background-color: rgba(61, 131, 192, 0.12);
+  color: var(--accent-color);
+  border-left: 3px solid var(--accent-color);
+  font-weight: 600;
+  box-shadow: 0 1px 6px rgba(61, 131, 192, 0.25);
+  transform: translateX(3px);
+  border-radius: 0 6px 6px 0;
+  position: relative;
+}
+
+/* Glow effect for sub-list active items */
+.sub-list li a.active::before,
+.sub-list li a[aria-current="page"]::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent-color), rgba(61, 131, 192, 0.4));
+  border-radius: 0 1px 1px 0;
 }
 
 .sub-list li a:hover {
@@ -2692,8 +2733,8 @@ background: #f9f9f9; /* optional */
 .suggestion-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  color: var(--accent-color);
-  border-color: var(--accent-color);
+  color: var(--accent-color-hover);
+  border-color: var(--accent-color-hover);
 }
 
 .suggestion-item i {
@@ -2703,7 +2744,7 @@ background: #f9f9f9; /* optional */
 }
 
 .suggestion-item:hover i {
-  color: var(--accent-color);
+  color: var(--accent-color-hover);
   transform: scale(1.1);
 }
 
@@ -2909,7 +2950,7 @@ background: #f9f9f9; /* optional */
 /* Doctor Management Button */
 .doctor-manage-btn {
   width: 100%;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: var(--accent-color);
   color: white;
   font-weight: 500;
   padding: 1rem 1.5rem;
@@ -2924,7 +2965,7 @@ background: #f9f9f9; /* optional */
 }
 
 .doctor-manage-btn:hover {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  background: var(--accent-color-hover);
   box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.4);
   transform: translateY(-2px);
 }
@@ -2962,7 +3003,7 @@ background: #f9f9f9; /* optional */
 .add-doctor-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: var(--accent-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2973,7 +3014,7 @@ background: #f9f9f9; /* optional */
 }
 
 .add-doctor-button:hover .add-doctor-icon {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  background: var(--accent-color-hover);
   box-shadow: 0 8px 15px -3px rgba(37, 99, 235, 0.4);
 }
 
@@ -2993,7 +3034,7 @@ background: #f9f9f9; /* optional */
 }
 
 .add-doctor-button:hover .add-doctor-text {
-  color: #1e3a8a;
+  color: var(--accent-color-hover);
 }
 
 .add-doctor-subtitle {
@@ -3004,7 +3045,7 @@ background: #f9f9f9; /* optional */
 }
 
 .add-doctor-button:hover .add-doctor-subtitle {
-  color: #1d4ed8;
+  color: var(--accent-color-hover);
 }
 
 /* Add Doctor Dialog */
@@ -3139,7 +3180,7 @@ background: #f9f9f9; /* optional */
 }
 
 .add-doctor-submit-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  background: var(--accent-color-hover);
   transform: translateY(-1px);
 }
 
@@ -3616,8 +3657,8 @@ background: #f9f9f9; /* optional */
 }
 
 .back-button:hover {
-  background:  #0979e2;
-  border-color:   #0979e2;
+  background:  var(--accent-color-hover);
+  border-color:   var(--accent-color-hover);
   transform: translateY(-2px);
 }
 
@@ -3713,7 +3754,64 @@ background: #f9f9f9; /* optional */
 
 .add-appointment-btn:hover {
   transform: translateY(-2px);
-  box-shadow: #0979e2;
+  box-shadow: var(--accent-color-hover);
+}
+
+/* Filter Dropdown */
+.appointment-filter-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 1.5rem 0;
+  padding: 0 1.5rem;
+}
+
+.appointment-filter-dropdown {
+  padding: 0.75rem 1rem;
+  border: 2px solid white;
+  background: var(--accent-color);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+.appointment-filter-dropdown:hover {
+  background-color: var(--accent-color-hover);
+  border-color: white;
+}
+
+.appointment-filter-dropdown:focus {
+  outline: none;
+  border-color: var(--heading-color);
+  box-shadow: 0 0 0 3px rgba(61, 131, 192, 0.1);
+  background-color: white;
+  color: var(--accent-color);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d83c0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+/* Style the dropdown options */
+.appointment-filter-dropdown option {
+  background-color: white;
+  color: var(--accent-color);
+  padding: 0.5rem;
+}
+
+.appointment-filter-dropdown option:hover {
+  background-color: #f8fafc;
+}
+
+.appointment-filter-dropdown option:checked {
+  background-color: var(--accent-color);
+  color: white;
 }
 
 /* Appointments Section */
@@ -3770,16 +3868,23 @@ background: #f9f9f9; /* optional */
 
 .appointment-date,
 .appointment-day,
-.appointment-time {
+.appointment-time,
+.appointment-patient {
   font-size: 1.1rem;
   color: #4a5568;
 }
 
 .appointment-date strong,
 .appointment-day strong,
-.appointment-time strong {
+.appointment-time strong,
+.appointment-patient strong {
   color: #2d3748;
   font-weight: 600;
+}
+
+.appointment-patient {
+  color: #2b6cb0;
+  font-weight: 500;
 }
 
 .appointment-status {
@@ -3829,7 +3934,7 @@ background: #f9f9f9; /* optional */
 }
 
 .modify-btn:hover {
-  background: #3182ce;
+  background: var(--accent-color-hover);
   transform: translateY(-1px);
 }
 
@@ -4189,6 +4294,19 @@ background: #f9f9f9; /* optional */
 @media (max-width: 768px) {
   .doctor-management {
     padding: 1rem;
+  }
+  
+  .appointment-filter-container {
+    justify-content: center;
+    margin: 1rem 0;
+    padding: 0;
+  }
+  
+  .appointment-filter-dropdown {
+    width: 100%;
+    min-width: auto;
+    padding: 1rem;
+    font-size: 1rem;
   }
   
   .doctor-management-header {
