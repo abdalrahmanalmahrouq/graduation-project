@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/img/medicinalogo.png";
 import homebanenr from "../assets/img/theme/home.png";
 import clinicsbanner from "../assets/img/theme/clinics.png"
@@ -19,6 +19,7 @@ import axios from "axios";
 export default function Sidebar() {
   const [openItem, setOpenItem] = useState(null);
   const [user, setUser] = useState(null);
+  const location = useLocation();
 
   // ✅ safely get token & role
   const token = localStorage.getItem("token");
@@ -99,10 +100,10 @@ export default function Sidebar() {
               </a>
             </li>
             <li>
-              <Link to="/clinics">
+              <NavLink to="/clinics">
               <img src={clinicsbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
               <span>العيادات</span>
-              </Link>
+              </NavLink>
              
             </li>
             <li
@@ -116,17 +117,17 @@ export default function Sidebar() {
               </a>
               <ul className="sub-list">
                 <li>
-                  <Link to="/patient/upcoming-appointments">
+                  <NavLink to="/patient/upcoming-appointments">
                     <img src={upappointmentbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
                     <span>المواعيد القادمة</span> 
-                  </Link>
+                  </NavLink>
                  
                 </li>
                 <li>
-                  <Link to="/patient/past-appointments">
+                  <NavLink to="/patient/past-appointments">
                     <img src={pastappointmentbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
                     <span>المواعيد السابقة</span>                 
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </li>
@@ -147,10 +148,10 @@ export default function Sidebar() {
               </a>
               <ul className="sub-list">
                 <li>
-                  <Link to={`/${role}/account`}>
+                  <NavLink to={`/${role}/account`}>
                     <img src={accountbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
                     <span>حسابي</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
                   <NavLink to="/" onClick={logout}>
@@ -179,10 +180,17 @@ export default function Sidebar() {
               </a>
             </li>
             <li>
-              <Link to="/manage/doctors">
+              <NavLink 
+                to="/manage/doctors"
+                className={({ isActive }) => 
+                  isActive || location.pathname.startsWith('/manage/doctor') 
+                    ? 'active' 
+                    : ''
+                }
+              >
                 <img src={doctorbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
                 <span>الاطباء</span>
-              </Link>
+              </NavLink>
               
             </li>
             <li>
@@ -202,10 +210,10 @@ export default function Sidebar() {
               </a>
               <ul className="sub-list">
                 <li>
-                  <Link to={`/${role}/account`}>
+                  <NavLink to={`/${role}/account`}>
                     <img src={accountbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
                     <span>حسابي</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
                   <NavLink to="/" onClick={logout}>
@@ -251,10 +259,10 @@ export default function Sidebar() {
               </a>
               <ul className="sub-list">
                 <li>
-                  <Link to={`/${role}/account`}>
+                  <NavLink to={`/${role}/account`}>
                     <img src={accountbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
                     <span>حسابي</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
                   <NavLink to="/" onClick={logout}>

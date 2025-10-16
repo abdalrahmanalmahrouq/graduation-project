@@ -18,7 +18,7 @@ const PastAppointmentPage = () => {
     <div className="app-container" dir='rtl'>
       <SideBar className='sidebar' />
       <ToolBar className='toolbar'/>
-      <main className="content-area pt-12">
+      <main className="content-area">
         <PastAppointment />
       </main>
       {/* Mobile sidebar overlay */}

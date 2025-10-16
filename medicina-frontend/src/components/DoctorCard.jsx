@@ -7,7 +7,7 @@ import axios from 'axios';
 const DoctorCard = ({ doctor, onManage }) => {
   const navigate = useNavigate();
   // Use real profile image if available, otherwise use default
-  const profileImage = doctor.profile_image_url || '/default-doctor.jpg';
+  const profileImage = doctor.profile_image_url || defaultImage;
   
   const handleManage = async () => {
     try {
@@ -16,6 +16,7 @@ const DoctorCard = ({ doctor, onManage }) => {
       const clinicId = profileResponse.data.id;
       
       // Navigate to doctor management page
+      
       navigate(`/manage/doctor/${doctor.doctorId}/${clinicId}`);
     } catch (error) {
       console.error('Error getting clinic ID:', error);
