@@ -51,7 +51,8 @@ class AppointmentController extends Controller
         return response()->json(['message' => 'Appointment created successfully', 'appointment' => $appointment], 201);
     }
 
-    public function getAvailableDoctorClinicAppointments($doctor_id,$clinic_id){
+    // get available one doctor in specific(one) clinic appointments
+    public function getAvailableDoctorClinicAppointment($doctor_id,$clinic_id){
         $appointments=Appointment::where('doctor_id', $doctor_id)
         ->where('clinic_id', $clinic_id)
         ->where('status', 'available')
@@ -61,8 +62,8 @@ class AppointmentController extends Controller
         ->get();
         return response()->json(['appointments' => $appointments], 200);
     }
-
-    public function updateAppointment(Request $request, $appointment_id){
+    // update available doctor appointment interval in specific(one) clinic appointments
+    public function updateAvailableDoctorClinicAppointment(Request $request, $appointment_id){
         $validated = $request->validate([
             'appointment_date' => 'required|date',
             'day' => 'nullable|string',
@@ -103,11 +104,46 @@ class AppointmentController extends Controller
         return response()->json(['message' => 'Appointment updated successfully', 'appointment' => $appointment], 200);
     }
 
-    public function deleteAppointment($appointment_id){
+    // delete available doctor appointment interval in specific(one) clinic appointments
+    public function deleteAvailableDoctorClinicAppointment($appointment_id){
         $appointment = Appointment::findOrFail($appointment_id);
         $appointment->delete();
         return response()->json(['message' => 'Appointment deleted successfully'], 200);
     }
 
-        
+    // get booked doctor appointment interval in specific(one) clinic appointments
+    public function getBookedDoctorClinicAppointment($doctor_id,$clinic_id){
+        $appointments=Appointment::where('doctor_id', $doctor_id)
+        ->where('clinic_id', $clinic_id)
+        ->where('status', 'booked')
+        ->with(['patient'])
+        ->get();
+        return response()->json(['appointments' => $appointments], 200);
+    }
+
+    // delete booked doctor appointment interval in specific(one) clinic appointments
+    public function deleteBookedDoctorClinicAppointment($appointment_id){
+        $appointment = Appointment::findOrFail($appointment_id);
+        $appointment->delete();
+        return response()->json(['message' => 'Appointment deleted successfully'], 200);
+    }
+
+    // get completed doctor appointment interval in specific(one) clinic appointments
+    public function getCompletedDoctorClinicAppointment($doctor_id,$clinic_id){
+        $appointments=Appointment::where('doctor_id', $doctor_id)
+        ->where('clinic_id', $clinic_id)
+        ->where('status', 'completed')
+        ->with(['patient'])
+        ->get();
+        return response()->json(['appointments' => $appointments], 200);
+    }
+
+    public function getCancelledDoctorClinicAppointment($doctor_id,$clinic_id){
+        $appointments=Appointment::where('doctor_id', $doctor_id)
+        ->where('clinic_id', $clinic_id)
+        ->where('status', 'cancelled')
+        ->with(['patient'])
+        ->get();
+        return response()->json(['appointments' => $appointments], 200);
+    }
 }

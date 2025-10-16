@@ -106,6 +106,11 @@ Route::get('doctors/by-specialization/{specialization}',[DoctorClinicController:
 Route::get('doctors/profile/{id}',[DoctorClinicController::class,'getDoctorProfile']);
 
 Route::post('appointments/create',[AppointmentController::class,'createAppointment']);
-Route::get('appointments/available/{doctor_id}/{clinic_id}',[AppointmentController::class,'getAvailableDoctorClinicAppointments']);
-Route::put('appointments/{appointment_id}',[AppointmentController::class,'updateAppointment']);
-Route::delete('appointments/{appointment_id}',[AppointmentController::class,'deleteAppointment']);
+Route::get('appointments/available/{doctor_id}/{clinic_id}',[AppointmentController::class,'getAvailableDoctorClinicAppointment']);
+Route::get('appointments/booked/{doctor_id}/{clinic_id}',[AppointmentController::class,'getBookedDoctorClinicAppointment']);
+Route::get('appointments/completed/{doctor_id}/{clinic_id}',[AppointmentController::class,'getCompletedDoctorClinicAppointment']);
+Route::get('appointments/cancelled/{doctor_id}/{clinic_id}',[AppointmentController::class,'getCancelledDoctorClinicAppointment']);
+Route::put('appointments/{appointment_id}',[AppointmentController::class,'updateAvailableDoctorClinicAppointment']);
+
+Route::delete('appointments/{appointment_id}',[AppointmentController::class,'deleteAvailableDoctorClinicAppointment']);
+Route::delete('appointments/booked/{appointment_id}',[AppointmentController::class,'deleteBookedDoctorClinicAppointment']);

@@ -19,4 +19,9 @@ class Patient extends Model
     protected $casts = [
         'user_id' => 'string',
     ];
+
+    // Each patient has one user
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
