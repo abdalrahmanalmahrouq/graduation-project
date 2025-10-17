@@ -1886,7 +1886,7 @@ background: #f9f9f9; /* optional */
 /* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
   display: none;
-  background: linear-gradient(135deg, var(--accent-color), #667eea);
+  background: var(--accent-color);
   border: none;
   font-size: 1.2rem;
   color: white;
@@ -3168,7 +3168,7 @@ background: #f9f9f9; /* optional */
 .add-doctor-submit-btn {
   flex: 1;
   padding: 0.75rem 1rem;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background: var(--accent-color);
   color: white;
   border: none;
   border-radius: 8px;

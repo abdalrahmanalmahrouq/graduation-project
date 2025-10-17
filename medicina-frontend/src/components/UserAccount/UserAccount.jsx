@@ -327,12 +327,17 @@ const UserAccount = ({ token }) => {
   // Loading component with modern design
   if (isLoading) {
     return (
-      <div className="user-account-loading">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p className="loading-text">Loading your profile...</p>
+      <div className="container-fluid">
+      <div className="row justify-content-center">
+        <div className="col-12">
+          <div className="d-flex justify-content-center align-items-center" style={{ height: '400px' }}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">جاري التحميل...</span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
     );
   }
 

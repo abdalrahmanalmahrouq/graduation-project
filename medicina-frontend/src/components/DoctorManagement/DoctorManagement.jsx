@@ -178,8 +178,16 @@ const DoctorManagement = () => {
 
   if (isLoading) {
     return (
-      <div className="doctor-management-loading">
-        <div className="loading-spinner"></div>
+      <div className="container-fluid">
+        <div className="row justify-content-center">
+          <div className="col-12">
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '400px' }}>
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">جاري التحميل...</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
