@@ -29,6 +29,7 @@ import ManageDoctorsPage from '../pages/ManageDoctorsPage'
 import DoctorManagementPage from '../pages/DoctorManagementPage'
 import UpComingAppointmentPage from '../pages/UpComingAppointmentPage'
 import PastAppointmentPage from '../pages/PastAppointmentPage'
+import ClinicAppointmentsPage from '../pages/ClinicAppointmentsPage'
 import EmailVerificationSuccess from '../components/EmailVerificationSuccess'
 import ForgotPassword from '../components/ForgotPassword'
 import ResetPassword from '../components/ResetPassword'
@@ -137,6 +138,11 @@ const AppRouter = () => {
         <Route path="/manage/doctor/:doctorId/:clinicId" element={
           <ProtectedRoute allowedRoles={['clinic']}>
           <DoctorManagementPage/>
+          </ProtectedRoute>
+          }/>
+        <Route path="/clinic/appointments" element={
+          <ProtectedRoute allowedRoles={['clinic']}>
+          <ClinicAppointmentsPage/>
           </ProtectedRoute>
           }/>
         

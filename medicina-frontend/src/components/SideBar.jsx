@@ -13,7 +13,7 @@ import doctorbanner from "../assets/img/theme/doctor.png";
 import patientbanner from "../assets/img/theme/patient.png";
 import dashboardbanner from "../assets/img/theme/dashboard.png"
 import logoutbanner from "../assets/img/theme/power.png";
-
+import clinicbanner from "../assets/img/theme/hospital.png";
 import axios from "axios";
 
 export default function Sidebar() {
@@ -194,10 +194,10 @@ export default function Sidebar() {
               
             </li>
             <li>
-              <a href="">
-                <img src={patientbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
-                <span>مواعيد المرضى</span>
-              </a>
+              <NavLink to="/clinic/appointments">
+                <img src={clinicbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <span>مواعيد العيادة</span>
+              </NavLink>
             </li>
             <li
               className={`nav-item-collapsible ${
