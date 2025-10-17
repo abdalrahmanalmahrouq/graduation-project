@@ -20,6 +20,13 @@ class Clinic extends Model
         'user_id' => 'string',
     ];
 
+    // Relationship with User
+    // each clinic has one user
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     //Each clinic can have multiple doctors
     public function doctors(){
         return $this->belongsToMany(Doctor::class,'clinic_doctor', 'clinic_id', 'doctor_id', 'user_id', 'user_id');

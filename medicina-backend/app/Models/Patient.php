@@ -21,7 +21,7 @@ class Patient extends Model
     ];
 
     // Each patient has one user
-    public function user(){
+    public function user(){                //->patient //->user
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

@@ -138,12 +138,45 @@ class AppointmentController extends Controller
         return response()->json(['appointments' => $appointments], 200);
     }
 
+    // get cancelled doctor appointment interval in specific(one) clinic appointments
     public function getCancelledDoctorClinicAppointment($doctor_id,$clinic_id){
         $appointments=Appointment::where('doctor_id', $doctor_id)
         ->where('clinic_id', $clinic_id)
         ->where('status', 'cancelled')
         ->with(['patient'])
         ->get();
+        return response()->json(['appointments' => $appointments], 200);
+    }
+
+    // get all clinic appointments for all doctors in specific(one) clinic with optional status filter
+    public function getAllClinicAppointments(Request $request, $clinic_id){
+        $query = Appointment::where('clinic_id', $clinic_id)
+            ->with(['patient:user_id,full_name', 'doctor:user_id,full_name','clinic:user_id,clinic_name']);
+        
+        // Filter by status if provided
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+        
+        // Filter by doctor if provided
+        if ($request->has('doctor_id')) {
+            $query->where('doctor_id', $request->doctor_id);
+        }
+        
+        // Filter by date range if provided
+        if ($request->has('date_from')) {
+            $query->where('appointment_date', '>=', $request->date_from);
+        }
+        
+        if ($request->has('date_to')) {
+            $query->where('appointment_date', '<=', $request->date_to);
+        }
+        
+        // Order by date and time
+        $appointments = $query->orderBy('appointment_date', 'asc')
+            ->orderBy('starting_time', 'asc')
+            ->get();
+            
         return response()->json(['appointments' => $appointments], 200);
     }
 }
