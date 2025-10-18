@@ -6,9 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
 
-const apiBase = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-// Use backend origin only; request paths should include "/api/..."
-axios.defaults.baseURL = apiBase.replace(/\/$/, '');
+const apiBase = process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : '');
+// If apiBase is empty (production), use relative paths and rely on Nginx /api proxy
+axios.defaults.baseURL = apiBase ? apiBase.replace(/\/$/, '') : '';
 
 // Set up axios interceptor to handle token updates
 axios.interceptors.request.use(

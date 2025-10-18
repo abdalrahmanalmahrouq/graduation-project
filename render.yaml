@@ -50,5 +50,5 @@ services:
     plan: free
     autoDeploy: true
     envVars:
-      - key: REACT_APP_API_URL
+      - key: BACKEND_ORIGIN
         value: https://medicina-backend.onrender.com

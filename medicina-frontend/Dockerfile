@@ -20,7 +20,7 @@ FROM nginx:alpine
 # Copy built app from build stage
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Write nginx configuration (SPA fallback + caching)
+# Write nginx configuration (SPA fallback + caching + /api proxy)
 RUN printf "server {\n\
     listen 80;\n\
     server_name localhost;\n\
@@ -37,6 +37,16 @@ RUN printf "server {\n\
     location = /index.html {\n\
         try_files /index.html =404;\n\
     }\n\
+    # API proxy to backend\n\
+    location /api/ {\n\
+        proxy_pass ${BACKEND_ORIGIN:-http://backend:8000}/api/;\n\
+        proxy_http_version 1.1;\n\
+        proxy_set_header Host $host;\n\
+        proxy_set_header X-Real-IP $remote_addr;\n\
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
+        proxy_set_header X-Forwarded-Proto $scheme;\n\
+    }\n\
+\n\
     location / {\n\
         try_files \\$uri \\$uri/ /index.html;\n\
     }\n\
