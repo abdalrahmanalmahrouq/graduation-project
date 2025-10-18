@@ -30,6 +30,7 @@ import DoctorManagementPage from '../pages/DoctorManagementPage'
 import UpComingAppointmentPage from '../pages/UpComingAppointmentPage'
 import PastAppointmentPage from '../pages/PastAppointmentPage'
 import ClinicAppointmentsPage from '../pages/ClinicAppointmentsPage'
+import PatientDataPage from '../pages/PatientDataPage'
 import EmailVerificationSuccess from '../components/EmailVerificationSuccess'
 import ForgotPassword from '../components/ForgotPassword'
 import ResetPassword from '../components/ResetPassword'
@@ -143,6 +144,11 @@ const AppRouter = () => {
         <Route path="/clinic/appointments" element={
           <ProtectedRoute allowedRoles={['clinic']}>
           <ClinicAppointmentsPage/>
+          </ProtectedRoute>
+          }/>
+        <Route path="/patients/by-user-id/:user_id" element={
+          <ProtectedRoute allowedRoles={['clinic']}>
+          <PatientDataPage/>
           </ProtectedRoute>
           }/>
         

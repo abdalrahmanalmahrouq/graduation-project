@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -8,7 +9,7 @@ const ClinicAppointments = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [clinicId, setClinicId] = useState('');
-  
+  const navigate = useNavigate();
   // Filter states
   const [filters, setFilters] = useState({
     status: 'all',
@@ -274,9 +275,15 @@ const ClinicAppointments = () => {
                         </td>
                         <td>
                             {appointment.patient ? (
+                              
                               <div className="d-flex align-items-center">
                                
-                                <span>{appointment.patient.full_name}</span>
+                               <span 
+                                className="patient-name-link"
+                                onClick={() => navigate(`/patients/by-user-id/${appointment.patient.user_id}`)}  
+                              >
+                                {appointment.patient.full_name}
+                              </span>
                               </div>
                             ) : (
                               <span className="text-muted">غير محدد</span>

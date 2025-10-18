@@ -323,6 +323,7 @@ const DoctorManagement = () => {
 
 // Appointment Card Component
 const AppointmentCard = ({ appointment, onDelete, onModify, showActions = true }) => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({
     date: appointment.appointment_date,
@@ -424,7 +425,13 @@ const AppointmentCard = ({ appointment, onDelete, onModify, showActions = true }
             </div>
             {appointment.patient && (
               <div className="appointment-patient">
-                <strong>المريض:</strong> {appointment.patient.full_name}
+                <strong>المريض:</strong>{' '}
+                <span 
+                  className="patient-name-link"
+                  onClick={() => navigate(`/patients/by-user-id/${appointment.patient.user_id}`)}  
+                >
+                  {appointment.patient.full_name}
+                </span>
               </div>
             )}
             <div className="appointment-status">
