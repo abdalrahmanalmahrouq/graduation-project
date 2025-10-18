@@ -4,6 +4,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ClinicDoctorController;
 use App\Http\Controllers\DoctorBioController;
 use App\Http\Controllers\DoctorClinicController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionControllers\AuthController;
 use Illuminate\Http\Request;
@@ -104,6 +105,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
 Route::get('doctors/by-specialization/{specialization}',[DoctorClinicController::class,'getDoctorsBySpecialization']);
 Route::get('doctors/profile/{id}',[DoctorClinicController::class,'getDoctorProfile']);
+
+Route::middleware(['auth:sanctum'])->get('patients/by-user-id/{user_id}',[PatientController::class,'getPatientByUserId']);
 
 Route::post('appointments/create',[AppointmentController::class,'createAppointment']);
 Route::get('appointments/available/{doctor_id}/{clinic_id}',[AppointmentController::class,'getAvailableDoctorClinicAppointment']);
