@@ -1,16 +1,10 @@
-services:
-  # 🐘 PostgreSQL Database
-  - type: pserv
-    name: medicina-database
+databases:
+  - name: medicina-database
     plan: free
-    envVars:
-      - key: POSTGRES_DB
-        value: medicina
-      - key: POSTGRES_USER
-        value: medicina_user
-      - key: POSTGRES_PASSWORD
-        value: password
+    databaseName: medicina
+    user: medicina_user
 
+services:
   # 🐘 Laravel backend
   - type: web
     name: medicina-backend
@@ -27,22 +21,10 @@ services:
         generateValue: true
       - key: DB_CONNECTION
         value: pgsql
-      - key: DB_HOST
-        fromService:
-          type: pserv
+      - key: DATABASE_URL
+        fromDatabase:
           name: medicina-database
-          property: host
-      - key: DB_PORT
-        fromService:
-          type: pserv
-          name: medicina-database
-          property: port
-      - key: DB_DATABASE
-        value: medicina
-      - key: DB_USERNAME
-        value: medicina_user
-      - key: DB_PASSWORD
-        value: password
+          property: connectionString
       - key: CACHE_DRIVER
         value: file
       - key: SESSION_DRIVER
