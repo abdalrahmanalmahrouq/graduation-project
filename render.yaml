@@ -9,7 +9,7 @@ services:
       - key: POSTGRES_USER
         value: medicina_user
       - key: POSTGRES_PASSWORD
-        generateValue: true
+        value: password
 
   # 🐘 Laravel backend
   - type: web
@@ -38,20 +38,11 @@ services:
           name: medicina-database
           property: port
       - key: DB_DATABASE
-        fromService:
-          type: pserv
-          name: medicina-database
-          property: database
+        value: medicina
       - key: DB_USERNAME
-        fromService:
-          type: pserv
-          name: medicina-database
-          property: user
+        value: medicina_user
       - key: DB_PASSWORD
-        fromService:
-          type: pserv
-          name: medicina-database
-          property: password
+        value: password
       - key: CACHE_DRIVER
         value: file
       - key: SESSION_DRIVER
