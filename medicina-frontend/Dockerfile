@@ -27,6 +27,7 @@ RUN printf "server {\n\
 \n\
     root /usr/share/nginx/html;\n\
     index index.html index.htm;\n\
+    error_page 404 /index.html;\n\
 \n\
     gzip on;\n\
     gzip_vary on;\n\
@@ -35,7 +36,7 @@ RUN printf "server {\n\
     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/javascript;\n\
 \n\
     location / {\n\
-        try_files \\$uri \\$uri/ /index.html;\n\
+        try_files \\$uri \\$uri/ =404;\n\
     }\n\
 \
     location ~* \\.(js|css|png|jpg|jpeg|gif|ico|svg)$ {\n\
