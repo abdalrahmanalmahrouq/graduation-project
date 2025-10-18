@@ -12,7 +12,7 @@ RUN npm ci
 COPY . .
 
 # Build the app for production
-RUN npm run build
+RUN npm run build && ls -al /app/build && test -f /app/build/index.html
 
 # Production stage
 FROM nginx:alpine
@@ -27,7 +27,6 @@ RUN printf "server {\n\
 \n\
     root /usr/share/nginx/html;\n\
     index index.html index.htm;\n\
-    error_page 404 /index.html;\n\
 \n\
     gzip on;\n\
     gzip_vary on;\n\
@@ -35,8 +34,11 @@ RUN printf "server {\n\
     gzip_proxied expired no-cache no-store private auth;\n\
     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/javascript;\n\
 \n\
+    location = /index.html {\n\
+        try_files /index.html =404;\n\
+    }\n\
     location / {\n\
-        try_files \\$uri \\$uri/ =404;\n\
+        try_files \\$uri \\$uri/ /index.html;\n\
     }\n\
 \
     location ~* \\.(js|css|png|jpg|jpeg|gif|ico|svg)$ {\n\
@@ -54,5 +56,5 @@ RUN printf "server {\n\
 # Expose port
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx (print built files for verification once at start)
+CMD ["sh", "-c", "ls -al /usr/share/nginx/html || true; nginx -g 'daemon off;'" ]
