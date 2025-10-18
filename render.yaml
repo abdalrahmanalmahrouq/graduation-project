@@ -1,4 +1,16 @@
 services:
+  # 🐘 PostgreSQL Database
+  - type: pserv
+    name: medicina-database
+    plan: free
+    envVars:
+      - key: POSTGRES_DB
+        value: medicina
+      - key: POSTGRES_USER
+        value: medicina_user
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+
   # 🐘 Laravel backend
   - type: web
     name: medicina-backend
@@ -11,14 +23,47 @@ services:
         value: production
       - key: APP_DEBUG
         value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: DB_CONNECTION
+        value: pgsql
       - key: DB_HOST
-        value: mysql
+        fromService:
+          type: pserv
+          name: medicina-database
+          property: host
+      - key: DB_PORT
+        fromService:
+          type: pserv
+          name: medicina-database
+          property: port
       - key: DB_DATABASE
-        value: medicina
+        fromService:
+          type: pserv
+          name: medicina-database
+          property: database
       - key: DB_USERNAME
-        value: root
+        fromService:
+          type: pserv
+          name: medicina-database
+          property: user
       - key: DB_PASSWORD
-        value: root
+        fromService:
+          type: pserv
+          name: medicina-database
+          property: password
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_LEVEL
+        value: error
+      - key: APP_URL
+        value: https://medicina-backend.onrender.com
 
   # ⚛️ React frontend
   - type: web
