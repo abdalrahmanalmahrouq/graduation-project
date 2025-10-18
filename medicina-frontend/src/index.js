@@ -6,7 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
 
-axios.defaults.baseURL = 'http://localhost:8000/api';
+const apiBase = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// Use backend origin only; request paths should include "/api/..."
+axios.defaults.baseURL = apiBase.replace(/\/$/, '');
 
 // Set up axios interceptor to handle token updates
 axios.interceptors.request.use(

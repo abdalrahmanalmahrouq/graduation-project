@@ -38,6 +38,8 @@ services:
         value: error
       - key: APP_URL
         value: https://medicina-backend.onrender.com
+      - key: FRONTEND_URL
+        value: https://medicina-frontend.onrender.com
 
   # ⚛️ React frontend
   - type: web
