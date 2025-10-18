@@ -31,11 +31,11 @@ RUN printf "server {\n\
     gzip on;\n\
     gzip_vary on;\n\
     gzip_min_length 1024;\n\
-    gzip_proxied expired no-cache no-store private must-revalidate auth;\n\
+    gzip_proxied expired no-cache no-store private auth;\n\
     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/javascript;\n\
 \n\
     location / {\n\
-        try_files $uri $uri/ /index.html;\n\
+        try_files \\$uri \\$uri/ /index.html;\n\
     }\n\
 \
     location ~* \\.(js|css|png|jpg|jpeg|gif|ico|svg)$ {\n\
