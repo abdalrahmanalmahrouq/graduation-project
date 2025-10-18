@@ -9,6 +9,7 @@ services:
   - type: web
     name: medicina-backend
     env: docker
+    dockerContext: ./medicina-backend
     dockerfilePath: ./medicina-backend/Dockerfile
     plan: free
     autoDeploy: true
@@ -42,6 +43,7 @@ services:
   - type: web
     name: medicina-frontend
     env: docker
+    dockerContext: ./medicina-frontend
     dockerfilePath: ./medicina-frontend/Dockerfile
     plan: free
     autoDeploy: true

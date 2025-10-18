@@ -44,13 +44,8 @@ RUN mkdir -p storage/app/public \
     && mkdir -p storage/framework/views \
     && mkdir -p storage/logs
 
-# Run Laravel setup commands
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
-
 # Expose port
 EXPOSE 8000
 
 # Start the application
-CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["sh", "-c", "php artisan key:generate --force || true; php artisan config:cache; php artisan route:cache; php artisan view:cache; php artisan migrate --force; php artisan serve --host=0.0.0.0 --port=8000"]
