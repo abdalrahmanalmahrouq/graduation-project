@@ -2,17 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/img/profpic.png';
 import axios from 'axios';
-import idbanner from '../../assets/img/theme/id.png';
-import namebanner from '../../assets/img/theme/name.png';
-import phonebanner from '../../assets/img/theme/phone.png';
-import datebanner from '../../assets/img/theme/date-of-birth.png';
-import locationbanner from '../../assets/img/theme/location.png';
-import editbanner from '../../assets/img/theme/edit.png';
-import clinicbanner from '../../assets/img/theme/clinic.png';
-import doctorbanner from '../../assets/img/theme/doctor.png';
-import lockbanner from '../../assets/img/theme/locked.png';
-import biobanner from '../../assets/img/theme/bio.png';
-import deletebanner from '../../assets/img/theme/delete-user.png';
+
 
 const UserAccount = ({ token }) => {
   const navigate = useNavigate();
@@ -370,7 +360,8 @@ const UserAccount = ({ token }) => {
   const renderInputField = (label, value, field, type = 'text', placeholder = '') => (
     <div className="info-field modern-field">
       <div className="field-icon">
-        <img src={getFieldIcon(field)} alt={label} style={{width: '40px', height: '40px'}}/>
+       
+        <i className={`fa-solid ${getFieldIcon(field)} medicina-theme-icon`}></i>
       </div>
       <div className="field-content">
         <label className="field-label">{label}</label>
@@ -388,14 +379,14 @@ const UserAccount = ({ token }) => {
   // Get field icon based on field name
   const getFieldIcon = (field) => {
     switch (field) {
-      case 'user_id': return idbanner;
-      case 'full_name': 
-      case 'clinic_name': return namebanner;
-      case 'phone_number': return phonebanner;
-      case 'date_of_birth': return datebanner;
-      case 'address': return locationbanner;
-      case 'specialization': return doctorbanner;
-      default: return namebanner;
+      case 'user_id': return 'fa-id-card-clip';
+      case 'full_name': return 'fa-user'; 
+      case 'clinic_name': return 'fa-hospital';
+      case 'phone_number': return 'fa-phone';
+      case 'date_of_birth': return 'fa-calendar';
+      case 'address': return 'fa-location-dot';
+      case 'specialization': return 'fa-stethoscope';
+      default: return 'fa-user';
     }
   };
 
@@ -406,7 +397,7 @@ const UserAccount = ({ token }) => {
       {/* Non-editable fields */}
       <div className="info-field modern-field">
         <div className="field-icon">
-          <img src={idbanner} alt="User ID" style={{width: '40px', height: '40px'}}/>
+          <i className={`fa-solid fa-id-card-clip medicina-theme-icon`}></i>
         </div>
         <div className="field-content">
           <label className="field-label">User ID</label>
@@ -415,7 +406,9 @@ const UserAccount = ({ token }) => {
       </div>
       
       <div className="info-field modern-field">
-        <div className="field-icon">👤</div>
+        <div className="field-icon">
+          <i className={`fa-solid fa-hospital-user medicina-theme-icon`}></i>
+        </div>
         <div className="field-content">
           <label className="field-label">Role</label>
           <span className="field-value role-badge non-editable" style={{backgroundColor: getRoleColor(role)}}>
@@ -425,7 +418,9 @@ const UserAccount = ({ token }) => {
       </div>
       
       <div className="info-field modern-field">
-        <div className="field-icon">📧</div>
+        <div className="field-icon">
+          <i className={`fa-solid fa-envelope medicina-theme-icon`}></i>
+        </div>
         <div className="field-content">
           <label className="field-label">Email</label>
           <span className="field-value non-editable">{email}</span>
@@ -445,7 +440,7 @@ const UserAccount = ({ token }) => {
       {/* Non-editable fields */}
       <div className="info-field modern-field">
         <div className="field-icon">
-          <img src={idbanner} alt="User ID" style={{width: '40px', height: '40px'}}/>
+          <i className={`fa-solid fa-id-card-clip medicina-theme-icon`}></i>
         </div>
         <div className="field-content">
           <label className="field-label">User ID</label>
@@ -455,7 +450,7 @@ const UserAccount = ({ token }) => {
       
       <div className="info-field modern-field">
         <div className="field-icon">
-          <img src={doctorbanner} alt="Doctor" style={{width: '40px', height: '40px'}}/>
+          <i className={`fa-solid fa-user-doctor medicina-theme-icon`}></i>
         </div>
         <div className="field-content">
           <label className="field-label">Role</label>
@@ -466,7 +461,9 @@ const UserAccount = ({ token }) => {
       </div>
       
       <div className="info-field modern-field">
-        <div className="field-icon">📧</div>
+        <div className="field-icon">
+          <i className={`fa-solid fa-envelope medicina-theme-icon`}></i>
+        </div>
         <div className="field-content">
           <label className="field-label">Email</label>
           <span className="field-value non-editable">{email}</span>
@@ -485,7 +482,7 @@ const UserAccount = ({ token }) => {
       {/* Non-editable fields */}
       <div className="info-field modern-field">
         <div className="field-icon">
-          <img src={idbanner} alt="User ID" style={{width: '40px', height: '40px'}}/>
+          <i className={`fa-solid fa-id-card-clip medicina-theme-icon`}></i>
         </div>
         <div className="field-content">
           <label className="field-label">User ID</label>
@@ -495,7 +492,7 @@ const UserAccount = ({ token }) => {
       
       <div className="info-field modern-field">
         <div className="field-icon">
-          <img src={clinicbanner} alt="Clinic" style={{width: '40px', height: '40px'}}/>
+          <i className={`fa-solid fa-hospital medicina-theme-icon`}></i>
         </div>
         <div className="field-content">
           <label className="field-label">Role</label>
@@ -506,7 +503,9 @@ const UserAccount = ({ token }) => {
       </div>
       
       <div className="info-field modern-field">
-        <div className="field-icon">📧</div>
+        <div className="field-icon">
+          <i className={`fa-solid fa-envelope medicina-theme-icon`}></i>
+        </div>
         <div className="field-content">
           <label className="field-label">Email</label>
           <span className="field-value non-editable">{email}</span>
@@ -663,8 +662,8 @@ const UserAccount = ({ token }) => {
               className="modern-btn primary-btn"
               disabled={isSaving}
             >
-              <span className="btn-icon pb-1">
-                <img src={editbanner} alt="Save" style={{width: '20px', height: '20px'}}/>
+              <span className="btn-icon">
+                <i className={`fa-solid fa-pen-to-square medicina-theme-icon`}></i>
               </span>
               {isSaving ? 'Saving...' : 'Save Profile'}
             </button>
@@ -673,8 +672,8 @@ const UserAccount = ({ token }) => {
               onClick={() => navigate(`/${user.role}/change-password`)} 
               className="modern-btn secondary-btn"
             >
-              <span className="btn-icon pb-1">
-                <img src={lockbanner} alt="Lock" style={{width: '20px', height: '20px'}}/>
+              <span className="btn-icon">
+                <i className={`fa-solid fa-key medicina-theme-icon`}></i>
               </span>
               Change Password
             </button>
@@ -684,8 +683,8 @@ const UserAccount = ({ token }) => {
                 onClick={() => navigate(`/${user.role}/bio`)} 
                 className="modern-btn secondary-btn"
               >
-                <span className="btn-icon pb-1">
-                  <img src={biobanner} alt="" style={{width: '20px', height: '20px'}}/>
+                <span className="btn-icon">
+                  <i className={`fa-solid fa-notes-medical medicina-theme-icon`}></i>
                 </span>
                 Bio
               </button>
@@ -702,8 +701,8 @@ const UserAccount = ({ token }) => {
                 onClick={() => handleDeleteAccount()} 
                 className="modern-btn danger-btn"
               >
-                <span className="btn-icon pb-1">
-                  <img src={deletebanner} alt="Delete" style={{width: '20px', height: '20px'}}/>
+                <span className="btn-icon">
+                  <i className={`fa-solid fa-trash medicina-theme-icon`}></i>
                 </span>
                 Delete Account
               </button>

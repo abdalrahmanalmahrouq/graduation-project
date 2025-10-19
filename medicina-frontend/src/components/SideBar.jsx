@@ -1,19 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import logo from "../assets/img/medicinalogo.png";
-import homebanenr from "../assets/img/theme/home.png";
-import clinicsbanner from "../assets/img/theme/clinics.png"
-import appointmentbanner from "../assets/img/theme/appointment.png";
-import upappointmentbanner from "../assets/img/theme/upcomingapointment.png";
-import pastappointmentbanner from "../assets/img/theme/pastappointment.png";
-import medicalrecordbanner from "../assets/img/theme/medical-record.png";
-import settingsbanner from "../assets/img/theme/setting.png";
-import accountbanner from "../assets/img/theme/account.png";
-import doctorbanner from "../assets/img/theme/doctor.png";
-import patientbanner from "../assets/img/theme/patient.png";
-import dashboardbanner from "../assets/img/theme/dashboard.png"
-import logoutbanner from "../assets/img/theme/power.png";
-import clinicbanner from "../assets/img/theme/hospital.png";
 import axios from "axios";
 
 export default function Sidebar() {
@@ -95,13 +82,13 @@ export default function Sidebar() {
           <ul className="nav-list">
             <li>
               <a href="">
-                <img src={homebanenr} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+               <i className={`fa-solid fa-house medicina-theme-icon pb-2`}></i>
                 <span>الصفحة الرئيسية</span>
               </a>
             </li>
             <li>
               <NavLink to="/clinics">
-              <img src={clinicsbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+              <i className={`fa-solid fa-hospital medicina-theme-icon pb-2`}></i>
               <span>العيادات</span>
               </NavLink>
              
@@ -112,20 +99,20 @@ export default function Sidebar() {
               }`}
             >
               <a onClick={() => handleToggle("store")}>
-                <img src={appointmentbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-calendar medicina-theme-icon pb-2`}></i>
                 <span>مواعيدي</span>
               </a>
               <ul className="sub-list">
                 <li>
                   <NavLink to="/patient/upcoming-appointments">
-                    <img src={upappointmentbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                    <i className={`fa-solid fa-calendar-check medicina-theme-icon pb-2`}></i>
                     <span>المواعيد القادمة</span> 
                   </NavLink>
                  
                 </li>
                 <li>
                   <NavLink to="/patient/past-appointments">
-                    <img src={pastappointmentbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                    <i className={`fa-solid fa-calendar-minus medicina-theme-icon pb-2`}></i>
                     <span>المواعيد السابقة</span>                 
                   </NavLink>
                 </li>
@@ -133,7 +120,7 @@ export default function Sidebar() {
             </li>
             <li>
               <a href="">
-                <img src={medicalrecordbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-file-medical medicina-theme-icon pb-2`}></i>
                 <span>السجل الطبي</span>
               </a>
             </li>
@@ -143,19 +130,19 @@ export default function Sidebar() {
               }`}
             >
               <a onClick={() => handleToggle("settings")}>
-                <img src={settingsbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-gear medicina-theme-icon pb-2`}></i>
                 <span>الاعدادات</span>
               </a>
               <ul className="sub-list">
                 <li>
                   <NavLink to={`/${role}/account`}>
-                    <img src={accountbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                    <i className={`fa-solid fa-user medicina-theme-icon pb-2`}></i>
                     <span>حسابي</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/" onClick={logout}>
-                     <img src={logoutbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                     <i className={`fa-solid fa-power-off medicina-theme-icon pb-2`}></i>
                     <span>تسجيل الخروج</span>
                   </NavLink>
                 </li>
@@ -169,13 +156,13 @@ export default function Sidebar() {
           <ul className="nav-list">
             <li>
               <a href="">
-                <img src={homebanenr} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-house medicina-theme-icon pb-2`}></i>
                 <span>الصفحة الرئيسية</span>
               </a>
             </li>
             <li>
               <a href="">
-                <img src={dashboardbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-square-poll-vertical medicina-theme-icon pb-2`}></i>
                 <span>داشبورد</span>
               </a>
             </li>
@@ -188,14 +175,14 @@ export default function Sidebar() {
                     : ''
                 }
               >
-                <img src={doctorbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-user-doctor medicina-theme-icon pb-2`}></i>
                 <span>الاطباء</span>
               </NavLink>
               
             </li>
             <li>
               <NavLink to="/clinic/appointments">
-                <img src={clinicbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-calendar medicina-theme-icon pb-2`}></i>
                 <span>مواعيد العيادة</span>
               </NavLink>
             </li>
@@ -205,19 +192,19 @@ export default function Sidebar() {
               }`}
             >
               <a onClick={() => handleToggle("settings")}>
-                <img src={settingsbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-gear medicina-theme-icon pb-2`}></i>
                 <span>الاعدادات</span>
               </a>
               <ul className="sub-list">
                 <li>
                   <NavLink to={`/${role}/account`}>
-                    <img src={accountbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                    <i className={`fa-solid fa-user medicina-theme-icon pb-2`}></i>
                     <span>حسابي</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/" onClick={logout}>
-                     <img src={logoutbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/><span>تسجيل الخروج</span>
+                     <i className={`fa-solid fa-power-off medicina-theme-icon pb-2`}></i><span>تسجيل الخروج</span>
                   </NavLink>
                 </li>
               </ul>
@@ -230,19 +217,19 @@ export default function Sidebar() {
           <ul className="nav-list">
             <li>
               <a href="">
-                <img src={homebanenr} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-house medicina-theme-icon pb-2`}></i>
                 <span>الصفحة الرئيسية</span>
               </a>
             </li>
             <li>
               <a href="">
-                <img src={clinicsbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-hospital medicina-theme-icon pb-2`}></i>
                 <span>العيادات</span>
               </a>
             </li>
             <li>
               <a href="">
-                <img src={patientbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-user-injured medicina-theme-icon pb-2`}></i>
                 <span>المرضى</span>
               </a>
             </li>
@@ -254,19 +241,19 @@ export default function Sidebar() {
               }`}
             >
               <a onClick={() => handleToggle("settings")}>
-                <img src={settingsbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                <i className={`fa-solid fa-gear medicina-theme-icon pb-2`}></i>
                 <span>الاعدادات</span>
               </a>
               <ul className="sub-list">
                 <li>
                   <NavLink to={`/${role}/account`}>
-                    <img src={accountbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/>
+                    <i className={`fa-solid fa-user medicina-theme-icon pb-2`}></i>
                     <span>حسابي</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/" onClick={logout}>
-                     <img src={logoutbanner} alt="" style={{ height:"21px" , width:"20px" , paddingBottom:"3px"}}/><span>تسجيل الخروج</span>
+                     <i className={`fa-solid fa-power-off medicina-theme-icon pb-2`}></i><span>تسجيل الخروج</span>
                   </NavLink>
                 </li>
               </ul>

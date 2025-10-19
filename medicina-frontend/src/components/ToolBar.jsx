@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import notificatioimg from '../assets/img/notification.png'
 import profileimg from '../assets/img/profpic.png'
 import axios from 'axios';
 
@@ -71,7 +70,8 @@ const ToolBar = ({ token }) => {
         </div>
         <div className="toolbar-right">
           <button className="notification-btn">
-            <img src={notificatioimg} alt="" style={{width:'20px', height:'20px'}} />
+           
+            <i className={`fa-solid fa-bell`}></i>
           </button>
           <div>
             <h3 className='mt-3 font-bold fw-bolder text-sky-950'>
