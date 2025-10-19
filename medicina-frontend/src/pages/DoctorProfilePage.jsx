@@ -20,8 +20,8 @@ const DoctorProfilePage = () => {
     <div className="app-container" dir='rtl'>
       <Sidebar className='sidebar'/>
       <ToolBar className='toolbar'/>
-      <main className='content-area'>
-        <DoctorProfile/>
+      <main className='content-area authenticated-doctor-profile'>
+        <DoctorProfile />
       </main>
     </div>
   );
@@ -29,7 +29,9 @@ const DoctorProfilePage = () => {
   const guestLayout = (
     <div className='topnav-without-background'>
       <TopNav/>
+      <div className="guest-doctor-profile">
       <DoctorProfile/>
+      </div>
       <Footer/>
     </div>
   );

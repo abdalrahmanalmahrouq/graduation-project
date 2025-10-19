@@ -20,7 +20,7 @@ const AppointmentsSchedulePage = () => {
     <div className='app-container' dir='rtl'>
       <Sidebar className='sidebar' />
       <ToolBar className='toolbar' />
-      <main className='content-area pt-0'>
+      <main className='content-area pt-0 authenticated-doctor-profile'>
         <AppointmentsSchedule/>
       </main>
     </div>
@@ -29,7 +29,9 @@ const AppointmentsSchedulePage = () => {
   const guestLayout = (
     <div className='topnav-without-background' dir='rtl'>
       <TopNav/>
+      <div className="guest-doctor-profile">
       <AppointmentsSchedule/>
+      </div>
       <Footer/>
     </div>
   );

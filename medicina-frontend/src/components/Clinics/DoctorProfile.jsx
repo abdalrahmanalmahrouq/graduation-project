@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Button, Card, Container, Nav, Row, Spinner, Alert, Form } from 'react-bootstrap';
+import { Button, Card, Container, Nav, Row, Spinner, Alert, Form, Badge, Col } from 'react-bootstrap';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import defaultImage from '../../assets/img/profpic.png';
-import TopPageDetails from '../TopPageDetails/TopPageDetails';
+import DoctorHeaderCard from '../DoctorHeaderCard';
+
 
 
 function DoctorProfile() {
@@ -39,10 +39,6 @@ function DoctorProfile() {
         }
     };
     
-    const getDefaultImage = () => {
-        // You can add a default doctor image here
-        return defaultImage;
-    };
 
     if (loading) {
         return (
@@ -93,62 +89,88 @@ function DoctorProfile() {
 
     return (
         <Fragment>
-            <Container className='doctor-profile' dir="rtl">
-                <Row>
-                    <Card>
-                        <Card.Header as="h5" className='doctor-title'>ملف الطبيب</Card.Header>
-                        <Card.Body className="d-flex align-items-center">
-                            <Card.Img
-                                variant="top"
-                                src={doctor.profile_image_url || getDefaultImage()}
-                                className="card-img-clinics"
-                                style={{ width: '150px', height: '150px', marginLeft: '20px' }}
-                            />
-                            <div>
-                                <Card.Title className='doctor-title'>{doctor.name}</Card.Title>
-                                <Card.Text>{doctor.specialization}</Card.Text>
-                                
-                                
-                            </div>
-                        </Card.Body>
-                    </Card>
+            <Container className='modern-appointment-container' dir="rtl">
+                {/* Modern Doctor Header Card */}
+                <Row className="mb-4">
+                    <Col>
+                        <DoctorHeaderCard 
+                            doctor={doctor}
+                            showStats={true}
+                            showSpecialty={true}
+                            imageSize="large"
+                        />
+                    </Col>
                 </Row>
 
-                <Row className='pt-5'>
-                    <Card>
-                        <Card.Header>
-                            <Nav variant="tabs" activeKey={activeTab} onSelect={handleTabSelect}>
-                                
-                                <Nav.Item>
-                                    <Nav.Link eventKey="locations">المواقع</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item>
-                                    <Nav.Link eventKey="overview">نظرة عامة</Nav.Link>
-                                </Nav.Item>
-                            </Nav>
-                        </Card.Header>
-                        <Card.Body>
-                            {activeTab === "overview" && (
-                                <>
-                                    <Card.Title className='doctor-title'>عن الطبيب</Card.Title>
-                                    <Card.Text className='doctor-description'>
-                                        {doctor.bio || 'لا توجد معلومات متاحة عن الطبيب حالياً'}
-                                    </Card.Text>
-                                </>
-                            )}
+                {/* Modern Tabs Card */}
+                <Row>
+                    <Col>
+                        <div className="modern-profile-card">
+                            <div className="modern-tabs-container">
+                                <Nav variant="pills" activeKey={activeTab} onSelect={handleTabSelect} className="modern-nav-tabs">
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="overview" className="modern-nav-link">
+                                            <i className="fas fa-user me-2"></i>
+                                            نظرة عامة
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="locations" className="modern-nav-link">
+                                            <i className="fas fa-map-marker-alt me-2"></i>
+                                            المواقع والعيادات
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </div>
 
-                            {activeTab === "locations" && (
-                                <>
-                                    <Card.Title className='doctor-title'>المواقع</Card.Title>
-                                    <div className='doctor-description'>
+                            <div className="profile-content">
+                                {activeTab === "overview" && (
+                                    <div className="overview-section">
+                                        <div className="section-header">
+                                            <h3 className="section-title-doctor">
+                                                <i className="fas fa-info-circle me-2"></i>
+                                                عن الطبيب
+                                            </h3>
+                                        </div>
+                                        <div className="modern-field bio-field">
+                                            <div className="field-content">
+                                                <div className="bio-content">
+                                                    {doctor.bio ? (
+                                                        <p className="doctor-bio-text">{doctor.bio}</p>
+                                                    ) : (
+                                                        <div className="empty-state">
+                                                            <i className="fas fa-user-md empty-icon"></i>
+                                                            <p className="empty-text">لا توجد معلومات متاحة عن الطبيب حالياً</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {activeTab === "locations" && (
+                                    <div className="locations-section">
+                                        <div className="section-header">
+                                            <h3 className="section-title-doctor">
+                                                <i className="fas fa-map-marker-alt me-2"></i>
+                                                العيادات والمواقع
+                                            </h3>
+                                            <p className="section-subtitle">اختر العيادة المناسبة لك واحجز موعدك</p>
+                                        </div>
+
                                         {doctor.clinics && doctor.clinics.length > 0 ? (
-                                            <div>
-                                                <div className="mb-4">
-                                                    <Form.Label className="fw-bold">اختر العيادة للحجز:</Form.Label>
+                                            <div className="clinics-container">
+                                                {/* Quick Selection Dropdown */}
+                                                <div className="clinic-selector-container">
+                                                    <Form.Label className="modern-label">
+                                                        <i className="fas fa-search me-2"></i>
+                                                        اختر العيادة للحجز
+                                                    </Form.Label>
                                                     <Form.Select 
                                                         value={selectedClinic} 
                                                         onChange={(e) => handleClinicSelect(e.target.value)}
-                                                        className="mb-3"
+                                                        className="modern-select clinic-selector"
                                                     >
                                                         <option value="">اختر العيادة</option>
                                                         {doctor.clinics.map((clinic, index) => (
@@ -159,55 +181,86 @@ function DoctorProfile() {
                                                     </Form.Select>
                                                 </div>
                                                 
-                                                <div className="row">
+                                                {/* Modern Clinic Cards Grid */}
+                                                <div className="clinics-grid">
                                                     {doctor.clinics.map((clinic, index) => (
-                                                        <div key={index} className="col-md-6 mb-3">
-                                                            <div className={`p-3 border rounded ${selectedClinic === clinic.id ? 'border-primary bg-light' : ''}`}>
-                                                                <h6 className="mb-2">
-                                                                    <strong>{clinic.name}</strong>
-                                                                    {selectedClinic === clinic.id && (
-                                                                        <span className="badge ms-2" style={{ backgroundColor: 'var(--accent-color)' }}>محدد</span>
-                                                                    )}
-                                                                </h6>
+                                                        <div key={index} className="clinic-card-container">
+                                                            <div className={`clinic-card ${selectedClinic === clinic.id ? 'selected' : ''}`}>
+                                                                <div className="clinic-card-header">
+                                                                    <div className="clinic-icon">
+                                                                        <i className="fas fa-hospital"></i>
+                                                                    </div>
+                                                                    <div className="clinic-info">
+                                                                        <h4 className="clinic-name">{clinic.name}</h4>
+                                                                        {selectedClinic === clinic.id && (
+                                                                            <Badge bg="primary" className="selected-badge">
+                                                                                <i className="fas fa-check me-1"></i>
+                                                                                محدد
+                                                                            </Badge>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                                
                                                                 {clinic.address && (
-                                                                    <div className="text-muted">
-                                                                        <i className="fas fa-map-marker-alt me-2"></i>
-                                                                        {clinic.address}
+                                                                    <div className="clinic-address">
+                                                                        <i className="fas fa-map-marker-alt"></i>
+                                                                        <span>{clinic.address}</span>
                                                                     </div>
                                                                 )}
-                                                                <Button 
-                                                                    variant={selectedClinic === clinic.id ? "primary" : "outline-primary"}
-                                                                    size="sm" 
-                                                                    className="mt-2"
-                                                                    onClick={() => handleClinicSelect(clinic.id)}
-                                                                >
-                                                                    {selectedClinic === clinic.id ? "محدد" : "اختيار"}
-                                                                </Button>
+                                                                
+                                                                <div className="clinic-actions">
+                                                                    <Button 
+                                                                        variant={selectedClinic === clinic.id ? "primary" : "outline-primary"}
+                                                                        className="modern-btn clinic-select-btn"
+                                                                        onClick={() => handleClinicSelect(clinic.id)}
+                                                                    >
+                                                                        <i className={`fas ${selectedClinic === clinic.id ? 'fa-check' : 'fa-plus'} me-2`}></i>
+                                                                        {selectedClinic === clinic.id ? "محدد" : "اختيار"}
+                                                                    </Button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     ))}
                                                 </div>
                                                 
+                                                {/* Booking Action Card */}
                                                 {selectedClinic && (
-                                                    <div className="mt-4 p-3  text-white rounded" style={{ backgroundColor: 'var(--accent-color)' }}>
-                                                        <h6 className="mb-2">العيادة المحددة:</h6>
-                                                        <p className="mb-3 text-white">
-                                                            {doctor.clinics.find(clinic => clinic.id === selectedClinic)?.name}
-                                                        </p>
-                                                        <Button variant="light" onClick={handleBookAppointment}>
-                                                            حجز موعد في هذه العيادة
-                                                        </Button>
+                                                    <div className="booking-action-card">
+                                                        <div className="booking-card-content">
+                                                            <div className="booking-info">
+                                                                <h4 className="booking-title">
+                                                                    <i className="fas fa-calendar-check me-2"></i>
+                                                                    جاهز للحجز
+                                                                </h4>
+                                                                <p className="booking-subtitle">
+                                                                    العيادة المحددة: <strong>{doctor.clinics.find(clinic => clinic.id === selectedClinic)?.name}</strong>
+                                                                </p>
+                                                            </div>
+                                                            <Button 
+                                                                variant="primary" 
+                                                                size="lg"
+                                                                className="modern-btn booking-btn"
+                                                                onClick={handleBookAppointment}
+                                                            >
+                                                                <i className="fas fa-calendar-plus me-2"></i>
+                                                                حجز موعد الآن
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>
                                         ) : (
-                                            <p className="text-muted">لا توجد مواقع متاحة</p>
+                                            <div className="empty-state">
+                                                <i className="fas fa-hospital empty-icon"></i>
+                                                <h4 className="empty-title">لا توجد عيادات متاحة</h4>
+                                                <p className="empty-text">هذا الطبيب غير متاح في أي عيادة حالياً</p>
+                                            </div>
                                         )}
                                     </div>
-                                </>
-                            )}
-                        </Card.Body>
-                    </Card>
+                                )}
+                            </div>
+                        </div>
+                    </Col>
                 </Row>
             </Container>
         </Fragment>

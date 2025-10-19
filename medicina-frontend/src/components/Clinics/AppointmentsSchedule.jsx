@@ -1,9 +1,10 @@
 import React, {  Fragment, useState, useEffect } from 'react'
-import { Card, Container, Row, Spinner } from 'react-bootstrap'
+import { Card, Container, Row, Spinner,Col } from 'react-bootstrap'
 import { useParams, useLocation } from 'react-router-dom';
 import AppointmentTable from './AppointmentTable';
 import axios from 'axios';
 import defaultImage from '../../assets/img/profpic.png';
+import DoctorHeaderCard from '../DoctorHeaderCard';
 
 function  AppointmentsSchedule  () {
     const { id } = useParams();
@@ -69,45 +70,24 @@ function  AppointmentsSchedule  () {
     return (
       <Fragment>
         <Container className='doctor-profile' >
-                <Row >
-                    <Card>
-                        <Card.Header as="h5" className='doctor-title'>
-                            حجز الموعد
-                            {selectedClinic && (
-                                <span className="ms-3 text-muted">- {selectedClinic.name}</span>
-                            )}
-                        </Card.Header>
-                        <Card.Body className="d-flex align-items-center">
-                            <Card.Img
-                                variant="top"
-                                src={doctor.profile_image_url || getDefaultImage()}
-                                className="card-img-clinics"
-                                style={{ width: '150px', height: '150px', marginLeft: '20px' }}
-                            />
-                            <div>
-                                <Card.Title className='doctor-title'>{doctor.name}</Card.Title>
-                                <Card.Text>
-                                    {selectedClinic ? (
-                                        <div>
-                                            <strong>العيادة المحددة:</strong> {selectedClinic.name}
-                                            {selectedClinic.address && (
-                                                <div className="text-muted mt-1">
-                                                    <i className="fas fa-map-marker-alt me-1"></i>
-                                                    {selectedClinic.address}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        doctor.clinics.map(clinic => clinic.name).join(', ')
-                                    )}
-                                </Card.Text>
-                            </div>
-                        </Card.Body>
-                    </Card>
+                 {/* Modern Doctor Header Card */}
+                 <Row className="mb-4">
+                    <Col>
+                        <DoctorHeaderCard 
+                            doctor={doctor}
+                            showStats={false}
+                            showSpecialty={true}
+                            selectedClinic={selectedClinic}
+                            imageSize="large"
+                        />
+                    </Col>
                 </Row>
 
                 <Row className="pt-5">
-                <AppointmentTable  />
+                <AppointmentTable 
+                    doctorId={doctor?.id} 
+                    clinicId={selectedClinic?.id} 
+                />
                 </Row>
         </Container>
       </Fragment>
