@@ -67,7 +67,7 @@ const DoctorHeaderCard = ({
                     />
                 </div>
                 <div className="profile-title">
-                    <h1 className={`user-name ${getNameSizeClass()}`}>
+                    <h1 className={`user-name ${getNameSizeClass()} text-center`}>
                         {doctor.name}
                     </h1>
                     {showSpecialty && doctor.specialization && (

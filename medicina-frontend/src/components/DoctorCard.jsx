@@ -44,7 +44,7 @@ const DoctorCard = ({ doctor, onManage }) => {
         </div>
       </div>
       
-      <h3 className="doctor-name">{doctor.name}</h3>
+      <h3 className="add-doctor-name">{doctor.name}</h3>
       <p className="doctor-specialty">{doctor.specialty || doctor.clinic}</p>
       
       <button 
@@ -219,24 +219,7 @@ const DoctorList = () => {
   };
 
   // Function to get dynamic grid layout based on number of cards
-  const getGridLayout = () => {
-    const totalCards = doctors.length + 1; // +1 for add button
-    
-    // Calculate padding based on number of cards
-    let paddingTop = '2rem'; // Base padding
-    
-    if (totalCards <= 6) {
-      paddingTop = '2rem'; // Extra padding for 3+ rows
-    } else if (totalCards <= 9) {
-      paddingTop = '30rem'; // Medium padding for 2 rows
-    }else{
-      paddingTop = '55rem';
-    }
-    
-    return {
-      paddingTop: paddingTop
-    };
-  };
+ 
 
   const handleAddDoctor = (newDoctor) => {
     setDoctors(prevDoctors => [...prevDoctors, newDoctor]);
@@ -248,7 +231,6 @@ const DoctorList = () => {
     setIsAddDialogOpen(false);
   };
 
-  const gridLayout = getGridLayout();
 
   if (isLoading) {
     return (
@@ -294,7 +276,6 @@ const DoctorList = () => {
   return (
     <div 
       className="doctor-list-grid" 
-      style={{ paddingTop: gridLayout.paddingTop }}
     >
       {doctors.map((doctor) => (
         <DoctorCard 

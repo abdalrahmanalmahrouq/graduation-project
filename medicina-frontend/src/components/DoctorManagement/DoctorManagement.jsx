@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import defaultImage from '../../assets/img/profpic.png';
@@ -13,6 +13,10 @@ const DoctorManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeFilter, setActiveFilter] = useState('available');
+  // extra UI filters (client-side)
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     console.log('Managing doctor:', doctorId, 'for clinic:', clinicId);
@@ -120,6 +124,36 @@ const DoctorManagement = () => {
       }
     }
   };
+
+  // Helpers for client-side filtering
+  const getTimeSlot = (timeString) => {
+    const [hours] = (timeString || '').split(':');
+    const hour = parseInt(hours || '0');
+    if (hour >= 6 && hour < 12) return 'morning';
+    if (hour >= 12 && hour < 17) return 'afternoon';
+    if (hour >= 17 && hour < 21) return 'evening';
+    return 'night';
+  };
+
+  const filteredAppointments = useMemo(() => {
+    return appointments.filter((apt) => {
+      if (selectedDate && apt.appointment_date !== selectedDate) return false;
+      if (selectedTimeSlot !== 'all') {
+        const slot = getTimeSlot(apt.starting_time);
+        if (slot !== selectedTimeSlot) return false;
+      }
+      if (searchQuery) {
+        const day = apt.day || new Date(apt.appointment_date).toLocaleDateString('en-US', { weekday: 'long' });
+        if (!day.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+      }
+      return true;
+    });
+  }, [appointments, selectedDate, selectedTimeSlot, searchQuery]);
+
+  const uniqueDates = useMemo(() => {
+    const dates = appointments.map((a) => a.appointment_date);
+    return [...new Set(dates)].sort();
+  }, [appointments]);
 
   const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, appointmentId: null });
 
@@ -258,21 +292,179 @@ const DoctorManagement = () => {
         )}
       </div>
 
-      {/* Filter Dropdown */}
-      <div className="appointment-filter-container">
-        <select 
-          className="appointment-filter-dropdown"
-          value={activeFilter}
-          onChange={(e) => handleFilterChange(e.target.value)}
-        >
-          <option value="available">المواعيد المتاحة</option>
-          <option value="booked">المواعيد المحجوزة</option>
-          <option value="completed">المواعيد المكتملة</option>
-          <option value="cancelled">المواعيد الملغية</option>
-        </select>
+      {/* Filters box (integrated status selector) */}
+      <div className="filters-card mb-4 modern-appointment-container">
+        <div className="appointment-form">
+          {/* Desktop Filters */}
+          <div className="d-none d-lg-block">
+            <div className="form-row" style={{ gap: '16px', alignItems: 'flex-end', display: 'flex', flexWrap: 'nowrap' }}>
+              <div className="form-group" style={{ flex: '1 1 0', minWidth: 0 }}>
+                <label className="filter-label">
+                  <i className="fas fa-filter me-2"></i>
+                  حالة الموعد
+                </label>
+                <div className="search-input-wrapper">
+                  <select
+                    value={activeFilter}
+                    onChange={(e) => handleFilterChange(e.target.value)}
+                    className="modern-select"
+                  >
+                    <option value="available">المواعيد المتاحة</option>
+                    <option value="booked">المواعيد المحجوزة</option>
+                    <option value="completed">المواعيد المكتملة</option>
+                    <option value="cancelled">المواعيد الملغية</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group" style={{ flex: '1 1 0', minWidth: 0 }}>
+                <label className="filter-label">
+                  <i className="fas fa-calendar me-2"></i>
+                  التاريخ
+                </label>
+                <div className="search-input-wrapper">
+                  <select
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="modern-select"
+                  >
+                    <option value="">جميع التواريخ</option>
+                    {uniqueDates.map((date) => (
+                      <option key={date} value={date}>{date}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="form-group" style={{ flex: '1 1 0', minWidth: 0 }}>
+                <label className="filter-label">
+                  <i className="fas fa-clock me-2"></i>
+                  الفترة الزمنية
+                </label>
+                <div className="search-input-wrapper">
+                  <select
+                    value={selectedTimeSlot}
+                    onChange={(e) => setSelectedTimeSlot(e.target.value)}
+                    className="modern-select"
+                  >
+                    <option value="all">جميع الأوقات</option>
+                    <option value="morning">صباحاً (6 ص - 12 م)</option>
+                    <option value="afternoon">ظهراً (12 م - 5 م)</option>
+                    <option value="evening">مساءً (5 م - 9 م)</option>
+                    <option value="night">ليلاً (9 م - 6 ص)</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group" style={{ flex: '1 1 0', minWidth: 0 }}>
+                <label className="filter-label">
+                  <i className="fas fa-search me-2"></i>
+                  بحث باليوم
+                </label>
+                <div className="search-input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="مثال: Sunday, Monday..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="modern-input"
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      className="clear-search-btn"
+                      onClick={() => setSearchQuery('')}
+                      aria-label="مسح البحث"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Filters */}
+          <div className="d-lg-none">
+            <div className="row g-2">
+              <div className="col-12">
+                <label className="filter-label">
+                  <i className="fas fa-filter me-2"></i>
+                  حالة الموعد
+                </label>
+                <select
+                  value={activeFilter}
+                  onChange={(e) => handleFilterChange(e.target.value)}
+                  className="form-control"
+                >
+                  <option value="available">المواعيد المتاحة</option>
+                  <option value="booked">المواعيد المحجوزة</option>
+                  <option value="completed">المواعيد المكتملة</option>
+                  <option value="cancelled">المواعيد الملغية</option>
+                </select>
+              </div>
+              <div className="col-6">
+                <label className="filter-label">
+                  <i className="fas fa-calendar me-2"></i>
+                  التاريخ
+                </label>
+                <select
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="form-control"
+                >
+                  <option value="">جميع التواريخ</option>
+                  {uniqueDates.map((date) => (
+                    <option key={date} value={date}>{date}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-6">
+                <label className="filter-label">
+                  <i className="fas fa-clock me-2"></i>
+                  الفترة الزمنية
+                </label>
+                <select
+                  value={selectedTimeSlot}
+                  onChange={(e) => setSelectedTimeSlot(e.target.value)}
+                  className="form-control"
+                >
+                  <option value="all">جميع الأوقات</option>
+                  <option value="morning">صباحاً</option>
+                  <option value="afternoon">ظهراً</option>
+                  <option value="evening">مساءً</option>
+                  <option value="night">ليلاً</option>
+                </select>
+              </div>
+              <div className="col-12">
+                <label className="filter-label">
+                  <i className="fas fa-search me-2"></i>
+                  بحث باليوم
+                </label>
+                <input
+                  type="text"
+                  placeholder="مثال: Sunday, Monday..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="form-control"
+                />
+              </div>
+            </div>
+          </div>
+
+          {(selectedDate || selectedTimeSlot !== 'all' || searchQuery) && (
+            <div className="mt-3 text-center">
+              <button
+                type="button"
+                className="clear-filters-btn"
+                onClick={() => { setSelectedDate(''); setSelectedTimeSlot('all'); setSearchQuery(''); }}
+              >
+                <i className="fas fa-redo me-2"></i>
+                مسح جميع الفلاتر
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Appointments List */}
+      {/* Appointments Table */}
       <div className="appointments-section">
         <h3 className="manage-section-title">
           {activeFilter === 'available' && 'المواعيد المتاحة'}
@@ -290,17 +482,57 @@ const DoctorManagement = () => {
             </p>
           </div>
         ) : (
-          <div className="appointments-list">
-            {appointments.map((appointment) => (
-              <AppointmentCard
-                key={appointment.id}
-                appointment={appointment}
-                onDelete={handleDeleteAppointment}
-                onModify={handleModifyAppointment}
-                showActions={activeFilter === 'available'}
-              />
-            ))}
-          </div>
+          <>
+            {/* Desktop View - Table */}
+            <div className="d-none d-lg-block">
+              <div className="appointments-table-card">
+                <div className="table-responsive">
+                  <table className="modern-appointments-table">
+                    <thead>
+                      <tr>
+                        <th>اليوم</th>
+                        <th>التاريخ</th>
+                        <th>وقت البداية</th>
+                        <th>وقت النهاية</th>
+                        {activeFilter !== 'available' && (<th>المريض</th>)}
+                        <th>الحالة</th>
+                        <th className="text-center" style={{ paddingRight: '80px' }}>الإجراء</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredAppointments.map((appointment) => (
+                        <AppointmentRow
+                          key={appointment.id}
+                          appointment={appointment}
+                          onDelete={handleDeleteAppointment}
+                          onModify={handleModifyAppointment}
+                          showActions={activeFilter === 'available'}
+                          showPatientColumn={activeFilter !== 'available'}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile View - Cards */}
+            <div className="d-lg-none">
+              <div className="row g-3">
+                {filteredAppointments.map((appointment) => (
+                  <div key={appointment.id} className="col-12">
+                    <AppointmentMobileCard
+                      appointment={appointment}
+                      onDelete={handleDeleteAppointment}
+                      onModify={handleModifyAppointment}
+                      showActions={activeFilter === 'available'}
+                      showPatientColumn={activeFilter !== 'available'}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         )}
       </div>
 
@@ -462,6 +694,157 @@ const AppointmentCard = ({ appointment, onDelete, onModify, showActions = true }
         </>
       )}
     </div>
+  );
+};
+
+// Table Row version for appointments
+const AppointmentRow = ({ appointment, onDelete, onModify, showActions = true, showPatientColumn = false }) => {
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    date: appointment.appointment_date,
+    day: appointment.day,
+    startingTime: appointment.starting_time,
+    endingTime: appointment.ending_time
+  });
+
+  const getDayName = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    return days[date.getDay()];
+  };
+
+  const handleDateChange = (dateValue) => {
+    const dayName = getDayName(dateValue);
+    setEditData(prev => ({
+      ...prev,
+      date: dateValue,
+      day: dayName
+    }));
+  };
+
+  const handleSave = () => {
+    if (!editData.date || !editData.startingTime || !editData.endingTime) {
+      alert('يرجى ملء جميع الحقول المطلوبة');
+      return;
+    }
+    onModify(appointment.id, editData);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditData({
+      date: appointment.appointment_date,
+      day: appointment.day,
+      startingTime: appointment.starting_time,
+      endingTime: appointment.ending_time
+    });
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <tr className="appointment-row editing">
+        <td>
+          <input
+            type="text"
+            value={editData.day}
+            readOnly
+            className="form-input"
+            style={{ backgroundColor: '#f7fafc', cursor: 'not-allowed' }}
+          />
+        </td>
+        <td>
+          <input
+            type="date"
+            value={editData.date}
+            onChange={(e) => handleDateChange(e.target.value)}
+            className="form-input"
+          />
+        </td>
+        <td>
+          <input
+            type="time"
+            value={editData.startingTime}
+            onChange={(e) => setEditData({ ...editData, startingTime: e.target.value })}
+            className="form-input"
+          />
+        </td>
+        <td>
+          <input
+            type="time"
+            value={editData.endingTime}
+            onChange={(e) => setEditData({ ...editData, endingTime: e.target.value })}
+            className="form-input"
+          />
+        </td>
+        <td>
+          <span className={`status-badge status-${appointment.status}`}>
+            {appointment.status === 'available' && 'متاح'}
+            {appointment.status === 'booked' && 'محجوز'}
+            {appointment.status === 'completed' && 'مكتمل'}
+            {appointment.status === 'cancelled' && 'ملغي'}
+          </span>
+        </td>
+        <td className="text-center">
+          <div className="form-actions">
+            <button onClick={handleSave} className="save-btn">حفظ</button>
+            <button onClick={handleCancel} className="cancel-btn">إلغاء</button>
+          </div>
+        </td>
+      </tr>
+    );
+  }
+
+  return (
+    <tr className="appointment-row">
+      <td>
+        <span className="day-badge">
+          {appointment.day || new Date(appointment.appointment_date).toLocaleDateString('en-US', { weekday: 'long' })}
+        </span>
+      </td>
+      <td className="date-cell">{appointment.appointment_date}</td>
+      <td className="time-cell">
+        <span className="time-badge start-time">{appointment.starting_time}</span>
+      </td>
+      <td className="time-cell">
+        <span className="time-badge end-time">{appointment.ending_time}</span>
+      </td>
+      {showPatientColumn && (
+        <td>
+          {appointment.patient ? (
+            <span
+              className="patient-name-link"
+              onClick={() => navigate(`/patients/by-user-id/${appointment.patient.user_id}`)}
+              style={{ cursor: 'pointer', color: '#0d6efd' }}
+            >
+              {appointment.patient.full_name}
+            </span>
+          ) : (
+            <span className="text-muted">—</span>
+          )}
+        </td>
+      )}
+      <td>
+        <span className={`status-badge status-${appointment.status}`}>
+          {appointment.status === 'available' && 'متاح'}
+          {appointment.status === 'booked' && 'محجوز'}
+          {appointment.status === 'completed' && 'مكتمل'}
+          {appointment.status === 'cancelled' && 'ملغي'}
+        </span>
+      </td>
+      <td className="action-cell text-center">
+        {showActions ? (
+          <div className="appointment-actions">
+            <button onClick={() => setIsEditing(true)} className="modify-btn">تعديل</button>
+            <button onClick={() => onDelete(appointment.id)} className="delete-btn">حذف</button>
+          </div>
+        ) : (
+          <span className="text-muted">—</span>
+        )}
+      </td>
+    </tr>
   );
 };
 
@@ -629,6 +1012,170 @@ const DeleteConfirmationDialog = ({ isOpen, onConfirm, onCancel }) => {
           </button>
         </div>
       </div>
+    </div>
+  );
+};
+
+// Mobile Card Component for appointments
+const AppointmentMobileCard = ({ appointment, onDelete, onModify, showActions = true, showPatientColumn = false }) => {
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    date: appointment.appointment_date,
+    day: appointment.day,
+    startingTime: appointment.starting_time,
+    endingTime: appointment.ending_time
+  });
+
+  const getDayName = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    return days[date.getDay()];
+  };
+
+  const handleDateChange = (dateValue) => {
+    const dayName = getDayName(dateValue);
+    setEditData(prev => ({
+      ...prev,
+      date: dateValue,
+      day: dayName
+    }));
+  };
+
+  const handleSave = () => {
+    if (!editData.date || !editData.startingTime || !editData.endingTime) {
+      alert('يرجى ملء جميع الحقول المطلوبة');
+      return;
+    }
+    onModify(appointment.id, editData);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditData({
+      date: appointment.appointment_date,
+      day: appointment.day,
+      startingTime: appointment.starting_time,
+      endingTime: appointment.ending_time
+    });
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <div className="appointment-mobile-card">
+        <div className="appointment-mobile-header">
+          <span className="day-badge-mobile">تعديل الموعد</span>
+        </div>
+        <div className="appointment-mobile-details">
+          <div className="detail-row">
+            <span className="detail-label">التاريخ:</span>
+            <input
+              type="date"
+              value={editData.date}
+              onChange={(e) => handleDateChange(e.target.value)}
+              className="form-control"
+            />
+          </div>
+          <div className="detail-row">
+            <span className="detail-label">اليوم:</span>
+            <input
+              type="text"
+              value={editData.day}
+              readOnly
+              className="form-control"
+              style={{ backgroundColor: '#f7fafc', cursor: 'not-allowed' }}
+            />
+          </div>
+          <div className="detail-row">
+            <span className="detail-label">وقت البداية:</span>
+            <input
+              type="time"
+              value={editData.startingTime}
+              onChange={(e) => setEditData({ ...editData, startingTime: e.target.value })}
+              className="form-control"
+            />
+          </div>
+          <div className="detail-row">
+            <span className="detail-label">وقت النهاية:</span>
+            <input
+              type="time"
+              value={editData.endingTime}
+              onChange={(e) => setEditData({ ...editData, endingTime: e.target.value })}
+              className="form-control"
+            />
+          </div>
+        </div>
+        <div className="form-actions mt-3">
+          <button onClick={handleSave} className="btn btn-success btn-sm me-2">حفظ</button>
+          <button onClick={handleCancel} className="btn btn-secondary btn-sm">إلغاء</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="appointment-mobile-card">
+      <div className="appointment-mobile-header">
+        <span className="day-badge-mobile">
+          {appointment.day || new Date(appointment.appointment_date).toLocaleDateString('en-US', { weekday: 'long' })}
+        </span>
+        <span className="date-badge-mobile">{appointment.appointment_date}</span>
+      </div>
+      
+      <div className="appointment-mobile-details">
+        <div className="detail-row">
+          <i className="fas fa-clock me-2"></i>
+          <span className="detail-label">من:</span>
+          <span className="detail-value">{appointment.starting_time}</span>
+        </div>
+        <div className="detail-row">
+          <i className="fas fa-clock me-2"></i>
+          <span className="detail-label">إلى:</span>
+          <span className="detail-value">{appointment.ending_time}</span>
+        </div>
+        {showPatientColumn && appointment.patient && (
+          <div className="detail-row">
+            <i className="fas fa-user me-2"></i>
+            <span className="detail-label">المريض:</span>
+            <span 
+              className="detail-value patient-name-link"
+              onClick={() => navigate(`/patients/by-user-id/${appointment.patient.user_id}`)}
+              style={{ cursor: 'pointer', color: '#0d6efd' }}
+            >
+              {appointment.patient.full_name}
+            </span>
+          </div>
+        )}
+        <div className="detail-row">
+          <i className="fas fa-info-circle me-2"></i>
+          <span className="detail-label">الحالة:</span>
+          <span className={`status-badge status-${appointment.status}`}>
+            {appointment.status === 'available' && 'متاح'}
+            {appointment.status === 'booked' && 'محجوز'}
+            {appointment.status === 'completed' && 'مكتمل'}
+            {appointment.status === 'cancelled' && 'ملغي'}
+          </span>
+        </div>
+      </div>
+      
+      {showActions && (
+        <div className="appointment-actions mt-3">
+          <button 
+            onClick={() => setIsEditing(true)} 
+            className="btn btn-primary btn-sm me-2"
+          >
+            تعديل
+          </button>
+          <button 
+            onClick={() => onDelete(appointment.id)} 
+            className="btn btn-danger btn-sm"
+          >
+            حذف
+          </button>
+        </div>
+      )}
     </div>
   );
 };

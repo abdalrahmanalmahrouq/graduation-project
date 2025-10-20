@@ -2815,7 +2815,7 @@ background: #f9f9f9; /* optional */
 }
 
 /* Doctor Name */
-.doctor-name {
+.add-doctor-name {
   font-weight: 600;
   color: #111827;
   text-align: center;
@@ -5872,7 +5872,7 @@ background: #f9f9f9; /* optional */
   }
 
   .patient-profile-header {
-    background: var(--accent-color);
+    background:linear-gradient(135deg, var(--accent-color) 0%, #f1f5f9 100%);
     padding: 30px;
     display: flex;
     align-items: center;
@@ -6156,7 +6156,7 @@ background: #f9f9f9; /* optional */
 }
 
 .modern-appointments-table thead tr {
-  background: var(--contrast-color);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #f1f5f9 100%);
   color: var(--heading-color);
 }
 
