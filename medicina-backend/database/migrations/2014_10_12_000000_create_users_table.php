@@ -19,7 +19,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->enum('role', ['patient', 'doctor', 'clinic', 'admin']);
             $table->timestamps();
-
+            // add phone number column to users table for all roles
             //unique constraint for email and role combination
             $table->unique(['email', 'role']);
         });

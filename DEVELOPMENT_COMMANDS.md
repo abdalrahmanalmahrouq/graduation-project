@@ -5,6 +5,7 @@ This guide provides all the essential commands for managing your Medicina projec
 ## 🐳 Docker Commands
 
 ### Starting Services
+
 ```bash
 # Start all services (frontend, backend, database, phpMyAdmin)
 docker compose up
@@ -17,6 +18,7 @@ docker compose up frontend backend
 ```
 
 ### Stopping Services
+
 ```bash
 # Stop all services
 docker compose down
@@ -29,6 +31,7 @@ docker compose stop frontend
 ```
 
 ### Restarting Services
+
 ```bash
 # Restart all services
 docker compose restart
@@ -44,6 +47,7 @@ docker compose up --build
 ## 🔄 Frontend Commands
 
 ### Development
+
 ```bash
 # Start frontend development server (if running locally)
 cd medicina-frontend
@@ -57,6 +61,7 @@ npm run build
 ```
 
 ### Docker Frontend Management
+
 ```bash
 # Restart frontend container
 docker compose restart frontend
@@ -75,6 +80,7 @@ docker compose exec frontend npm run build
 ## 🔧 Backend Commands
 
 ### Development
+
 ```bash
 # Start Laravel development server (if running locally)
 cd medicina-backend
@@ -94,6 +100,7 @@ php artisan db:seed
 ```
 
 ### Docker Backend Management
+
 ```bash
 # Restart backend container
 docker compose restart backend
@@ -113,6 +120,7 @@ docker compose exec backend php artisan key:generate
 ## 🗄️ Database Commands
 
 ### Database Management
+
 ```bash
 # Access MySQL container
 docker compose exec mysql mysql -u root -p
@@ -131,13 +139,15 @@ docker compose exec backend php artisan migrate:fresh --seed
 ```
 
 ### phpMyAdmin Access
-- URL: http://localhost:8080
-- Username: `root`
-- Password: `root`
+
+-   URL: http://localhost:8080
+-   Username: `root`
+-   Password: `root`
 
 ## 🧹 Cache Management
 
 ### Laravel Cache Clearing
+
 ```bash
 # Clear all caches
 docker compose exec backend php artisan cache:clear
@@ -153,6 +163,7 @@ docker compose exec backend php artisan optimize
 ```
 
 ### Frontend Cache Clearing
+
 ```bash
 # Clear npm cache
 docker compose exec frontend npm cache clean --force
@@ -165,6 +176,7 @@ docker compose exec frontend npm install
 ## 🔨 Rebuilding Services
 
 ### Complete Rebuild
+
 ```bash
 # Stop all services
 docker compose down
@@ -181,6 +193,7 @@ docker compose up
 ```
 
 ### Individual Service Rebuild
+
 ```bash
 # Rebuild specific service
 docker compose build frontend
@@ -193,6 +206,7 @@ docker compose up --build frontend
 ## 🐛 Debugging Commands
 
 ### Container Management
+
 ```bash
 # List all running containers
 docker ps
@@ -209,6 +223,7 @@ docker compose exec backend bash
 ```
 
 ### Logs and Monitoring
+
 ```bash
 # View all logs
 docker compose logs
@@ -223,6 +238,7 @@ docker compose logs --since="2024-01-01T00:00:00" frontend
 ## 🚀 Quick Development Workflow
 
 ### Daily Development Start
+
 ```bash
 # 1. Start all services
 docker compose up -d
@@ -235,6 +251,7 @@ docker compose logs -f
 ```
 
 ### When You Make Changes
+
 ```bash
 # For frontend changes (React hot reload should work automatically)
 # No restart needed
@@ -247,6 +264,7 @@ docker compose exec backend php artisan migrate
 ```
 
 ### When Things Go Wrong
+
 ```bash
 # 1. Stop everything
 docker compose down
@@ -258,13 +276,12 @@ docker compose exec backend php artisan optimize:clear
 docker compose up --build
 ```
 
-
 ## 🌐 Service URLs
 
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **phpMyAdmin**: http://localhost:8080
-- **MySQL**: localhost:3306
+-   **Frontend**: http://localhost:3000
+-   **Backend API**: http://localhost:8000
+-   **phpMyAdmin**: http://localhost:8080
+-   **MySQL**: localhost:3306
 
 ## ⚠️ Important Notes
 
@@ -277,9 +294,10 @@ docker compose up --build
 4. **Environment Variables**: Backend environment variables are configured in the docker compose.yml file.
 
 5. **File Permissions**: If you encounter permission issues, you may need to adjust file ownership:
-   ```bash
-   sudo chown -R $USER:$USER /home/aboodlinux/projects/graduation-project
-   ```
+    ```bash
+    sudo chown -R $USER:$USER /home/aboodlinux/projects/graduation-project
+    ```
 
-// to give an edit permission    
+// to give an edit permission  
 sudo chown -R aboodlinux:aboodlinux .
+sudo chown -R yaqoub:yaqoub .

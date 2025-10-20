@@ -48,6 +48,13 @@ class ClinicDoctorSeeder extends Seeder
                             'doctor_id' => $doctor->user_id,
                             'created_at' => now(),
                             'updated_at' => now(),
+                            'sunday_schedule' => '0900-1700',
+                            'monday_schedule' => '0900-1700',
+                            'tuesday_schedule' => '0900-1700',
+                            'wednesday_schedule' => '0900-1700',
+                            'thursday_schedule' => '0900-1700',
+                            'friday_schedule' => '0900-1300',
+                            'saturday_schedule' => '0000-0000',
                         ]);
                     }
                 }
