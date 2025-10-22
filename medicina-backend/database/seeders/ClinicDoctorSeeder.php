@@ -42,19 +42,54 @@ class ClinicDoctorSeeder extends Seeder
                     $doctorUser = User::where('email', $doctorEmail)->first();
                     $doctor = $doctors->where('user_id', $doctorUser->id)->first();
                     
+                    // Define a default weekly schedule (empty for seeding)
+                    $schedule = [
+                        'mon' => [
+                            'start_time' => '09:00',
+                            'end_time' => '17:00',
+                            'break_start' => '12:00',
+                            'break_end' => '13:00',
+                        ],
+                        'tue' => NULL,
+                        'wed' => [
+                            'start_time' => '09:00',
+                            'end_time' => '17:00',
+                            'break_start' => '12:00',
+                            'break_end' => '13:00',
+                        ],
+                        'thu' => [
+                            'start_time' => '09:00',
+                            'end_time' => '17:00',
+                            'break_start' => '12:00',
+                            'break_end' => '13:00',
+                            ],
+                        'fri' => NULL,
+                        'sat' => [
+                            'start_time' => '09:00',
+                            'end_time' => '17:00',
+                            'break_start' => '12:00',
+                            'break_end' => '13:00',
+                            ],
+                        'sun' => [
+                            'start_time' => '09:00',
+                            'end_time' => '17:00',
+                            'break_start' => '12:00',
+                            'break_end' => '13:00',
+                        ],
+                        'sat' => [
+                            'start_time' => '09:00',
+                            'end_time' => '17:00',
+                            'break_start' => '12:00',
+                            'break_end' => '13:00',
+                            ],
+                    ];
                     if ($doctor) {
                         DB::table('clinic_doctor')->insert([
                             'clinic_id' => $clinic->user_id,
                             'doctor_id' => $doctor->user_id,
                             'created_at' => now(),
                             'updated_at' => now(),
-                            'sunday_schedule' => '0900-1700',
-                            'monday_schedule' => '0900-1700',
-                            'tuesday_schedule' => '0900-1700',
-                            'wednesday_schedule' => '0900-1700',
-                            'thursday_schedule' => '0900-1700',
-                            'friday_schedule' => '0900-1300',
-                            'saturday_schedule' => '0000-0000',
+                            'weekly_schedule' => json_encode($schedule), // Empty schedule for seeding
                         ]);
                     }
                 }

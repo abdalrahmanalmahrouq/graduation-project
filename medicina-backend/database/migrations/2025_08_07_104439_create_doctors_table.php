@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('specialization');
             $table->text('bio')->nullable();
+            $table->integer('consultation_duration');
             $table->timestamps();
         });
     }

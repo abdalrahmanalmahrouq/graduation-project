@@ -17,13 +17,7 @@ return new class extends Migration
             $table->string('doctor_id', 7);
             $table->foreign('clinic_id')->references('user_id')->on('clinics')->onDelete('cascade');
             $table->foreign('doctor_id')->references('user_id')->on('doctors')->onDelete('cascade');
-            $table->string('sunday_schedule');
-            $table->string('monday_schedule');
-            $table->string('tuesday_schedule');
-            $table->string('wednesday_schedule');
-            $table->string('thursday_schedule');
-            $table->string('friday_schedule');
-            $table->string('saturday_schedule');
+            $table->json('weekly_schedule');
             $table->timestamps();
         });
     }
