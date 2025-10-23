@@ -19,6 +19,13 @@ return new class extends Migration
             $table->string('phone_number')->unique();
             $table->date('date_of_birth');
             $table->string('address')->nullable();
+
+            $table->string('insurance_id', 7)->nullable();
+            $table->foreign('insurance_id')
+            ->references('insurance_id')
+            ->on('insurances')
+            ->onDelete('set null');
+
             $table->timestamps();
         });
     }

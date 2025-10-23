@@ -20,13 +20,13 @@ class Patient extends Model
         'user_id' => 'string',
     ];
 
-    // Each patient has one user
+    // Each patient belongs to user 
     public function user(){                //->patient //->user
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-
+    // insurance has one 
     public function insurances()
     {
-        return $this->belongsTo(Insurance::class, 'insurances_patients', 'user_id', 'insurance_id');
+        return $this->belongsTo(Insurance::class);
     }
 }
