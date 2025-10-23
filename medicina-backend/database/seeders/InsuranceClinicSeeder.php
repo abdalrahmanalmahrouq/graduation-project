@@ -2,28 +2,30 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class InsuranceClinicSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Fetch all insurance and clinic IDs from the database
-        $insuranceIds = DB::table('insurances')->pluck('insurance_id')->toArray();
-        $clinicIds = DB::table('clinics')->pluck('user_id')->toArray();
+        // Get all insurance IDs and clinic IDs
+        $insuranceIds = DB::table('insurances')->pluck('insurance_id');
+        $clinicIds = DB::table('clinics')->pluck('user_id');
 
-        // Insert random data into the pivot table
-        DB::table('insurances_clinics')->insert([
-            ['id' => 1,'insurance_id' => $insuranceIds[array_rand($insuranceIds)], 'clinic_id' => $clinicIds[array_rand($clinicIds)]],
-            ['id' => 2,'insurance_id' => $insuranceIds[array_rand($insuranceIds)], 'clinic_id' => $clinicIds[array_rand($clinicIds)]],
-            ['id' => 3,'insurance_id' => $insuranceIds[array_rand($insuranceIds)], 'clinic_id' => $clinicIds[array_rand($clinicIds)]],
-            ['id' => 4,'insurance_id' => $insuranceIds[array_rand($insuranceIds)], 'clinic_id' => $clinicIds[array_rand($clinicIds)]],
-            ['id' => 5,'insurance_id' => $insuranceIds[array_rand($insuranceIds)], 'clinic_id' => $clinicIds[array_rand($clinicIds)]],
-        ]);
+        // Simple loop to create random associations
+        foreach ($insuranceIds as $insuranceId) {
+            // randomly pick 1–3 clinics for each insurance
+            $randomClinics = $clinicIds->random(rand(1, min(3, $clinicIds->count())));
+
+            foreach ($randomClinics as $clinicId) {
+                DB::table('insurances_clinics')->insert([
+                    'insurance_id' => $insuranceId,
+                    'clinic_id' => $clinicId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
     }
 }

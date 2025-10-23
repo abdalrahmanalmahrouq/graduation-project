@@ -16,17 +16,12 @@ class InsuranceSeeder extends Seeder
     {
         //
         $insurancesData = [
-            ['insurance_id' => 1, 'name' => 'GIG Insurance'],
-            ['insurance_id' => 2, 'name' => 'Al-nisr Al-Arabi Insurance'],
-            ['insurance_id' => 3, 'name' => 'Metlife Insurance'],
+            ['name' => 'GIG Insurance'],
+            ['name' => 'Al-nisr Al-Arabi Insurance'],
+            ['name' => 'Metlife Insurance'],
         ];
-        // DB::table('insurances')->insert([
-        //     ['insurance_id' => 1, 'name' => 'GIG Insurance'],
-        //     ['insurance_id' => 2, 'name' => 'Al-nisr Al-Arabi Insurance'],
-        //     ['insurance_id' => 3, 'name' => 'Metlife Insurance'],
-        // ];
         foreach ($insurancesData as $data) {
             Insurance::create($data);
         }
-}
+    }
 }
