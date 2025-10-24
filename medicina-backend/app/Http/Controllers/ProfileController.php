@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
@@ -14,12 +15,13 @@ class ProfileController extends Controller
 
         switch ($user->role) {
         case 'patient':
+            $patient= Patient::with('insurances')->where('user_id',$user->id)->first();
             return response()->json([
                 'id' => $user->id,
                 'email' => $user->email,
                 'role' => $user->role,
                 'profile_image_url' => $user->profile_image_url,
-                'profile' => $user->patient,
+                'profile' => $patient,
             ]);
         case 'doctor':
             return response()->json([   
@@ -62,6 +64,10 @@ class ProfileController extends Controller
         // Validate the request based on user role - make validation more flexible
         $validationRules = [];
         
+        if ($request->has('insurance_id') && $request->input('insurance_id') === '') {
+            $request->merge(['insurance_id' => null]);
+        }
+
         switch ($user->role) {
             case 'patient':
                 $validationRules = [
@@ -69,6 +75,7 @@ class ProfileController extends Controller
                     'phone_number' => 'nullable|string|max:20|regex:/^[+]?[0-9\s\-\(\)]{7,20}$/|unique:patients,phone_number,' . $user->patient->id,
                     'date_of_birth' => 'nullable|date',
                     'address' => 'nullable|string|max:500',
+                    'insurance_id' => 'nullable|string|exists:insurances,insurance_id',
                 ];
                 break;
             case 'doctor':
@@ -179,7 +186,7 @@ class ProfileController extends Controller
         switch ($user->role) {
             case 'patient':
                 $updateData = array_filter($validated, function($key) {
-                    return in_array($key, ['full_name', 'phone_number', 'date_of_birth', 'address']);
+                    return in_array($key, ['full_name', 'phone_number', 'date_of_birth', 'address', 'insurance_id']);
                 }, ARRAY_FILTER_USE_KEY);
                 \Log::info('Updating patient profile:', $updateData);
                 if (!empty($updateData)) {

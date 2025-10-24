@@ -4068,7 +4068,7 @@ background: #f9f9f9; /* optional */
 
 /* Doctor Info Container */
 .doctor-info-container {
-  background: white;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #f1f5f9 100%);
   border-radius: 20px;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -4132,8 +4132,8 @@ background: #f9f9f9; /* optional */
 }
 
 .add-appointment-btn {
-  background: var(--accent-color);
-  color: white;
+  background:var(--contrast-color);
+  color: var(--default-color);
   border: none;
   padding: 1.25rem 2.5rem;
   border-radius: 12px;
@@ -4213,7 +4213,7 @@ background: #f9f9f9; /* optional */
 
 /* Appointments Section */
 .appointments-section {
-  background: white;
+ 
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);

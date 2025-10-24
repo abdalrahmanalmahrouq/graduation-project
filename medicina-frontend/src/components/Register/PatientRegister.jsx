@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import { Link,useNavigate } from 'react-router-dom'
 import AuthLayout from '../AuthLayout';
 import axios from 'axios';
@@ -13,12 +13,58 @@ export default function PatientRegister() {
         const [phone_number,setPhoneNumber]=useState('');
         const [date_of_birth,setDate]=useState('');
         const [address,setAddress]=useState('');
+        const [insurance,setInsurance]=useState('');
         const [password,setPassword]=useState('');
         const [password_confirmation,setConfirmPassword]=useState('');
         const [message, setMessage] = useState('');
         const navigate = useNavigate();
         const [errors, setErrors] = useState({});
         const [loading,setLoading]=useState(false);
+        const [insuranceOptions, setInsuranceOptions] = useState([]);
+        const [isLoadingInsurances, setIsLoadingInsurances] = useState(false);
+        const [insuranceFetchError, setInsuranceFetchError] = useState('');
+
+        useEffect(() => {
+            let isMounted = true;
+
+            const fetchInsurances = async () => {
+                setIsLoadingInsurances(true);
+                setInsuranceFetchError('');
+
+                try {
+                    const response = await axios.get('/insurances');
+                    if (!isMounted) {
+                        return;
+                    }
+
+                    const rawOptions = Array.isArray(response.data?.data) ? response.data.data : [];
+                    const normalizedOptions = rawOptions.map((option) => {
+                        if (typeof option === 'string') {
+                            return { insurance_id: option, name: option };
+                        }
+                        return option;
+                    });
+                    setInsuranceOptions(normalizedOptions);
+                } catch (error) {
+                    if (!isMounted) {
+                        return;
+                    }
+                    console.error('Failed to fetch insurance options:', error);
+                    setInsuranceOptions([]);
+                    setInsuranceFetchError('تعذّر تحميل شركات التأمين، حاول مرة أخرى لاحقاً.');
+                } finally {
+                    if (isMounted) {
+                        setIsLoadingInsurances(false);
+                    }
+                }
+            };
+
+            fetchInsurances();
+
+            return () => {
+                isMounted = false;
+            };
+        }, []);
 
 
         if(localStorage.getItem('token')){
@@ -36,6 +82,7 @@ export default function PatientRegister() {
               phone_number,
               date_of_birth,
               address,
+              insurance,
               password,
               password_confirmation
             };
@@ -94,7 +141,29 @@ export default function PatientRegister() {
                                 <label htmlFor="address">العنوان</label>
                                 <input type="text" className="form-control" placeholder="amman" name='address' required
                                 onChange={(e)=>setAddress(e.target.value)} />
-                                {errors.password && <small className="text-danger">{errors.password[0]}</small>}
+                                {errors.address && <small className="text-danger">{errors.address[0]}</small>}
+                        </div>
+                         <div className="form-group mt-4">
+                                <label htmlFor="insurance">التأمين</label>
+                                <input 
+                                type="text" 
+                                className="form-control" 
+                                id="insurance"
+                                name="insurance"
+                                placeholder="اختر شركة التأمين"
+                                list="insuranceOptions"
+                                value={insurance}
+                                onChange={(e)=>setInsurance(e.target.value)}
+                                autoComplete="off"
+                                />
+                                <datalist id="insuranceOptions">
+                                {insuranceOptions.map((option) => (
+                                        <option key={option.insurance_id ?? option.name} value={option.name} />
+                                ))}
+                                </datalist>
+                                {isLoadingInsurances && <small className="text-muted">جارٍ تحميل شركات التأمين...</small>}
+                                {insuranceFetchError && <small className="text-danger d-block mt-1">{insuranceFetchError}</small>}
+                                {errors.insurance && <small className="text-danger d-block mt-1">{errors.insurance[0]}</small>}
                         </div>
                         <div className="form-group mt-4">
                                 <label htmlFor="password">كلمة المرور</label>

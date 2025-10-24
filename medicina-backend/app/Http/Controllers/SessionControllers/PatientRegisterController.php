@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SessionControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Insurance;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Patient;
@@ -19,6 +20,7 @@ class PatientRegisterController extends Controller
             'date_of_birth' => 'required|date',
             'phone_number' => 'required|string|unique:patients,phone_number',
             'address' => 'nullable|string',
+            'insurance'=>'nullable|exists:insurances,name'
         ]);
 
         $user = User::create([
@@ -27,12 +29,14 @@ class PatientRegisterController extends Controller
             'role' => 'patient',
         ]);
 
+        $insurance=Insurance::where('name',$request->insurance)->first();
         Patient::create([
             'user_id' => $user->id,
             'full_name' => $validated['full_name'],
             'date_of_birth' => $validated['date_of_birth'],
             'phone_number' => $validated['phone_number'],
             'address' => $validated['address'],
+            'insurance_id'=>$insurance ? $insurance->insurance_id : null,
         ]);
 
         // Send email verification notification (will fail silently if no mail config)

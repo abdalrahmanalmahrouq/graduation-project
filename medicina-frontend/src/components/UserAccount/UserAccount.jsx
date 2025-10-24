@@ -15,6 +15,10 @@ const UserAccount = ({ token }) => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
+  const [insuranceOptions, setInsuranceOptions] = useState([]);
+  const [isLoadingInsurances, setIsLoadingInsurances] = useState(false);
+  const [insuranceFetchError, setInsuranceFetchError] = useState('');
+  const [hasLoadedInsurances, setHasLoadedInsurances] = useState(false);
 
   useEffect(() => {
     loadUser();
@@ -56,6 +60,43 @@ const UserAccount = ({ token }) => {
     }
   };
 
+  const loadInsuranceOptions = async () => {
+    if (!user || user.role !== 'patient') {
+      return;
+    }
+
+    setIsLoadingInsurances(true);
+    setInsuranceFetchError('');
+
+    try {
+      const response = await axios.get('/insurances');
+      const rawOptions = Array.isArray(response.data?.data) ? response.data.data : [];
+      const normalizedOptions = rawOptions.map((option) => {
+        if (typeof option === 'string') {
+          return { insurance_id: option, name: option };
+        }
+        return option;
+      });
+
+      setInsuranceOptions(normalizedOptions);
+      setHasLoadedInsurances(true);
+    } catch (error) {
+      console.error('Failed to fetch insurance companies:', error);
+      setInsuranceOptions([]);
+      setInsuranceFetchError('Failed to load insurance companies. Please try again later.');
+    } finally {
+      setIsLoadingInsurances(false);
+    }
+  };
+
+  const ensureInsuranceOptionsLoaded = () => {
+    if (isLoadingInsurances || hasLoadedInsurances) {
+      return;
+    }
+
+    loadInsuranceOptions();
+  };
+
   const initializeEditForm = (userData) => {
     const formData = {
       full_name: userData.profile.full_name || '',
@@ -64,6 +105,7 @@ const UserAccount = ({ token }) => {
       address: userData.profile.address || '',
       clinic_name: userData.profile.clinic_name || '',
       specialization: userData.profile.specialization || '',
+      insurance_id: userData.profile.insurance_id || '',
     };
     setEditForm(formData);
   };
@@ -149,7 +191,8 @@ const UserAccount = ({ token }) => {
             full_name: editForm.full_name || '',
             phone_number: editForm.phone_number || '',
             date_of_birth: editForm.date_of_birth || '',
-            address: editForm.address || ''
+            address: editForm.address || '',
+            insurance_id: editForm.insurance_id || null,
           };
           break;
         case 'doctor':
@@ -432,6 +475,42 @@ const UserAccount = ({ token }) => {
       {renderInputField('Phone Number', phone_number, 'phone_number', 'tel', 'Enter your phone number')}
       {renderInputField('Date of Birth', date_of_birth, 'date_of_birth', 'date')}
       {renderInputField('Address', address, 'address', 'text', 'Enter your address')}
+      <div className="info-field modern-field">
+        <div className="field-icon">
+          <i className={`fa-solid fa-building medicina-theme-icon`}></i>
+        </div>
+        <div className="field-content">
+          <label className="field-label">Insurance Company</label>
+          <select
+            value={editForm.insurance_id || ''}
+            onChange={(e) => handleInputChange('insurance_id', e.target.value || '')}
+            className="field-input"
+            onFocus={ensureInsuranceOptionsLoaded}
+            onClick={ensureInsuranceOptionsLoaded}
+          >
+            <option value="">Select insurance</option>
+            {!hasLoadedInsurances && user.profile?.insurances && (
+              <option value={user.profile.insurances.insurance_id || ''}>
+                {user.profile.insurances.name}
+              </option>
+            )}
+            {insuranceOptions.map((option) => (
+              <option
+                key={option.insurance_id ?? option.name}
+                value={option.insurance_id ?? ''}
+              >
+                {option.name}
+              </option>
+            ))}
+          </select>
+          {isLoadingInsurances && (
+            <small className="text-muted d-block mt-1">Loading insurance companies...</small>
+          )}
+          {insuranceFetchError && (
+            <small className="text-danger d-block mt-1">{insuranceFetchError}</small>
+          )}
+        </div>
+      </div>
     </div>
   );
 
@@ -702,7 +781,7 @@ const UserAccount = ({ token }) => {
                 className="modern-btn danger-btn"
               >
                 <span className="btn-icon">
-                  <i className={`fa-solid fa-trash medicina-theme-icon`}></i>
+                  <i className={`fa-solid fa-trash text-white`}></i>
                 </span>
                 Delete Account
               </button>

@@ -4,6 +4,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ClinicDoctorController;
 use App\Http\Controllers\DoctorBioController;
 use App\Http\Controllers\DoctorClinicController;
+use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionControllers\AuthController;
@@ -119,3 +120,7 @@ Route::delete('appointments/{appointment_id}',[AppointmentController::class,'del
 Route::delete('appointments/booked/{appointment_id}',[AppointmentController::class,'deleteBookedDoctorClinicAppointment']);
 
 Route::get('appointments/all-appointments/{clinic_id}',[AppointmentController::class,'getAllClinicAppointments']);
+
+
+// Insurance Management Routes
+Route::get('insurances', [InsuranceController::class, 'index']);
