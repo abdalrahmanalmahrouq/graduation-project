@@ -13,21 +13,39 @@ class ClinicDoctorController extends Controller
             'doctor_id' => 'required|exists:doctors,user_id',
         ]);
 
-        $clinic=auth()->user()->clinic;
+        $user = auth()->user();
+        $clinic = $user->clinic;
+
+        // Check if user has a clinic (i.e., is a clinic user)
+        if(!$clinic){    
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied. Only clinic users can access this resource.'
+            ], 403);
+        }
 
         // Prevent duplicates
-    if ($clinic->doctors()->where('user_id', $request->doctor_id)->exists()) {
-        return response()->json(['message' => 'Doctor already added.'], 409);
-    }
+        if ($clinic->doctors()->where('user_id', $request->doctor_id)->exists()) {
+            return response()->json(['message' => 'Doctor already added.'], 409);
+        }
 
-    $clinic->doctors()->attach($request->doctor_id);
+        $clinic->doctors()->attach($request->doctor_id);
 
-    return response()->json(['message' => 'Doctor added successfully.'], 200);
+        return response()->json(['message' => 'Doctor added successfully.'], 200);
     }
 
     public function getAvailableDoctors(Request $request)
     {
-        $clinic = auth()->user()->clinic;
+        $user = auth()->user();
+        $clinic = $user->clinic;
+        
+        // Check if user has a clinic (i.e., is a clinic user)
+        if(!$clinic){    
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied. Only clinic users can access this resource.'
+            ], 403);
+        }
         
         // Get all doctors except those already added to this clinic
         $addedDoctorIds = $clinic->doctors()->pluck('user_id')->toArray();
@@ -52,7 +70,16 @@ class ClinicDoctorController extends Controller
 
     public function getClinicDoctors(Request $request)
     {
-        $clinic = auth()->user()->clinic;
+        $user = auth()->user();
+        $clinic = $user->clinic;
+        
+        // Check if user has a clinic (i.e., is a clinic user)
+        if(!$clinic){    
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied. Only clinic users can access this resource.'
+            ], 403); // Changed from 404 to 403 (Forbidden)
+        }
         
         // Get all doctors added to this clinic
         $clinicDoctors = $clinic->doctors()
@@ -69,6 +96,7 @@ class ClinicDoctorController extends Controller
         });
 
         return response()->json([
+            'success' => true,
             'doctors' => $clinicDoctors
         ]);
     }

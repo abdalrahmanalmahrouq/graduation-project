@@ -32,7 +32,9 @@ class Clinic extends Model
         return $this->belongsToMany(Doctor::class,'clinic_doctor', 'clinic_id', 'doctor_id', 'user_id', 'user_id');
     }
 
-    public function insurances(){
-        return $this->belongsToMany(Insurance::class,'insurances_clinics','user_id','insurance_id');
+    public function insurances(){                   //first atribute insurances_clinics //second     //clinics table //insurances table
+        return $this->belongsToMany(Insurance::class,'insurances_clinics','clinic_id','insurance_id','user_id','insurance_id')
+            ->withTimestamps()
+            ->withPivot(['created_at', 'updated_at', 'deleted_at']);
     }
 }

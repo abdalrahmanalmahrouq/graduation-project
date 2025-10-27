@@ -124,3 +124,8 @@ Route::get('appointments/all-appointments/{clinic_id}',[AppointmentController::c
 
 // Insurance Management Routes
 Route::get('insurances', [InsuranceController::class, 'index']);
+
+Route::middleware(['auth:sanctum'])->get('clinic/get-insurances', [InsuranceController::class, 'getInsurancesForClinic']);//  this route will get all insurances company for specific clinic id
+Route::middleware(['auth:sanctum'])->post('clinic/add-insurances',[InsuranceController::class,'addInsurancesForClinic']); // this route will add insurance company for each clinic
+Route::middleware(['auth:sanctum'])->delete('clinic/delete-insurances',[InsuranceController::class,'deleteInsuranceForClinic']);// this route will soft delete an associated insurance company for the clinic
+Route::middleware(['auth:sanctum'])->post('clinic/restore-insurances',[InsuranceController::class,'restoreInsuranceForClinic']);// this route will restore a soft deleted insurance company for the clinic

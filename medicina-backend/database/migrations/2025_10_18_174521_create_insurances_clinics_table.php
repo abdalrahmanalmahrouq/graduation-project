@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('clinic_id');
             $table->foreign('clinic_id')->references('user_id')->on('clinics')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
