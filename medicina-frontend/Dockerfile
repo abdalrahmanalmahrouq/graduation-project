@@ -1,30 +1,18 @@
-# Build stage
-FROM node:18-alpine as build
+# Optimized Development Dockerfile for frontend
+FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install deps first (for caching)
+# Install dependencies first for better caching
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --only=production=false && npm cache clean --force
 
-# Copy rest of the app
+# Copy source code
 COPY . .
 
-# Build the app for production
-RUN npm run build && ls -al /app/build && test -f /app/build/index.html
+# Expose port 3000 for development server
+EXPOSE 3000
 
-# Production stage
-FROM nginx:alpine
-
-# Copy built app from build stage
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start development server with optimized settings
+CMD ["npm", "start"]
