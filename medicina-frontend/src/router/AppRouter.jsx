@@ -30,10 +30,12 @@ import DoctorManagementPage from '../pages/DoctorManagementPage'
 import UpComingAppointmentPage from '../pages/UpComingAppointmentPage'
 import PastAppointmentPage from '../pages/PastAppointmentPage'
 import ClinicAppointmentsPage from '../pages/ClinicAppointmentsPage'
+import ClinicInsurancePage from '../pages/ClinicInsurancePage'
 import PatientDataPage from '../pages/PatientDataPage'
 import EmailVerificationSuccess from '../components/EmailVerificationSuccess'
 import ForgotPassword from '../components/ForgotPassword'
 import ResetPassword from '../components/ResetPassword'
+import MedicalRecordEntryPage from '../pages/MedicalRecordEntryPage'
 
 const AppRouter = () => {
   useEffect(() => {
@@ -92,6 +94,11 @@ const AppRouter = () => {
           />
         <Route path='/doctor/profile/:id'  element={ <DoctorProfilePage/>}/>
         <Route path='/doctor/appointment/schedule/:id'  element={ <AppointmentsSchedulePage/>}/>
+        <Route path='/doctor/medical-records/new' element={
+          <ProtectedRoute allowedRoles={['doctor']}>
+            <MedicalRecordEntryPage />
+          </ProtectedRoute>
+        }/>
         
         {/* Upcoming Appointments: only for patients */}
         <Route
@@ -144,6 +151,11 @@ const AppRouter = () => {
         <Route path="/clinic/appointments" element={
           <ProtectedRoute allowedRoles={['clinic']}>
           <ClinicAppointmentsPage/>
+          </ProtectedRoute>
+          }/>
+        <Route path="/clinic/insurances" element={
+          <ProtectedRoute allowedRoles={['clinic']}>
+          <ClinicInsurancePage/>
           </ProtectedRoute>
           }/>
         <Route path="/patients/by-user-id/:user_id" element={

@@ -186,6 +186,12 @@ export default function Sidebar() {
                 <span>مواعيد العيادة</span>
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/clinic/insurances">
+                <i className={`fa-solid fa-building medicina-theme-icon pb-2`}></i>
+                <span>تأمينات العيادة</span>
+              </NavLink>
+            </li>
             <li
               className={`nav-item-collapsible ${
                 openItem === "settings" ? "open" : ""
