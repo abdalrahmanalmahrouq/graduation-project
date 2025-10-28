@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('doctor_id')->references('user_id')->on('doctors')->onDelete('cascade');
             $table->json('weekly_schedule');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

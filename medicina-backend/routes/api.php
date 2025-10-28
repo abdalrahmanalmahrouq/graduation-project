@@ -93,9 +93,12 @@ Route::middleware(['auth:sanctum'])->post('/change-password', [ProfileController
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('clinics/add-doctor', [ClinicDoctorController::class, 'addDoctor']);
-    Route::get('clinics/available-doctors', [ClinicDoctorController::class, 'getAvailableDoctors']);
-    Route::get('clinics/doctors', [ClinicDoctorController::class, 'getClinicDoctors']);
+    Route::get('clinics/get-doctors', [ClinicDoctorController::class, 'getClinicDoctors']);
+    Route::delete('clinics/delete-doctor-from-clinic', [ClinicDoctorController::class, 'deleteDoctorFromClinic']);
 });
+
+Route::get('doctors/by-specialization/{specialization}',[ClinicDoctorController::class,'getDoctorsBySpecialization']);
+Route::get('doctors/profile/{id}',[ClinicDoctorController::class,'getDoctorProfile']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('doctors/add-bio',[DoctorBioController::class,'addBio']);
@@ -104,8 +107,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
 });
 
 
-Route::get('doctors/by-specialization/{specialization}',[DoctorClinicController::class,'getDoctorsBySpecialization']);
-Route::get('doctors/profile/{id}',[DoctorClinicController::class,'getDoctorProfile']);
+
 
 Route::middleware(['auth:sanctum'])->get('patients/by-user-id/{user_id}',[PatientController::class,'getPatientByUserId']);
 

@@ -7350,3 +7350,219 @@ background: #f9f9f9; /* optional */
   left: 10px;
 }
 
+/*--------------------------------------------------------------
+# Doctor Delete Button & Modal Styles
+--------------------------------------------------------------*/
+
+.doctor-card {
+  position: relative;
+}
+
+.doctor-delete-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--heading-color);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+ 
+}
+
+.doctor-delete-btn:hover {
+  background: var(--heading-color);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--heading-color);
+}
+
+.doctor-delete-btn:active {
+  transform: scale(0.95);
+}
+
+.doctor-delete-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Delete Modal Styles */
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.delete-modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.delete-modal-header {
+  display: flex;
+  align-items: center;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.delete-modal-icon {
+  margin-left: 12px;
+  padding: 8px;
+  background: #fef2f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.delete-modal-body {
+  padding: 20px 24px;
+}
+
+.delete-modal-message {
+  font-size: 16px;
+  color: #374151;
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.delete-modal-warning {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  font-style: italic;
+}
+
+.delete-modal-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px 24px;
+  justify-content: flex-end;
+}
+
+.delete-modal-cancel-btn {
+  padding: 10px 20px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-modal-cancel-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.delete-modal-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.delete-modal-confirm-btn {
+  padding: 10px 20px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-modal-confirm-btn:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.delete-modal-confirm-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.delete-modal-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .delete-modal {
+    margin: 20px;
+    width: calc(100% - 40px);
+  }
+  
+  .delete-modal-header {
+    padding: 20px 20px 12px;
+  }
+  
+  .delete-modal-body {
+    padding: 16px 20px;
+  }
+  
+  .delete-modal-actions {
+    padding: 12px 20px 20px;
+    flex-direction: column;
+  }
+  
+  .delete-modal-cancel-btn,
+  .delete-modal-confirm-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

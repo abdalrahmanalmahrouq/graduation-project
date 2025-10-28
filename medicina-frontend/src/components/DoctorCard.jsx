@@ -4,8 +4,11 @@ import defaultImage from '../assets/img/profpic.png';
 import axios from 'axios';
 
 
-const DoctorCard = ({ doctor, onManage }) => {
+const DoctorCard = ({ doctor, onManage, onDelete }) => {
   const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  
   // Use real profile image if available, otherwise use default
   const profileImage = doctor.profile_image_url || defaultImage;
   
@@ -24,36 +27,118 @@ const DoctorCard = ({ doctor, onManage }) => {
       navigate(`/manage/doctor/${doctor.doctorId}`);
     }
   };
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // Prevent triggering manage button
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await axios.delete('/clinics/delete-doctor-from-clinic', {
+        data: {
+          doctor_id: doctor.doctorId
+        }
+      });
+      
+      // Call the parent's delete handler to update the UI
+      onDelete(doctor.doctorId);
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error('Error deleting doctor:', error);
+      alert('فشل في حذف الطبيب. يرجى المحاولة مرة أخرى.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+  };
   
   return (
-    <div className="doctor-card">
-      <div className="doctor-image-container">
-        <div className="relative">
-          <img 
-            src={profileImage} 
-            alt={doctor.name}
-            className="doctor-image"                                                                                                                      
-              onError={(e) => {
-              // Fallback to default image if profile image fails to load
-              e.target.src = defaultImage;
-            }}
-          />
-          <div className="doctor-status">
-            <div className="doctor-status-dot"></div>
+    <>
+      <div className="doctor-card">
+        {/* Delete Button */}
+        <button 
+          className="doctor-delete-btn"
+          onClick={handleDeleteClick}
+          title="حذف الطبيب"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="doctor-image-container">
+          <div className="relative">
+            <img 
+              src={profileImage} 
+              alt={doctor.name}
+              className="doctor-image"                                                                                                                      
+                onError={(e) => {
+                // Fallback to default image if profile image fails to load
+                e.target.src = defaultImage;
+              }}
+            />
+            <div className="doctor-status">
+              <div className="doctor-status-dot"></div>
+            </div>
           </div>
         </div>
+        
+        <h3 className="add-doctor-name">{doctor.name}</h3>
+        <p className="doctor-specialty">{doctor.specialty || doctor.clinic}</p>
+        
+        <button 
+          onClick={handleManage}
+          className="doctor-manage-btn"
+        >
+          إدارة الطبيب
+        </button>
       </div>
-      
-      <h3 className="add-doctor-name">{doctor.name}</h3>
-      <p className="doctor-specialty">{doctor.specialty || doctor.clinic}</p>
-      
-      <button 
-        onClick={handleManage}
-        className="doctor-manage-btn"
-      >
-        إدارة الطبيب
-      </button>
-    </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="delete-modal-overlay">
+          <div className="delete-modal">
+            <div className="delete-modal-header">
+              <div className="delete-modal-icon">
+                <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <h3 className="delete-modal-title">تأكيد الحذف</h3>
+            </div>
+            
+            <div className="delete-modal-body">
+              <p className="delete-modal-message">
+                هل أنت متأكد من أنك تريد حذف الطبيب <strong>{doctor.name}</strong>؟
+              </p>
+             
+            </div>
+            
+            <div className="delete-modal-actions">
+              <button
+                onClick={handleCancelDelete}
+                className="delete-modal-cancel-btn"
+                disabled={isDeleting}
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="delete-modal-confirm-btn"
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'جاري الحذف...' : 'حذف'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -189,7 +274,7 @@ const DoctorList = () => {
 
   const fetchClinicDoctors = async () => {
     try {
-      const response = await axios.get('/clinics/doctors');
+      const response = await axios.get('/clinics/get-doctors');
       const clinicDoctors = response.data.doctors.map(doctor => ({
         id: doctor.id,
         name: doctor.full_name,
@@ -225,6 +310,10 @@ const DoctorList = () => {
     setDoctors(prevDoctors => [...prevDoctors, newDoctor]);
     // Refresh the clinic's doctors list
     fetchClinicDoctors();
+  };
+
+  const handleDeleteDoctor = (doctorId) => {
+    setDoctors(prevDoctors => prevDoctors.filter(doctor => doctor.doctorId !== doctorId));
   };
 
   const handleCloseDialog = () => {
@@ -281,7 +370,8 @@ const DoctorList = () => {
         <DoctorCard 
           key={doctor.id} 
           doctor={doctor} 
-          onManage={handleManage} 
+          onManage={handleManage}
+          onDelete={handleDeleteDoctor}
         />
       ))}
       

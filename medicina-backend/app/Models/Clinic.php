@@ -29,7 +29,9 @@ class Clinic extends Model
 
     //Each clinic can have multiple doctors
     public function doctors(){
-        return $this->belongsToMany(Doctor::class,'clinic_doctor', 'clinic_id', 'doctor_id', 'user_id', 'user_id');
+        return $this->belongsToMany(Doctor::class,'clinic_doctor', 'clinic_id', 'doctor_id', 'user_id', 'user_id')
+            ->withPivot(['weekly_schedule', 'created_at', 'updated_at', 'deleted_at'])
+            ->withTimestamps();
     }
 
     public function insurances(){                   //first atribute insurances_clinics //second     //clinics table //insurances table
