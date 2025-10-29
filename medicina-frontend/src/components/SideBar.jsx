@@ -228,10 +228,10 @@ export default function Sidebar() {
               </a>
             </li>
             <li>
-              <a href="">
+              <NavLink to="/doctor/clinics">
                 <i className={`fa-solid fa-hospital medicina-theme-icon pb-2`}></i>
                 <span>العيادات</span>
-              </a>
+              </NavLink>
             </li>
             <li>
               <a href="">

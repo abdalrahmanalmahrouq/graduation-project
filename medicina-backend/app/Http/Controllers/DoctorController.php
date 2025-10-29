@@ -113,6 +113,32 @@ class DoctorController extends Controller
         ]);
     }
 
+    public function getClinics(Request $request){
+        $user=auth()->user();
+        $doctor=$user->doctor;
+        if(!$doctor){
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied. Only doctor users can access this resource.'
+            ], 403);
+        }
+        $clinics=$doctor->clinics()
+        ->wherePivot('deleted_at', null)
+        ->with('user:id,email,profile_image')
+        ->get(['clinics.user_id', 'clinics.clinic_name', 'clinics.address', 'clinics.phone_number']);
+
+        $clinics->each(function ($clinic) {
+            if ($clinic->user && $clinic->user->profile_image) {
+                $clinic->profile_image_url = $clinic->user->profile_image_url;
+            } else {
+                $clinic->profile_image_url = null;
+            }
+        });
+        return response()->json([
+            'success' => true,
+            'clinics' => $clinics
+        ], 200);
+    }
     // Add bio for authenticated doctor
     public function addBio(Request $request){
         $request->validate([

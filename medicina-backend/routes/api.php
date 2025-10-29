@@ -100,6 +100,7 @@ Route::get('doctors/by-specialization/{specialization}',[DoctorController::class
 Route::get('doctors/profile/{id}',[DoctorController::class,'getDoctorProfile']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
+    Route::get('doctors/get-clinics',[DoctorController::class,'getClinics']);
     Route::post('doctors/add-bio',[DoctorController::class,'addBio']);
     Route::get('doctors/get-bio',[DoctorController::class,'getBio']);    
     Route::post('doctors/update-bio',[DoctorController::class,'updateBio']);
