@@ -1,9 +1,8 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\ClinicDoctorController;
-use App\Http\Controllers\DoctorBioController;
-use App\Http\Controllers\DoctorClinicController;
+use App\Http\Controllers\ClinicController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
@@ -92,18 +91,18 @@ Route::middleware(['auth:sanctum'])->post('/change-password', [ProfileController
 
 
 Route::middleware(['auth:sanctum'])->group(function(){
-    Route::post('clinics/add-doctor', [ClinicDoctorController::class, 'addDoctor']);
-    Route::get('clinics/get-doctors', [ClinicDoctorController::class, 'getClinicDoctors']);
-    Route::delete('clinics/delete-doctor-from-clinic', [ClinicDoctorController::class, 'deleteDoctorFromClinic']);
+    Route::post('clinics/add-doctor', [ClinicController::class, 'addDoctor']);
+    Route::get('clinics/get-doctors', [ClinicController::class, 'getDoctors']);
+    Route::delete('clinics/delete-doctor-from-clinic', [ClinicController::class, 'deleteDoctor']);
 });
 
-Route::get('doctors/by-specialization/{specialization}',[ClinicDoctorController::class,'getDoctorsBySpecialization']);
-Route::get('doctors/profile/{id}',[ClinicDoctorController::class,'getDoctorProfile']);
+Route::get('doctors/by-specialization/{specialization}',[DoctorController::class,'getDoctorsBySpecialization']);
+Route::get('doctors/profile/{id}',[DoctorController::class,'getDoctorProfile']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
-    Route::post('doctors/add-bio',[DoctorBioController::class,'addBio']);
-    Route::get('doctors/get-bio',[DoctorBioController::class,'getBio']);    
-    Route::post('doctors/update-bio',[DoctorBioController::class,'updateBio']);
+    Route::post('doctors/add-bio',[DoctorController::class,'addBio']);
+    Route::get('doctors/get-bio',[DoctorController::class,'getBio']);    
+    Route::post('doctors/update-bio',[DoctorController::class,'updateBio']);
 });
 
 
