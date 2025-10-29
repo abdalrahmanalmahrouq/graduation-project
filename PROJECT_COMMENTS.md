@@ -1,5 +1,5 @@
 ### Commit 
-`  `
+`  ` Month/Day
 **Purpose:**  
 < >
 
@@ -9,6 +9,8 @@
 **Purpose:**  
 <i made this commit to enable the patient to add insurance company when they in register form also he will be able to modify or delete the associated insurance comapny from the user account pag.>
 
+'Fix: Docker Files' Oct/25
+<frontend service wasn't working>
 
 ### commit 
 `Fix docker problems `
@@ -38,3 +40,7 @@
 **Purpose:**  
 < enable each patient to filter by its insurance company so now before choose the clinic he can check if his prefered clinic use the same as his insurance company  >
 
+### Commit
+` Add: Create and Update consultation_duration for doctors.` Oct/29
+**Purpose:** 
+<Purpose is clear>

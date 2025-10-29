@@ -30,6 +30,7 @@ class ProfileController extends Controller
                 'role' => $user->role,
                 'profile_image_url' => $user->profile_image_url,
                 'profile' => $user->doctor,
+                'consultation_duration' => $user->doctor->consultation_duration,
             ]);
         case 'clinic':
             return response()->json([
@@ -83,6 +84,7 @@ class ProfileController extends Controller
                     'full_name' => 'nullable|string|max:255',
                     'phone_number' => 'nullable|string|max:20|regex:/^[+]?[0-9\s\-\(\)]{7,20}$/|unique:doctors,phone_number,' . $user->doctor->id,
                     'specialization' => 'nullable|string|max:255',
+                    'consultation_duration' => 'nullable|integer|min:10|max:60',
                 ];
                 break;
             case 'clinic':
@@ -195,7 +197,7 @@ class ProfileController extends Controller
                 break;
             case 'doctor':
                 $updateData = array_filter($validated, function($key) {
-                    return in_array($key, ['full_name', 'phone_number', 'specialization']);
+                    return in_array($key, ['full_name', 'phone_number', 'specialization', 'consultation_duration']);
                 }, ARRAY_FILTER_USE_KEY);
                 \Log::info('Updating doctor profile:', $updateData);
                 if (!empty($updateData)) {

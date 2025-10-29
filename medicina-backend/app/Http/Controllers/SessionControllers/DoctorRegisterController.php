@@ -18,6 +18,7 @@ class DoctorRegisterController extends Controller
             'full_name'=>'required|string',
             'phone_number'=>'required|string|unique:doctors,phone_number',
             'specialization'=>'required|string',
+            'consultation_duration'=>'required|integer|min:10|max:60',
         ]);
 
         $user=User::create([
