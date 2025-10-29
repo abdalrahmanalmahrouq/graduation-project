@@ -17,7 +17,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 - Notifications (appointments, updates, reminders)
 - Search & filter clinics/doctors by:
   - Area
-  - Supported insurance company
+  - Supported insurance company✅
 
 **Clinic**
 - Auth (CRUD)✅
@@ -25,7 +25,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 - Manage doctor schedules (CRUD)✅
 - Manage appointments (CRUD)⏳
 - Read clinic-related patient logs and profiles⏳
-- Manage collaborated insurance companies (CRUD)
+- Manage collaborated insurance companies (CRUD)✅
 - Dashboard includes:
   - Number of doctors
   - Number of patients
