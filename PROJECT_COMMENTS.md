@@ -54,3 +54,10 @@
 ` fix: remove unwanted components` Oct/29
 **Purpose:**
 <Caused a failure on server launch>
+
+
+` feat: enable each doctor to see his associated clinics.` Oct/29
+**Purpose:**  
+< now each doctor can see his associated clinic . >
+
+### Commit
