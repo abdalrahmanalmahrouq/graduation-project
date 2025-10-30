@@ -36,7 +36,7 @@ const ToolBar = ({ token }) => {
   };
 
   const { role, profile, profile_image_url } = user || {};
-  const { full_name, clinic_name } = profile || {};
+  const { full_name, clinic_name, lab_name } = profile || {};
 
   const toggleMobileSidebar = () => {
     console.log('Toggle mobile sidebar clicked'); // Debug log
@@ -81,6 +81,8 @@ const ToolBar = ({ token }) => {
                 clinic_name
               ) : role === 'patient' || role === 'doctor' ? (
                 full_name
+              ) : role === 'lab' ? (
+                lab_name
               ) : (
                 "Unknown role"
               )}

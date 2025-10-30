@@ -24,6 +24,7 @@ export default function LabLogin() {
     const data = {
       email,
       password,
+      role: 'lab',
     };
 
     axios.post('/login',data)
@@ -33,17 +34,10 @@ export default function LabLogin() {
           headers: { Authorization: `Bearer ${response.data.access_token}` }
         })
         .then((profileResponse) => {
-          // ✅ Validate role matches the login form BEFORE storing anything
-          if (profileResponse.data.role !== 'lab') {
-            setMessage(`يجب تسجيل الدخول من صفحة ${profileResponse.data.role === 'patient' ? 'المريض' : profileResponse.data.role === 'clinic' ? 'العيادة' : profileResponse.data.role === 'doctor' ? 'الطبيب' : profileResponse.data.role}`);
-            setLoading(false);
-            return;
-          }
-          
-          // ✅ Only store data if role is correct
+         
           localStorage.setItem('token', response.data.access_token);
           localStorage.setItem('user', JSON.stringify(profileResponse.data));
-          navigate('/lab/account');
+          navigate('/');
         })
         .catch((profileError) => {
           console.error('Failed to fetch profile:', profileError);

@@ -266,6 +266,40 @@ export default function Sidebar() {
             </li>
           </ul>
         )}
+        {/* ---------- LAB MENU ---------- */}
+        {role === "lab" && (
+          <ul className="nav-list">
+            <li>
+              <a href="">
+                <i className={`fa-solid fa-house medicina-theme-icon pb-2`}></i>
+                <span>الصفحة الرئيسية</span>
+              </a>
+            </li>
+            <li
+              className={`nav-item-collapsible ${
+                openItem === "settings" ? "open" : ""
+              }`}
+            >
+              <a onClick={() => handleToggle("settings")}>
+                <i className={`fa-solid fa-gear medicina-theme-icon pb-2`}></i>
+                <span>الاعدادات</span>
+              </a>
+              <ul className="sub-list">
+                <li>
+                  <NavLink to={`/${role}/account`}>
+                    <i className={`fa-solid fa-user medicina-theme-icon pb-2`}></i>
+                    <span>حسابي</span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/" onClick={logout}>
+                     <i className={`fa-solid fa-power-off medicina-theme-icon pb-2`}></i><span>تسجيل الخروج</span>
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        )}
       </nav>
     </div>
   );

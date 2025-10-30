@@ -106,6 +106,7 @@ const UserAccount = ({ token }) => {
       clinic_name: userData.profile.clinic_name || '',
       specialization: userData.profile.specialization || '',
       insurance_id: userData.profile.insurance_id || '',
+      lab_name: userData.profile.lab_name || '',
     };
     setEditForm(formData);
   };
@@ -171,6 +172,11 @@ const UserAccount = ({ token }) => {
         errors.push('Date of birth must be a valid date.');
       }
     }
+
+    // Lab name validation
+    if (data.lab_name && data.lab_name.trim().length > 255) {
+      errors.push('Lab name cannot exceed 255 characters.');
+    }
     
     return errors;
   };
@@ -205,6 +211,13 @@ const UserAccount = ({ token }) => {
         case 'clinic':
           requestData = {
             clinic_name: editForm.clinic_name || '',
+            phone_number: editForm.phone_number || '',
+            address: editForm.address || ''
+          };
+          break;
+        case 'lab':
+          requestData = {
+            lab_name: editForm.lab_name || '',
             phone_number: editForm.phone_number || '',
             address: editForm.address || ''
           };
@@ -395,6 +408,7 @@ const UserAccount = ({ token }) => {
       case 'patient': return 'var(--contrast-color)'; // Green
       case 'doctor': return 'var(--contrast-color)'; // Blue
       case 'clinic': return 'var(--contrast-color)'; // Purple
+      case 'lab': return 'var(--contrast-color)'; // Orange or other unique color
       default: return '#6b7280'; // Gray
     }
   };
@@ -425,6 +439,7 @@ const UserAccount = ({ token }) => {
       case 'user_id': return 'fa-id-card-clip';
       case 'full_name': return 'fa-user'; 
       case 'clinic_name': return 'fa-hospital';
+      case 'lab_name': return 'fa-flask-vial';
       case 'phone_number': return 'fa-phone';
       case 'date_of_birth': return 'fa-calendar';
       case 'address': return 'fa-location-dot';
@@ -598,6 +613,45 @@ const UserAccount = ({ token }) => {
     </div>
   );
 
+  const labForm = (
+    <div className="user-info-grid">
+      {/* Non-editable fields */}
+      <div className="info-field modern-field">
+        <div className="field-icon">
+          <i className={`fa-solid fa-id-card-clip medicina-theme-icon`}></i>
+        </div>
+        <div className="field-content">
+          <label className="field-label">User ID</label>
+          <span className="field-value non-editable">{user_id}</span>
+        </div>
+      </div>
+      <div className="info-field modern-field">
+        <div className="field-icon">
+          <i className={`fa-solid fa-flask-vial medicina-theme-icon`}></i>
+        </div>
+        <div className="field-content">
+          <label className="field-label">Role</label>
+          <span className="field-value role-badge non-editable" style={{backgroundColor: getRoleColor(role)}}>
+            {role}
+          </span>
+        </div>
+      </div>
+      <div className="info-field modern-field">
+        <div className="field-icon">
+          <i className={`fa-solid fa-envelope medicina-theme-icon`}></i>
+        </div>
+        <div className="field-content">
+          <label className="field-label">Email</label>
+          <span className="field-value non-editable">{email}</span>
+        </div>
+      </div>
+      {/* Editable fields */}
+      {renderInputField('Lab Name', user.profile.lab_name, 'lab_name', 'text', 'Enter lab name')}
+      {renderInputField('Phone Number', phone_number, 'phone_number', 'tel', 'Enter phone number')}
+      {renderInputField('Address', address, 'address', 'text', 'Enter lab address')}
+    </div>
+  );
+
   // Delete Account Modal Component
   const DeleteAccountModal = () => {
     if (!showDeleteModal) return null;
@@ -705,7 +759,9 @@ const UserAccount = ({ token }) => {
               <h2 className="user-name">
                 {role === 'patient' ? user.profile.full_name : 
                  role === 'doctor' ? user.profile.full_name : 
-                 user.profile.clinic_name}
+                 role === 'clinic' ? user.profile.clinic_name :
+                 role === 'lab' ? user.profile.lab_name :
+                 ''}
               </h2>
               <p className="user-role" style={{color: getRoleColor(role)}}>
                 {role.charAt(0).toUpperCase() + role.slice(1)}
@@ -728,6 +784,8 @@ const UserAccount = ({ token }) => {
               doctorForm
             ):role === 'clinic' ? (
               clinicForm
+            ):role === 'lab' ? (
+              labForm
             ) : null}
           </div>
       

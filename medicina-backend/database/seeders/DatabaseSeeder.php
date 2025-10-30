@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ClinicDoctorSeeder::class,
             AppointmentSeeder::class,
             InsuranceClinicSeeder::class,
+            LabSeeder::class,
         ]);
     }
 }

@@ -96,5 +96,22 @@ class UserSeeder extends Seeder
             'role' => 'clinic',
             'email_verified_at' => now(),
         ]);
+
+        User::create([
+
+            'email' => 'medlab@example.com',
+            'password' => Hash::make('password123'),
+            'role' => 'lab',
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            
+            'email' => 'biolab@example.com',
+            'password' => Hash::make('password123'),
+            'role' => 'lab',
+            'email_verified_at' => now(),
+        ]);
+     
     }
 }

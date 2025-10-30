@@ -88,6 +88,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Clinic::class);
     }
 
+    // user has one lab
+    public function lab(){
+        return $this->hasOne(Lab::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

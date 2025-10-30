@@ -13,6 +13,7 @@ use App\Http\Controllers\SessionControllers\PatientRegisterController;
 use App\Http\Controllers\SessionControllers\ClinicRegisterController;
 use App\Http\Controllers\SessionControllers\DoctorRegisterController;
 use App\Http\Controllers\SessionControllers\PasswordResetController;
+use App\Http\Controllers\SessionControllers\LabRegisterController;
 
 
 /*
@@ -45,6 +46,7 @@ Route::middleware('auth.rate.limit:3,1')->group(function () {
     Route::post('/register/patient',[PatientRegisterController::class,'register']);
     Route::post('/register/clinic',[ClinicRegisterController::class,'register']);
     Route::post('/register/doctor',[DoctorRegisterController::class,'register']);
+    Route::post('/register/lab',[LabRegisterController::class,'register']);
 });
 
 // Login endpoint with strict rate limiting (5 attempts per minute)

@@ -40,6 +40,14 @@ class ProfileController extends Controller
                 'profile_image_url' => $user->profile_image_url,
                 'profile' => $user->clinic,
             ]);
+        case 'lab':
+            return response()->json([
+                'id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+                'profile_image_url' => $user->profile_image_url,
+                'profile' => $user->lab,
+            ]);
         default:
             return response()->json(['error' => 'Invalid role'], 400);
         }
@@ -91,6 +99,13 @@ class ProfileController extends Controller
                 $validationRules = [
                     'clinic_name' => 'nullable|string|max:255',
                     'phone_number' => 'nullable|string|max:20|regex:/^[+]?[0-9\s\-\(\)]{7,20}$/|unique:clinics,phone_number,' . $user->clinic->id,
+                    'address' => 'nullable|string|max:500',
+                ];
+                break;
+            case 'lab':
+                $validationRules = [
+                    'lab_name' => 'nullable|string|max:255',
+                    'phone_number' => 'nullable|string|max:20|regex:/^[+]?[0-9\s\-\(\)]{7,20}$/|unique:labs,phone_number,' . $user->lab->id,
                     'address' => 'nullable|string|max:500',
                 ];
                 break;
@@ -211,6 +226,15 @@ class ProfileController extends Controller
                 \Log::info('Updating clinic profile:', $updateData);
                 if (!empty($updateData)) {
                     $user->clinic->update($updateData);
+                }
+                break;
+            case 'lab':
+                $updateData = array_filter($validated, function($key) {
+                    return in_array($key, ['lab_name', 'phone_number', 'address']);
+                }, ARRAY_FILTER_USE_KEY);
+                \Log::info('Updating lab profile:', $updateData);
+                if (!empty($updateData)) {
+                    $user->lab->update($updateData);
                 }
                 break;
         }
