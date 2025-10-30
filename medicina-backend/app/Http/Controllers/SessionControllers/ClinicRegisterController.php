@@ -12,26 +12,66 @@ use Illuminate\Support\Facades\Hash;
 class ClinicRegisterController extends Controller
 {
     public function register(Request $request){
-        $validated=$request->validate([
-            'email' => 'required|email|unique:users,email,NULL,id,role,clinic',
-            'password' => 'required|min:6|confirmed',
-            'clinic_name' => 'required|string',
-            'phone_number' => 'required|string|unique:clinics,phone_number',
-            'address' => 'nullable|string',
-        ]);
+        // If a soft-deleted clinic user exists with this email, restore instead of creating a new one
+        $trashedUser = User::onlyTrashed()
+            ->where('email', $request->input('email'))
+            ->where('role', 'clinic')
+            ->first();
 
-        $user = User::create([
-            'email'=>$validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role'=>'clinic'
-        ]);
+        if ($trashedUser) {
+            $existingClinic = Clinic::where('user_id', $trashedUser->id)->first();
 
-        Clinic::create([
-            'user_id' => $user->id,
-            'clinic_name'=>$validated['clinic_name'],
-            'phone_number'=>$validated['phone_number'],
-            'address'=>$validated['address']
-        ]);
+            $validated = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:6|confirmed',
+                'clinic_name' => 'required|string',
+                'phone_number' => 'required|string' . ($existingClinic ? ('|unique:clinics,phone_number,' . $existingClinic->id) : '|unique:clinics,phone_number'),
+                'address' => 'nullable|string',
+            ]);
+
+            $trashedUser->restore();
+            $trashedUser->password = Hash::make($validated['password']);
+            $trashedUser->save();
+
+            if ($existingClinic) {
+                $existingClinic->clinic_name = $validated['clinic_name'];
+                $existingClinic->phone_number = $validated['phone_number'];
+                $existingClinic->address = $validated['address'] ?? $existingClinic->address;
+                $existingClinic->save();
+            } else {
+                Clinic::create([
+                    'user_id' => $trashedUser->id,
+                    'clinic_name' => $validated['clinic_name'],
+                    'phone_number' => $validated['phone_number'],
+                    'address' => $validated['address'] ?? null,
+                ]);
+            }
+
+            // proceed to token and response section below using $user = $trashedUser
+            $user = $trashedUser;
+        } else {
+            $validated=$request->validate([
+                // ignore soft-deleted users for unique check
+                'email' => 'required|email|unique:users,email,NULL,id,role,clinic,deleted_at,NULL',
+                'password' => 'required|min:6|confirmed',
+                'clinic_name' => 'required|string',
+                'phone_number' => 'required|string|unique:clinics,phone_number',
+                'address' => 'nullable|string',
+            ]);
+
+            $user = User::create([
+                'email'=>$validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role'=>'clinic'
+            ]);
+
+            Clinic::create([
+                'user_id' => $user->id,
+                'clinic_name'=>$validated['clinic_name'],
+                'phone_number'=>$validated['phone_number'],
+                'address'=>$validated['address']
+            ]);
+        }
 
         // Send email verification notification (will fail silently if no mail config)
         try {

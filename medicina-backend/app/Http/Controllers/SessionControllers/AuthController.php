@@ -74,6 +74,8 @@ class AuthController extends Controller
     }
 
     public function deleteAccount(Request $request){
+        // Revoke all tokens then soft-delete the account
+        $request->user()->tokens()->delete();
         $request->user()->delete();
         return response()->json(['message'=>'Account deleted']);
     }

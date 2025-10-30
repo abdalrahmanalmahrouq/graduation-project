@@ -12,27 +12,65 @@ class LabRegisterController extends Controller
 {
    public function register(Request $request){
 
-    $validate=$request->validate([
-        'email'=>'required|email|unique:users,email,NULL,id,role,lab',
-        'password'=>'required|min:6|confirmed',
-        'lab_name'=>'required|string',
-        'phone_number'=>'required|string|unique:labs,phone_number',
-        'address'=>'nullable|string',
-    ]);
+    $trashedUser = User::onlyTrashed()
+        ->where('email', $request->input('email'))
+        ->where('role', 'lab')
+        ->first();
 
-    $user=User::create([
-        'email'=>$validate['email'],
-        'password'=>Hash::make($validate['password']),
-        'role'=>'lab'
-    ]);
+    if ($trashedUser) {
+        $existingLab = Lab::where('user_id', $trashedUser->id)->first();
 
-    // FIX: use create instead of created
-    $lab = Lab::create([
-        'user_id'=>$user->id,
-        'lab_name'=>$validate['lab_name'],
-        'phone_number'=>$validate['phone_number'],
-        'address'=>$validate['address'],
-    ]);
+        $validate=$request->validate([
+            'email'=>'required|email',
+            'password'=>'required|min:6|confirmed',
+            'lab_name'=>'required|string',
+            'phone_number'=>'required|string' . ($existingLab ? ('|unique:labs,phone_number,' . $existingLab->id) : '|unique:labs,phone_number'),
+            'address'=>'nullable|string',
+        ]);
+
+        $trashedUser->restore();
+        $trashedUser->password = Hash::make($validate['password']);
+        $trashedUser->save();
+
+        if ($existingLab) {
+            $existingLab->lab_name = $validate['lab_name'];
+            $existingLab->phone_number = $validate['phone_number'];
+            $existingLab->address = $validate['address'] ?? $existingLab->address;
+            $existingLab->save();
+            $lab = $existingLab;
+        } else {
+            $lab = Lab::create([
+                'user_id'=>$trashedUser->id,
+                'lab_name'=>$validate['lab_name'],
+                'phone_number'=>$validate['phone_number'],
+                'address'=>$validate['address'] ?? null,
+            ]);
+        }
+
+        $user = $trashedUser;
+    } else {
+        $validate=$request->validate([
+            'email'=>'required|email|unique:users,email,NULL,id,role,lab,deleted_at,NULL',
+            'password'=>'required|min:6|confirmed',
+            'lab_name'=>'required|string',
+            'phone_number'=>'required|string|unique:labs,phone_number',
+            'address'=>'nullable|string',
+        ]);
+
+        $user=User::create([
+            'email'=>$validate['email'],
+            'password'=>Hash::make($validate['password']),
+            'role'=>'lab'
+        ]);
+
+        // FIX: use create instead of created
+        $lab = Lab::create([
+            'user_id'=>$user->id,
+            'lab_name'=>$validate['lab_name'],
+            'phone_number'=>$validate['phone_number'],
+            'address'=>$validate['address'],
+        ]);
+    }
 
     // Send email verification notification (will fail silently if no mail config)
     try {

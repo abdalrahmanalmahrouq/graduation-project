@@ -12,27 +12,68 @@ use Illuminate\Support\Facades\Hash;
 class DoctorRegisterController extends Controller
 {
     public function register(Request $request){
-        $validated=$request->validate([
-            'email'=>'required|email|unique:users,email,NULL,id,role,doctor',
-            'password'=>'required|min:6|confirmed',
-            'full_name'=>'required|string',
-            'phone_number'=>'required|string|unique:doctors,phone_number',
-            'specialization'=>'required|string',
-            'consultation_duration'=>'required|integer|min:10|max:60',
-        ]);
+        $trashedUser = User::onlyTrashed()
+            ->where('email', $request->input('email'))
+            ->where('role', 'doctor')
+            ->first();
 
-        $user=User::create([
-            'email'=>$validated['email'],
-            'password'=>Hash::make($validated['password']),
-            'role'=>'doctor'
-        ]);
+        if ($trashedUser) {
+            $existingDoctor = Doctor::where('user_id', $trashedUser->id)->first();
 
-        Doctor::create([
-            'user_id' => $user->id,
-            'full_name'=>$validated['full_name'],
-            'phone_number'=>$validated['phone_number'],
-            'specialization'=>$validated['specialization'],
-        ]);
+            $validated=$request->validate([
+                'email'=>'required|email',
+                'password'=>'required|min:6|confirmed',
+                'full_name'=>'required|string',
+                'phone_number'=>'required|string' . ($existingDoctor ? ('|unique:doctors,phone_number,' . $existingDoctor->id) : '|unique:doctors,phone_number'),
+                'specialization'=>'required|string',
+                'consultation_duration'=>'required|integer|min:10|max:60',
+            ]);
+
+            $trashedUser->restore();
+            $trashedUser->password = Hash::make($validated['password']);
+            $trashedUser->save();
+
+            if ($existingDoctor) {
+                $existingDoctor->full_name = $validated['full_name'];
+                $existingDoctor->phone_number = $validated['phone_number'];
+                $existingDoctor->specialization = $validated['specialization'];
+                $existingDoctor->consultation_duration = $validated['consultation_duration'];
+                $existingDoctor->save();
+            } else {
+                Doctor::create([
+                    'user_id' => $trashedUser->id,
+                    'full_name'=>$validated['full_name'],
+                    'phone_number'=>$validated['phone_number'],
+                    'specialization'=>$validated['specialization'],
+                    'consultation_duration'=>$validated['consultation_duration'],
+                ]);
+            }
+
+            $user = $trashedUser;
+        } else {
+            $validated=$request->validate([
+                'email'=>'required|email|unique:users,email,NULL,id,role,doctor,deleted_at,NULL',
+                'password'=>'required|min:6|confirmed',
+                'full_name'=>'required|string',
+                'phone_number'=>'required|string|unique:doctors,phone_number',
+                'specialization'=>'required|string',
+                'consultation_duration'=>'required|integer|min:10|max:60',
+            ]);
+
+            $user=User::create([
+                'email'=>$validated['email'],
+                'password'=>Hash::make($validated['password']),
+                'role'=>'doctor'
+            ]);
+
+            Doctor::create([
+                'user_id' => $user->id,
+                'full_name'=>$validated['full_name'],
+                'phone_number'=>$validated['phone_number'],
+                'specialization'=>$validated['specialization'],
+                'consultation_duration'=>$validated['consultation_duration'],
+            ]);
+        }
 
         // Send email verification notification (will fail silently if no mail config)
         try {

@@ -68,3 +68,10 @@
 ` feat: implement the Lab User both in frontend and backend so now you can register,login as lab ` Oct/30
 **Purpose:**  
 < now you can register, login as lab the next step is handle lab features that will be after login>
+
+
+### Commit
+
+` Enhance: make the delete user account soft delete ` Oct/30
+**Purpose:**  
+< i made this change to make the delete user account soft delete >
