@@ -107,15 +107,13 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the profile image URL or default image.
      *
-     * @return string
+     * @return string|null
      */
     public function getProfileImageUrlAttribute()
     {
         if ($this->profile_image) {
-            // Extract filename from the storage path
-            $filename = basename($this->profile_image);
-            // Use direct public URL - hardcode localhost:8000 to avoid proxy issues
-            return 'http://localhost:8000/profile-images/' . $filename;
+            // Use Laravel Storage to generate the correct URL
+            return asset('storage/' . $this->profile_image);
         }
         
         // Return null if no profile image (frontend will handle placeholder)

@@ -137,17 +137,11 @@ class ProfileController extends Controller
             return response()->json(['error' => 'Validation failed', 'details' => $e->errors()], 422);
         }
 
-        // Handle profile image upload - use $_FILES directly for simplicity
+        // Handle profile image upload using Laravel Storage
         $imageProcessed = false;
         
-        // Check if image file is uploaded
-        
-        // Use $_FILES directly - this is the most reliable method
-        if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+        if ($request->hasFile('profile_image') && $request->file('profile_image')->isValid()) {
             \Log::info('Processing profile image upload');
-            
-            // Use move_uploaded_file directly to avoid Laravel parsing issues
-            $uploadedFile = $_FILES['profile_image'];
             
             // Delete old profile image if exists
             if ($user->profile_image) {
@@ -155,39 +149,19 @@ class ProfileController extends Controller
                 if (Storage::disk('public')->exists($user->profile_image)) {
                     Storage::disk('public')->delete($user->profile_image);
                 }
-                // Also delete from public directory
+                // Also clean up old public directory if exists
                 $oldPublicPath = public_path('profile-images/' . basename($user->profile_image));
                 if (file_exists($oldPublicPath)) {
                     unlink($oldPublicPath);
                 }
             }
 
-            // Generate new filename
-            $originalName = $uploadedFile['name'];
-            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
-            $fileName = uniqid() . '_' . time() . '.' . $extension;
-            $imagePath = 'profile-images/' . $fileName;
+            // Store file using Laravel Storage
+            $uploadedFile = $request->file('profile_image');
+            $fileName = uniqid() . '_' . time() . '.' . $uploadedFile->getClientOriginalExtension();
+            $imagePath = $uploadedFile->storeAs('profile-images', $fileName, 'public');
             
-            // Create directories if they don't exist
-            if (!is_dir(public_path('profile-images'))) {
-                mkdir(public_path('profile-images'), 0755, true);
-            }
-            
-            // Copy file directly using move_uploaded_file for storage
-            $storagePath = storage_path('app/public/' . $imagePath);
-            $storageDir = dirname($storagePath);
-            if (!is_dir($storageDir)) {
-                mkdir($storageDir, 0755, true);
-            }
-            
-            // Copy to storage
-            copy($uploadedFile['tmp_name'], $storagePath);
-            \Log::info('New image stored at:', ['storage_path' => $storagePath]);
-            
-            // Copy to public directory for direct access
-            $publicPath = public_path('profile-images/' . $fileName);
-            copy($uploadedFile['tmp_name'], $publicPath);
-            \Log::info('Image also copied to public directory:', ['public_path' => $publicPath]);
+            \Log::info('New image stored at:', ['storage_path' => $imagePath]);
             
             $user->profile_image = $imagePath;
             $user->save();
@@ -195,7 +169,7 @@ class ProfileController extends Controller
             \Log::info('Profile image updated in database');
             $imageProcessed = true;
         } else {
-            \Log::info('No valid image file found in $_FILES');
+            \Log::info('No valid image file found in request');
         }
 
         // Update profile based on role

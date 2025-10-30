@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/img/profpic.png';
 import axios from 'axios';
+import ImageCropModal from './ImageCropModal';
 
 
 const UserAccount = ({ token }) => {
@@ -19,6 +20,8 @@ const UserAccount = ({ token }) => {
   const [isLoadingInsurances, setIsLoadingInsurances] = useState(false);
   const [insuranceFetchError, setInsuranceFetchError] = useState('');
   const [hasLoadedInsurances, setHasLoadedInsurances] = useState(false);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null);
 
   useEffect(() => {
     loadUser();
@@ -123,15 +126,24 @@ const UserAccount = ({ token }) => {
     const file = e.target.files[0];
     console.log('Image selected:', file);
     if (file) {
-      setSelectedImage(file);
+     
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
-        console.log('Image preview set');
+        setImageToCrop(reader.result);
+        setShowCropModal(true);
       };
       reader.readAsDataURL(file);
     }
   };
+  const handleCropComplete = (croppedFile) => {
+    setSelectedImage(croppedFile);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(croppedFile);
+  };
+
 
   // Frontend validation function
   const validateForm = (data, role) => {
@@ -723,6 +735,13 @@ const UserAccount = ({ token }) => {
   return (
     <div className="user-account-container">
       <DeleteAccountModal />
+      {showCropModal && (
+        <ImageCropModal
+          imageSrc={imageToCrop}
+          onCropComplete={handleCropComplete}
+          onClose={() => setShowCropModal(false)}
+        />
+      )}
       <div className="user-account-wrapper">
         <div className="modern-profile-card" id="profileCard">
           {/* Profile Header */}
