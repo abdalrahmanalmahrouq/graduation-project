@@ -75,3 +75,10 @@
 ` Enhance: make the delete user account soft delete ` Oct/30
 **Purpose:**  
 < i made this change to make the delete user account soft delete >
+
+
+### Commit
+
+` Enhance: enhance the image upload issue when user choose his profile picture ` Oct/30
+**Purpose:**  
+< enhace the upload profile image for users so now the picture will not be added to the github repo it will be saved in laravelbackend/storage so that is the best practice for this feature . >
