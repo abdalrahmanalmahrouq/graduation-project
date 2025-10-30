@@ -56,8 +56,15 @@
 <Caused a failure on server launch>
 
 
+### Commit
+
 ` feat: enable each doctor to see his associated clinics.` Oct/29
 **Purpose:**  
 < now each doctor can see his associated clinic . >
 
+
 ### Commit
+
+` feat: implement the Lab User both in frontend and backend so now you can register,login as lab ` Oct/30
+**Purpose:**  
+< now you can register, login as lab the next step is handle lab features that will be after login>
