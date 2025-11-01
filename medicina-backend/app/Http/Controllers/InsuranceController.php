@@ -39,13 +39,6 @@ class InsuranceController extends Controller
             $user = auth()->user();
             $clinic = $user->clinic;
             
-            if(!$clinic){
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Access denied. Only clinic users can access this resource.'
-                ], 403);
-            }
-            
             // Get only non-soft-deleted insurances
             $insurances = $clinic->insurances()
                 ->wherePivotNull('deleted_at')
@@ -73,13 +66,6 @@ class InsuranceController extends Controller
 
             $user = auth()->user();
             $clinic = $user->clinic;
-
-            if(!$clinic){
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Access denied. Only clinic users can access this resource.'
-                ], 403);
-            }
 
             // prevent duplicates (including soft deleted ones)
             $existingInsurance = $clinic->insurances()
@@ -120,13 +106,6 @@ class InsuranceController extends Controller
                 
                 $user = auth()->user();
                 $clinic = $user->clinic;
-                
-                if(!$clinic){
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Access denied. Only clinic users can access this resource.'
-                    ], 403);
-                }
                 
                 // Check if the insurance is associated with this clinic
                 $insuranceClinic = $clinic->insurances()

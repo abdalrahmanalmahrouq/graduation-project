@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'auth.rate.limit' => \App\Http\Middleware\AuthRateLimit::class,
         'cors' => \App\Http\Middleware\CorsMiddleware::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'role' => \App\Http\Middleware\Role::class,
     ];
 }

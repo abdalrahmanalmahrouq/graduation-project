@@ -12,14 +12,6 @@ class ClinicController extends Controller
         $user = auth()->user();
         $clinic = $user->clinic;
         
-        // Check if user has a clinic (i.e., is a clinic user)
-        if(!$clinic){    
-            return response()->json([
-                'success' => false,
-                'message' => 'Access denied. Only clinic users can access this resource.'
-            ], 403); // Changed from 404 to 403 (Forbidden)
-        }
-        
         // Get all active doctors added to this clinic (exclude soft-deleted ones)
         $clinicDoctors = $clinic->doctors()
             ->wherePivot('deleted_at', null) // Only get doctors that are not soft-deleted
@@ -50,14 +42,6 @@ class ClinicController extends Controller
 
         $user = auth()->user();
         $clinic = $user->clinic;
-
-        // Check if user has a clinic (i.e., is a clinic user)
-        if(!$clinic){    
-            return response()->json([
-                'success' => false,
-                'message' => 'Access denied. Only clinic users can access this resource.'
-            ], 403);
-        }
 
         // Check if doctor exists in clinic (including soft-deleted ones)
         $existingDoctorPivot = $clinic->doctors()
@@ -114,13 +98,6 @@ class ClinicController extends Controller
 
             $user=auth()->user();
             $clinic=$user->clinic;
-
-            if(!$clinic){
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Access denied. Only clinic users can access this resource.'
-                ], 403);
-            }
 
             $doctorClinic=$clinic->doctors()
             ->wherepivot('doctor_id', $request->doctor_id)

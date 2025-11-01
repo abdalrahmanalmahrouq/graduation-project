@@ -116,12 +116,7 @@ class DoctorController extends Controller
     public function getClinics(Request $request){
         $user=auth()->user();
         $doctor=$user->doctor;
-        if(!$doctor){
-            return response()->json([
-                'success' => false,
-                'message' => 'Access denied. Only doctor users can access this resource.'
-            ], 403);
-        }
+        
         $clinics=$doctor->clinics()
         ->wherePivot('deleted_at', null)
         ->with('user:id,email,profile_image')
