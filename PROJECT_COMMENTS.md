@@ -82,3 +82,17 @@
 ` Enhance: enhance the image upload issue when user choose his profile picture ` Oct/30
 **Purpose:**  
 < enhace the upload profile image for users so now the picture will not be added to the github repo it will be saved in laravelbackend/storage so that is the best practice for this feature . >
+
+
+### Commit
+
+` Implement the role feature to make each feature accessable for each role ` Nov/01
+**Purpose:**  
+< this role will help manage the users authorization and give access by role , this was handled before in the controllers but now we separate this to make the code more clean and readable to follow the principles of writing clean code >
+
+
+### Commit
+
+` feat: enable each lab to make request to upload the lab results , enable each patient to respond for lab request ` Nov/01
+**Purpose:**  
+< here enable each lab to make request then the patient will respond then the lab will be enabled to upload the lab results , build this using specific requests for each APIs function instead of the default ones with policy to secure the process of associated patient for each lab and for sure with middleware configration to check the role after checking if the user is authenticated >
