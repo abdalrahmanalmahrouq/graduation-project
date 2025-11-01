@@ -37,7 +37,7 @@ export default function LabLogin() {
          
           localStorage.setItem('token', response.data.access_token);
           localStorage.setItem('user', JSON.stringify(profileResponse.data));
-          navigate('/');
+          navigate('/lab/results');
         })
         .catch((profileError) => {
           console.error('Failed to fetch profile:', profileError);

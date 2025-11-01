@@ -36,6 +36,8 @@ import DoctorClinicsPage from "../pages/DoctorClinicsPage";
 import EmailVerificationSuccess from "../components/EmailVerificationSuccess";
 import ForgotPassword from "../components/ForgotPassword";
 import ResetPassword from "../components/ResetPassword";
+import LabResultRequestPage from "../pages/LabResultRequestPage";
+import NotificationsPage from "../pages/NotificationsPage";
 
 const AppRouter = () => {
 	useEffect(() => {
@@ -214,6 +216,26 @@ const AppRouter = () => {
 					element={
 						<ProtectedRoute allowedRoles={["clinic"]}>
 							<PatientDataPage />
+						</ProtectedRoute>
+					}
+				/>
+				
+				{/* Lab Result Routes */}
+				<Route
+					path="/lab/results"
+					element={
+						<ProtectedRoute allowedRoles={["lab"]}>
+							<LabResultRequestPage />
+						</ProtectedRoute>
+					}
+				/>
+				
+				{/* Notifications Route */}
+				<Route
+					path="/patient/notifications"
+					element={
+						<ProtectedRoute allowedRoles={["patient"]}>
+							<NotificationsPage />
 						</ProtectedRoute>
 					}
 				/>

@@ -69,10 +69,15 @@ const ToolBar = ({ token }) => {
           </div>
         </div>
         <div className="toolbar-right">
-          <button className="notification-btn">
-           
-            <i className={`fa-solid fa-bell`}></i>
-          </button>
+          {role === 'patient' ? (
+            <Link to="/patient/notifications" className="notification-btn">
+              <i className={`fa-solid fa-bell`}></i>
+            </Link>
+          ) : (
+            <button className="notification-btn">
+              <i className={`fa-solid fa-bell`}></i>
+            </button>
+          )}
           <div>
             <h3 className='mt-3 font-bold fw-bolder text-sky-950'>
               {!user ? (

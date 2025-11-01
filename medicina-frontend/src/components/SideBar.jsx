@@ -119,6 +119,7 @@ export default function Sidebar() {
               </ul>
             </li>
             <li>
+             
               <a href="">
                 <i className={`fa-solid fa-file-medical medicina-theme-icon pb-2`}></i>
                 <span>السجل الطبي</span>
@@ -141,13 +142,24 @@ export default function Sidebar() {
                   </NavLink>
                 </li>
                 <li>
+                  <NavLink to="/patient/notifications">
+                    <i className={`fa-solid fa-bell medicina-theme-icon pb-2`}></i>
+                    <span>الإشعارات</span>
+                  </NavLink>
+                </li>
+                <li>
                   <NavLink to="/" onClick={logout}>
                      <i className={`fa-solid fa-power-off medicina-theme-icon pb-2`}></i>
                     <span>تسجيل الخروج</span>
                   </NavLink>
                 </li>
+
+                
               </ul>
+
+              
             </li>
+            
           </ul>
         )}
 
@@ -275,6 +287,16 @@ export default function Sidebar() {
                 <span>الصفحة الرئيسية</span>
               </a>
             </li>
+
+            <li>
+              <NavLink to="/lab/results">
+                <i className={`fa-solid fa-flask medicina-theme-icon pb-2`}></i>
+                <span>فحوصات المرضى</span>
+              </NavLink>
+            </li>
+
+            
+
             <li
               className={`nav-item-collapsible ${
                 openItem === "settings" ? "open" : ""

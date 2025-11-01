@@ -4,6 +4,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\InsuranceController;
+use App\Http\Controllers\LabResultController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionControllers\AuthController;
@@ -92,7 +93,7 @@ Route::middleware(['auth:sanctum'])->post('/profile', [ProfileController::class,
 Route::middleware(['auth:sanctum'])->post('/change-password', [ProfileController::class, 'changePassword']);
 
 
-Route::middleware(['auth:sanctum'])->group(function(){
+Route::middleware(['auth:sanctum', 'role:clinic'])->group(function(){
     Route::post('clinics/add-doctor', [ClinicController::class, 'addDoctor']);
     Route::get('clinics/get-doctors', [ClinicController::class, 'getDoctors']);
     Route::delete('clinics/delete-doctor-from-clinic', [ClinicController::class, 'deleteDoctor']);
@@ -101,10 +102,10 @@ Route::middleware(['auth:sanctum'])->group(function(){
 Route::get('doctors/by-specialization/{specialization}',[DoctorController::class,'getDoctorsBySpecialization']);
 Route::get('doctors/profile/{id}',[DoctorController::class,'getDoctorProfile']);
 
-Route::middleware(['auth:sanctum'])->group(function(){
+Route::middleware(['auth:sanctum', 'role:doctor'])->group(function(){
     Route::get('doctors/get-clinics',[DoctorController::class,'getClinics']);
     Route::post('doctors/add-bio',[DoctorController::class,'addBio']);
-    Route::get('doctors/get-bio',[DoctorController::class,'getBio']);    
+    Route::get('doctors/get-bio',[DoctorController::class,'getBio']);
     Route::post('doctors/update-bio',[DoctorController::class,'updateBio']);
 });
 
@@ -129,7 +130,26 @@ Route::get('appointments/all-appointments/{clinic_id}',[AppointmentController::c
 // Insurance Management Routes
 Route::get('insurances', [InsuranceController::class, 'index']);
 
-Route::middleware(['auth:sanctum'])->get('clinic/get-insurances', [InsuranceController::class, 'getInsurancesForClinic']);//  this route will get all insurances company for specific clinic id
-Route::middleware(['auth:sanctum'])->post('clinic/add-insurances',[InsuranceController::class,'addInsurancesForClinic']); // this route will add insurance company for each clinic
-Route::middleware(['auth:sanctum'])->delete('clinic/delete-insurances',[InsuranceController::class,'deleteInsuranceForClinic']);// this route will soft delete an associated insurance company for the clinic
-Route::middleware(['auth:sanctum'])->post('clinic/restore-insurances',[InsuranceController::class,'restoreInsuranceForClinic']);// this route will restore a soft deleted insurance company for the clinic
+Route::middleware(['auth:sanctum', 'role:clinic'])->group(function(){
+    Route::get('clinic/get-insurances', [InsuranceController::class, 'getInsurancesForClinic']);//  this route will get all insurances company for specific clinic id
+    Route::post('clinic/add-insurances',[InsuranceController::class,'addInsurancesForClinic']); // this route will add insurance company for each clinic
+    Route::delete('clinic/delete-insurances',[InsuranceController::class,'deleteInsuranceForClinic']);// this route will soft delete an associated insurance company for the clinic
+    Route::post('clinic/restore-insurances',[InsuranceController::class,'restoreInsuranceForClinic']);// this route will restore a soft deleted insurance company for the clinic
+});
+
+
+
+// Lab Result Routes
+// PATIENT → get notifications (pending requests)
+Route::middleware(['auth:sanctum', 'role:patient'])->get('/lab-results/notifications', [LabResultController::class, 'getPatientNotifications']);
+// PATIENT → accept/reject
+Route::middleware(['auth:sanctum', 'role:patient'])->patch('/lab-results/{labResult}/respond', [LabResultController::class, 'respond']);
+
+Route::middleware(['auth:sanctum', 'role:lab'])->group(function(){
+    Route::get('/lab-results/requests', [LabResultController::class, 'getLabRequests']);// LAB → get all their requests
+    Route::post('/lab-results/request', [LabResultController::class, 'createRequest']);// LAB → create pending request
+    Route::post('/lab-results/{labResult}/upload', [LabResultController::class, 'uploadDetails']);// LAB → upload details+file once approved
+});
+
+
+
