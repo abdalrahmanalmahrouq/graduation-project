@@ -13,7 +13,7 @@ class AuthController extends Controller
         $request->validate([
             'email'=>'required|email',
             'password'=>'required',
-            'role'=>'required|in:patient,doctor,clinic,admin,lab'
+            'role'=>'required|in:patient,doctor,clinic,lab'
         ]);
 
         // First check if user exists with this email

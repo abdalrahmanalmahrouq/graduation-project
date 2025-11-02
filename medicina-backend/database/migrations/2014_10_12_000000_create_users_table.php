@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->enum('role', ['patient', 'doctor', 'clinic', 'admin','lab']);
+            $table->enum('role', ['patient', 'doctor', 'clinic','lab']);
             $table->timestamps();
             $table->softDeletes();
             // add phone number column to users table for all roles

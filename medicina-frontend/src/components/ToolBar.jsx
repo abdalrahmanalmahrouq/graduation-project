@@ -100,10 +100,7 @@ const ToolBar = ({ token }) => {
           <button className="mobile-menu-toggle" onClick={toggleMobileSidebar}>
             <i className="bi bi-list"></i>
           </button>
-          <div className="search-bar">
-            <span></span>
-            <input type="search" placeholder="Search..." />
-          </div>
+          
         </div>
         <div className="toolbar-right">
           {role === 'patient' ? (

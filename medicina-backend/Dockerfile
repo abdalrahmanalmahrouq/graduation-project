@@ -2,6 +2,10 @@ FROM laravelsail/php82-composer
 
 WORKDIR /var/www/html
 
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
 # Install system packages and PHP extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
@@ -28,6 +32,12 @@ COPY composer.json composer.lock ./
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Copy package.json for npm dependencies
+COPY package.json package-lock.json* ./
+
+# Install Node dependencies (if package.json exists)
+RUN npm install || true
 
 # Copy project files
 COPY . .

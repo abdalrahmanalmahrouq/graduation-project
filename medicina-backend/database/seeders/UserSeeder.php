@@ -13,14 +13,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
-        User::create([
-           
-            'email' => 'admin@medicina.com',
-            'password' => Hash::make('password123'),
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]);
+        
 
         // Create sample patient users
         User::create([
