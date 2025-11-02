@@ -68,3 +68,35 @@ Route::get('/images/profile/{filename}', function ($filename) {
     return $response;
 })->where('filename', '.*');
 
+// Serve lab result files without CORS restrictions for frontend access
+Route::get('/lab-results/{filename}', function ($filename) {
+    $path = storage_path('app/public/lab-results/' . $filename);
+    
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    
+    // Determine the correct MIME type based on file extension
+    $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    $mimeTypes = [
+        'pdf' => 'application/pdf',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png' => 'image/png',
+        'gif' => 'image/gif',
+        'doc' => 'application/msword',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+    
+    $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
+    
+    $response = response()->file($path, ['Content-Type' => $mimeType]);
+    
+    // Add CORS headers
+    $response->headers->set('Access-Control-Allow-Origin', '*');
+    $response->headers->set('Access-Control-Allow-Methods', 'GET');
+    $response->headers->set('Access-Control-Allow-Headers', 'Content-Type');
+    
+    return $response;
+})->where('filename', '.*');
+

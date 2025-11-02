@@ -33,7 +33,7 @@
 
 /* Modern Insurance Management Styles */
 .insurance-management-container {
-  min-height: 100vh;
+  min-height: 80vh;
   background: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%);
   border-radius: 20px;
   padding: 2rem 0;
@@ -2564,6 +2564,7 @@ main {
 
 .nav-item-collapsible > a::after {
   content: '›';
+  cursor: pointer;
   font-size: 1.5rem;
   position: absolute;
   left: 1.5rem;
@@ -2740,6 +2741,36 @@ background: #f9f9f9; /* optional */
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border-color: var(--accent-color);
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  border: 2px solid white;
+  z-index: 10;
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 
@@ -16331,17 +16362,27 @@ box-shadow: none;
 
 .notifications-container {
   min-height: 80vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%);
+  min-width: 80vh;
+  /* background: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%); */
   border-radius: 20px;
   padding: 2rem 0;
 }
-
+@media (max-width: 1024px) {
+  .notifications-container {
+    min-width: 50vh;
+  }
+}
+@media (max-width: 450px) {
+  .notifications-container {
+    min-width: 30vh;
+  }
+}
 .notifications-header {
   background: linear-gradient(135deg, var(--medicina-card-background-color) 0%, #2980b9 100%);
   border-radius: 20px;
   margin: 0 2rem 2rem 2rem;
   padding: 2.5rem;
-  box-shadow: 0 10px 30px rgb(92 99 105 / 30%);
+  /* box-shadow: 0 10px 30px rgb(92 99 105 / 30%); */
   position: relative;
   overflow: hidden;
 }
@@ -16554,5 +16595,478 @@ box-shadow: none;
 
   .notification-actions .btn {
     flex: 1;
+  }
+}
+
+/* ============================================
+   Patient Lab Results Styles
+   ============================================ */
+
+.patient-lab-results-container {
+  min-height: 80vh;
+  min-width: 100vh;
+  /* background: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%); */
+  border-radius: 20px;
+  padding: 2rem 0;
+}
+@media (max-width: 1024px) {
+.patient-lab-results-container {
+  min-width: 50vh;
+}
+@media (max-width: 450px) {
+  .patient-lab-results-container {
+    min-width: 30vh;
+  }
+}
+}
+.patient-lab-results-header {
+  background: linear-gradient(135deg, var(--medicina-card-background-color) 0%, #2980b9 100%);
+  border-radius: 20px;
+  margin: 0 2rem 2rem 2rem;
+  padding: 2.5rem;
+  /* box-shadow: 0 10px 30px rgb(92 99 105 / 30%); */
+  position: relative;
+  overflow: hidden;
+}
+
+.patient-lab-results-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.patient-lab-results-title-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.patient-lab-results-icon-wrapper {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.patient-lab-results-main-icon {
+  font-size: 2.5rem;
+  color: var(--heading-color);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.patient-lab-results-title-text {
+  color: white;
+}
+
+.patient-lab-results-main-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.5px;
+}
+
+.patient-lab-results-subtitle {
+  font-size: 1.1rem;
+  margin: 0.5rem 0 0 0;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.patient-lab-results-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--surface-color);
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.count-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  line-height: 1;
+}
+
+.count-label {
+  font-size: 0.9rem;
+  color: var(--heading-color);
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}
+
+.patient-lab-results-content {
+  padding: 0 2rem;
+}
+
+.patient-lab-results-empty-state {
+  background: white;
+  border-radius: 20px;
+  padding: 4rem 2rem;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.patient-lab-results-empty-state .empty-state-icon {
+  font-size: 4rem;
+  color: #ddd;
+  margin-bottom: 1.5rem;
+}
+
+.patient-lab-results-empty-state h3 {
+  color: var(--heading-color);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.patient-lab-results-empty-state p {
+  color: #999;
+  font-size: 1rem;
+}
+
+.patient-lab-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.patient-lab-result-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.patient-lab-result-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.patient-lab-result-icon {
+  background: linear-gradient(135deg, var(--medicina-card-background-color) 0%, #2980b9 100%);
+  
+  width: 70px;
+  height: 70px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.patient-lab-result-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.patient-lab-result-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.patient-lab-result-title {
+  color: var(--heading-color);
+  font-weight: 600;
+  margin: 0;
+  font-size: 1.4rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.patient-lab-result-status {
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.patient-lab-result-status.approved {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+}
+
+.patient-lab-result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.patient-lab-result-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--default-color);
+}
+
+.patient-lab-result-detail-item i {
+  color: var(--medicina-card-background-color);
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-left: 0.25rem;
+}
+
+.detail-value {
+  color: var(--default-color);
+}
+
+.patient-lab-result-notes-wrapper {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.patient-lab-result-notes {
+  background: #f8f9fa;
+  border-right: 4px solid var(--medicina-card-background-color);
+  border-radius: 8px;
+  padding: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.patient-lab-result-notes.collapsed {
+  max-height: 120px;
+}
+
+.patient-lab-result-notes.expanded {
+  max-height: none;
+}
+
+.notes-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+.notes-header i {
+  color: var(--medicina-card-background-color);
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+.notes-label {
+  font-size: 0.95rem;
+}
+
+.notes-content {
+  position: relative;
+}
+
+.notes-content p {
+  margin: 0;
+  color: var(--default-color);
+  line-height: 1.8;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.notes-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(248, 249, 250, 0) 0%, rgba(248, 249, 250, 1) 100%);
+  pointer-events: none;
+}
+
+.btn-toggle-notes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  /* background: transparent; */
+  /* border: 1px solid var(--medicina-card-background-color); */
+  border-radius: 6px;
+  /* color: var(--medicina-card-background-color); */
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  width: 100%;
+}
+
+.btn-toggle-notes:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-toggle-notes:active {
+  transform: translateY(0);
+}
+
+.btn-toggle-notes i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+
+.patient-lab-result-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btn-download {
+  background: linear-gradient(135deg, var(--medicina-card-background-color) 0%, #2980b9 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 500;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(41, 128, 185, 0.3);
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(41, 128, 185, 0.4);
+  color: white;
+}
+
+.btn-download:active {
+  transform: translateY(0);
+}
+
+.no-file-badge {
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  color: #6c757d;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Responsive Styles for Patient Lab Results */
+@media (max-width: 768px) {
+  .patient-lab-results-header {
+    margin: 0 1rem 1.5rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .patient-lab-results-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .patient-lab-results-main-title {
+    font-size: 1.75rem;
+  }
+
+  .patient-lab-results-subtitle {
+    font-size: 1rem;
+  }
+
+  .patient-lab-results-icon-wrapper {
+    padding: 1rem;
+  }
+
+  .patient-lab-results-main-icon {
+    font-size: 2rem;
+  }
+
+  .patient-lab-results-content {
+    padding: 0 1rem;
+  }
+
+  .patient-lab-result-card {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .patient-lab-result-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    align-self: center;
+  }
+
+  .patient-lab-result-header-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .patient-lab-result-title {
+    font-size: 1.2rem;
+  }
+
+  .patient-lab-result-actions {
+    width: 100%;
+  }
+
+  .btn-download {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .patient-lab-results-main-title {
+    font-size: 1.5rem;
+  }
+
+  .patient-lab-results-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .patient-lab-result-card {
+    padding: 1rem;
+  }
+
+  .patient-lab-result-details {
+    gap: 0.5rem;
+  }
+
+  .patient-lab-result-detail-item {
+    font-size: 0.875rem;
+    flex-wrap: wrap;
+  }
+
+  .patient-lab-result-notes.collapsed {
+    max-height: 100px;
+  }
+
+  .btn-toggle-notes {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .notes-content p {
+    font-size: 0.875rem;
+    line-height: 1.6;
   }
 }

@@ -25,11 +25,34 @@ class LabResult extends Model
         'rejected_at' => 'datetime',
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['file_url'];
+
     public function lab(){
         return $this->belongsto(Lab::class, 'lab_id', 'user_id');
     }
 
     public function patient(){
         return $this->belongsto(Patient::class, 'patient_id', 'user_id');
+    }
+
+    /**
+     * Get the file URL for accessing the lab result file.
+     *
+     * @return string|null
+     */
+    public function getFileUrlAttribute()
+    {
+        if ($this->file_path) {
+            // Use Laravel Storage to generate the correct URL
+            // This works with the storage:link command (public/storage -> storage/app/public)
+            return asset('storage/' . $this->file_path);
+        }
+        
+        return null;
     }
 }

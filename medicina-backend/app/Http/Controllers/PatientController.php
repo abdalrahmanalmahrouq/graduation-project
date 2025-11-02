@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LabResult;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -52,6 +53,28 @@ class PatientController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while fetching patient data',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getPatientLabResults(){
+        try{
+        $userId=auth()->id();
+        $labResults=LabResult::where('patient_id',$userId)
+        ->where('status','approved')
+        ->with('lab:user_id,lab_name')
+        ->orderBy('created_at','desc')
+        ->get();
+            return response()->json([
+                'success' => true,
+                'labResults' => $labResults
+            ], 200);
+        }catch(\Exception $e){
+            Log::error('Error fetching patient lab results: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching patient lab results',
                 'error' => $e->getMessage()
             ], 500);
         }

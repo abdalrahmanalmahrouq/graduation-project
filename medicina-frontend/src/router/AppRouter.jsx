@@ -38,6 +38,7 @@ import ForgotPassword from "../components/ForgotPassword";
 import ResetPassword from "../components/ResetPassword";
 import LabResultRequestPage from "../pages/LabResultRequestPage";
 import NotificationsPage from "../pages/NotificationsPage";
+import PatientLabResultsPage from "../pages/PatientLabResultsPage";
 
 const AppRouter = () => {
 	useEffect(() => {
@@ -236,6 +237,16 @@ const AppRouter = () => {
 					element={
 						<ProtectedRoute allowedRoles={["patient"]}>
 							<NotificationsPage />
+						</ProtectedRoute>
+					}
+				/>
+
+				{/* Patient Lab Results Route */}
+				<Route
+					path="/patient/lab-results"
+					element={
+						<ProtectedRoute allowedRoles={["patient"]}>
+							<PatientLabResultsPage />
 						</ProtectedRoute>
 					}
 				/>

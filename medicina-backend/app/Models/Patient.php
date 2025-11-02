@@ -29,4 +29,9 @@ class Patient extends Model
     {
         return $this->belongsTo(Insurance::class,'insurance_id','insurance_id');
     }
+
+    // Each patient has many lab results
+    public function labResults(){
+        return $this->hasMany(LabResult::class);
+    }
 }

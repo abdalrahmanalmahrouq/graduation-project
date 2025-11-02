@@ -113,6 +113,7 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function(){
 
 
 Route::middleware(['auth:sanctum'])->get('patients/by-user-id/{user_id}',[PatientController::class,'getPatientByUserId']);
+Route::middleware(['auth:sanctum','role:patient'])->get('patients/lab-results',[PatientController::class,'getPatientLabResults']);
 
 Route::post('appointments/create',[AppointmentController::class,'createAppointment']);
 Route::get('appointments/available/{doctor_id}/{clinic_id}',[AppointmentController::class,'getAvailableDoctorClinicAppointment']);
