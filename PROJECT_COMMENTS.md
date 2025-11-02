@@ -109,3 +109,12 @@
 ` feat: enable the patient to access his lab results by click on lab results in sidebar ` Nov/02
 **Purpose:**  
 < now the patient can access and see the lab results reports that the lab upload after he gave the lab a permision to do this. >
+
+
+
+
+### Commit
+
+` feat: implement new user which is Admin but in backend so if you want to access the admin user you must use port:8000 ` Nov/02
+**Purpose:**  
+< add new user (Admin) but i setup it in backend so if you want to use it you must use localhost:8000 but first rebuild the backend container because i add new dependencies for the project which is npm but for backend to handle the view pages using tailwind css styles also run docker compose exec backend npm run build to make these changes happen after build the project . >
