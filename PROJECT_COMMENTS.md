@@ -96,3 +96,16 @@
 ` feat: enable each lab to make request to upload the lab results , enable each patient to respond for lab request ` Nov/01
 **Purpose:**  
 < here enable each lab to make request then the patient will respond then the lab will be enabled to upload the lab results , build this using specific requests for each APIs function instead of the default ones with policy to secure the process of associated patient for each lab and for sure with middleware configration to check the role after checking if the user is authenticated >
+
+
+### Commit
+
+` Enhance: the notifications icon for the patient to occur the number of massages above the bill icon in toolbar ` Nov/02
+**Purpose:**  
+< enhance the UI for the notifications button for the patient user.>
+
+### Commit
+
+` feat: enable the patient to access his lab results by click on lab results in sidebar ` Nov/02
+**Purpose:**  
+< now the patient can access and see the lab results reports that the lab upload after he gave the lab a permision to do this. >
