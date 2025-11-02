@@ -9,6 +9,7 @@ const ToolBar = ({ token }) => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     // Always check token validity when component mounts or token changes
@@ -17,6 +18,30 @@ const ToolBar = ({ token }) => {
       loadUser();
     }
   }, []);
+
+  useEffect(() => {
+    // Fetch notification count for patients
+    if (user && user.role === 'patient') {
+      fetchNotificationCount();
+      // Set up polling to refresh count every 30 seconds
+      const interval = setInterval(() => {
+        fetchNotificationCount();
+      }, 30000);
+
+      // Refresh count when page becomes visible again
+      const handleVisibilityChange = () => {
+        if (!document.hidden) {
+          fetchNotificationCount();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      return () => {
+        clearInterval(interval);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      };
+    }
+  }, [user]);
 
   const loadUser = () => {
     const token = localStorage.getItem('token');
@@ -33,6 +58,18 @@ const ToolBar = ({ token }) => {
         console.error('Failed to load user profile in ToolBar:', err);
         // The global axios interceptor will handle 401 errors and clear tokens
       });
+  };
+
+  const fetchNotificationCount = async () => {
+    try {
+      const response = await axios.get('/lab-results/notifications');
+      const notifications = response.data.notifications || [];
+      setNotificationCount(notifications.length);
+    } catch (error) {
+      console.error('Failed to fetch notification count:', error);
+      // Set count to 0 on error to avoid showing incorrect badge
+      setNotificationCount(0);
+    }
   };
 
   const { role, profile, profile_image_url } = user || {};
@@ -72,6 +109,9 @@ const ToolBar = ({ token }) => {
           {role === 'patient' ? (
             <Link to="/patient/notifications" className="notification-btn">
               <i className={`fa-solid fa-bell`}></i>
+              {notificationCount > 0 && (
+                <span className="notification-badge">{notificationCount > 99 ? '99+' : notificationCount}</span>
+              )}
             </Link>
           ) : (
             <button className="notification-btn">
