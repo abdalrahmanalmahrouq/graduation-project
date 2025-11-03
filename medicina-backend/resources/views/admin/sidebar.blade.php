@@ -17,11 +17,13 @@
             <!-- Navigation Menu -->
             <nav class="flex-1 overflow-y-auto py-4">
                 <div class="px-4 space-y-2">
-                    <a href="{{ route('admin.dashboard') }}" class="sidebar-item active flex items-center space-x-3 px-4 py-3 text-gray-700 font-medium">
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="sidebar-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }} flex items-center space-x-3 px-4 py-3 text-gray-700 font-medium">
                         <i class="fas fa-home text-xl"></i>
                         <span class="sidebar-text">Dashboard</span>
                     </a>
-                    <a href="" class="sidebar-item flex items-center space-x-3 px-4 py-3 text-gray-700 font-medium">
+                    <a href="{{ route('admin.insurances.index') }}" 
+                       class="sidebar-item {{ request()->routeIs('admin.insurances.*') ? 'active' : '' }} flex items-center space-x-3 px-4 py-3 text-gray-700 font-medium">
                         <i class="fas fa-building text-xl"></i>
                         <span class="sidebar-text">Insurance Companies</span>
                     </a>           

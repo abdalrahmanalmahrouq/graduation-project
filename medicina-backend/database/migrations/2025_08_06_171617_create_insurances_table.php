@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('insurances', function (Blueprint $table) {
             $table->string('insurance_id', 7)->primary();
             $table->timestamps();
+            $table->softDeletes(); // Add deleted_at column for soft deletes
             $table->string('name')->unique();
         });
     }
