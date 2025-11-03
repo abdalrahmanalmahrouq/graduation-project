@@ -118,3 +118,10 @@
 ` feat: implement new user which is Admin but in backend so if you want to access the admin user you must use port:8000 ` Nov/02
 **Purpose:**  
 < add new user (Admin) but i setup it in backend so if you want to use it you must use localhost:8000 but first rebuild the backend container because i add new dependencies for the project which is npm but for backend to handle the view pages using tailwind css styles also run docker compose exec backend npm run build to make these changes happen after build the project . >
+
+
+### Commit
+
+` feat: enable the admin user to read,creat,update,delete insurance companies ." Nov/03
+**Purpose:**  
+< now the admin can create delete read update any insurance company he want .>
