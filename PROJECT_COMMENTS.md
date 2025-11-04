@@ -125,3 +125,10 @@
 ` feat: enable the admin user to read,creat,update,delete insurance companies ." Nov/03
 **Purpose:**  
 < now the admin can create delete read update any insurance company he want .>
+
+
+### Commit
+
+` feat: enable the admin user to delete any user account ` Nov/04
+**Purpose:**  
+< now the admin can delete any user from MediCina's system >
