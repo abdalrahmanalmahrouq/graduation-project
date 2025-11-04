@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InsuranceController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::middleware('web')->prefix('admin')->name('admin.')->group(function(){
 
@@ -24,6 +25,10 @@ Route::middleware('web')->prefix('admin')->name('admin.')->group(function(){
         Route::get('insurances/{id}/edit',[InsuranceController::class,'edit'])->name('insurances.edit');
         Route::put('insurances/{id}',[InsuranceController::class,'update'])->name('insurances.update');
         Route::delete('insurances/{id}',[InsuranceController::class,'destroy'])->name('insurances.destroy');
+
+        // User Read,Delete Routes
+        Route::get('users',[UserController::class,'index'])->name('users.index');
+        Route::delete('users/{id}',[UserController::class,'destroy'])->name('users.destroy');
     });
 });
 

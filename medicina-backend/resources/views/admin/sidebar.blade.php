@@ -27,6 +27,11 @@
                         <i class="fas fa-building text-xl"></i>
                         <span class="sidebar-text">Insurance Companies</span>
                     </a>           
+                    <a href="{{ route('admin.users.index') }}" 
+                       class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }} flex items-center space-x-3 px-4 py-3 text-gray-700 font-medium">
+                        <i class="fas fa-users text-xl"></i>
+                        <span class="sidebar-text">Users</span>
+                    </a>
                 </div>
             </nav>  
             <div class="p-4 border-t border-gray-200"> 
