@@ -148,6 +148,19 @@ class AppointmentController extends Controller
         return response()->json(['appointments' => $appointments], 200);
     }
 
+    // mark a booked appointment as completed
+    public function finishBookedAppointment($appointment_id){
+        $appointment = Appointment::findOrFail($appointment_id);
+        if ($appointment->status !== 'booked') {
+            return response()->json([
+                'message' => 'Only booked appointments can be completed'
+            ], 422);
+        }
+        $appointment->status = 'completed';
+        $appointment->save();
+        return response()->json(['message' => 'Appointment marked as completed', 'appointment' => $appointment], 200);
+    }
+
     // get all clinic appointments for all doctors in specific(one) clinic with optional status filter
     public function getAllClinicAppointments(Request $request, $clinic_id){
         $query = Appointment::where('clinic_id', $clinic_id)

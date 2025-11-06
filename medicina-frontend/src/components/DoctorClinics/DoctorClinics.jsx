@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorClinics = () => {
   const [clinics, setClinics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchDoctorClinics();
@@ -14,7 +16,9 @@ const DoctorClinics = () => {
     try {
       setIsLoading(true);
       const response = await axios.get('/doctors/get-clinics');
-      setClinics(response.data.clinics || []);
+      const list = response.data.clinics || [];
+      setClinics(list);
+      try { localStorage.setItem('doctor_clinics_cache', JSON.stringify(list)); } catch (e) {}
       setError('');
     } catch (err) {
       console.error('Error fetching doctor clinics:', err);
@@ -55,18 +59,10 @@ const DoctorClinics = () => {
             </p>
           </div>
           <div className="header-icon">
-            <i className="bi bi-building-check"></i>
+          <i className="bi bi-building-check stat-label"></i>    
           </div>
         </div>
-        <div className="header-stats">
-          <div className="stat-card">
-            <i className="bi bi-hospital-fill"></i>
-            <div className="stat-info">
-              <span className="stat-number">{clinics.length}</span>
-              <span className="stat-label">عيادة مرتبطة</span>
-            </div>
-          </div>
-        </div>
+       
       </div>
 
       {/* Error Message */}
@@ -95,6 +91,8 @@ const DoctorClinics = () => {
               key={index}
               data-aos="fade-up"
               data-aos-delay={index * 100}
+              onClick={() => navigate(`/doctor/clinics/${clinic.user_id}/appointments`)}
+              style={{ cursor: 'pointer' }}
             >
               <div className="clinic-doctor-card-header">
                 <div className="clinic-avatar">
@@ -128,8 +126,8 @@ const DoctorClinics = () => {
               </div>
 
               <div className="clinic-card-footer">
-                <button className="btn-view-details">
-                  <span>عرض التفاصيل</span>
+                <button className="btn-view-details" onClick={(e) => { e.stopPropagation(); navigate(`/doctor/clinics/${clinic.user_id}/appointments`); }}>
+                  <span>عرض المواعيد</span>
                   <i className="bi bi-arrow-left"></i>
                 </button>
               </div>

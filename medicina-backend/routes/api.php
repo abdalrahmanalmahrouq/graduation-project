@@ -127,6 +127,9 @@ Route::delete('appointments/booked/{appointment_id}',[AppointmentController::cla
 
 Route::get('appointments/all-appointments/{clinic_id}',[AppointmentController::class,'getAllClinicAppointments']);
 
+// Doctor: finish a booked appointment
+Route::middleware(['auth:sanctum','role:doctor'])->put('appointments/finish/{appointment_id}',[AppointmentController::class,'finishBookedAppointment']);
+
 
 // Insurance Management Routes
 Route::get('insurances', [InsuranceController::class, 'index']);
