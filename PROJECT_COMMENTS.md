@@ -132,3 +132,10 @@
 ` feat: enable the admin user to delete any user account ` Nov/04
 **Purpose:**  
 < now the admin can delete any user from MediCina's system >
+
+### Commit
+
+` feat: enable each doctor to see his patient appointment for specific associated clinic ` Nov/06
+**Purpose:**  
+< now the doctor can see his patients and after finish the appointment he can click on finish appointment so the status will be changed
+from booked to completed next step to operate the medical record so he will be enable to upload medical record with associated lab results for specific appointment ID >
