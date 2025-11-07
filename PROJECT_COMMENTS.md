@@ -139,3 +139,11 @@
 **Purpose:**  
 < now the doctor can see his patients and after finish the appointment he can click on finish appointment so the status will be changed
 from booked to completed next step to operate the medical record so he will be enable to upload medical record with associated lab results for specific appointment ID >
+
+
+### Commit
+
+` enhance seeders and put profile image for each user ` Nov/07
+**Purpose:**  
+< enhance the seeders data and upload new profile picture for each user so now when you make --seed a profile picture will be inserted
+so the overall design will be so great , also the uploaded pictures from the seeder where gone to backend storage. >
