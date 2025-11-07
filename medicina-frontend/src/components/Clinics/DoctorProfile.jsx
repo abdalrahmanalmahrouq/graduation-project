@@ -18,6 +18,7 @@ function DoctorProfile() {
     const [clinicsWithInsurances, setClinicsWithInsurances] = useState([]);
     const [filteredClinics, setFilteredClinics] = useState([]);
   
+    
     useEffect(()=>{
         fetchDoctor();
     },[id]);
@@ -232,8 +233,16 @@ function DoctorProfile() {
                                                         <div key={index} className="clinic-card-container">
                                                             <div className={`clinic-card ${selectedClinic === clinic.id ? 'selected' : ''}`}>
                                                                 <div className="clinic-card-header">
-                                                                    <div className="clinic-icon">
+                                                                <div className="clinic-icon">
+                                                                        {clinic.profile_image_url ? (
+                                                                        <img 
+                                                                            src={clinic.profile_image_url} 
+                                                                            alt="Clinic Logo" 
+                                                                            className="clinic-profile-image"
+                                                                        />
+                                                                        ) : (
                                                                         <i className="fas fa-hospital"></i>
+                                                                        )}
                                                                     </div>
                                                                     <div className="clinic-info">
                                                                         <h4 className="clinic-name">{clinic.name}</h4>

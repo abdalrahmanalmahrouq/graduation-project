@@ -5,7 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 class UserSeeder extends Seeder
 {
     /**
@@ -13,98 +14,52 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        
+        // Make sure these folders exist:
+        // public/images/users-data  → your source images
+        // public/profile-images     → destination
 
-        // Create sample patient users
-        User::create([
-                
-            'email' => 'john@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'patient',
-            'email_verified_at' => now(),
-        ]);
-
-        User::create([
-           
-            'email' => 'jane@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'patient',
-            'email_verified_at' => now(),
-        ]);
-
-        User::create([
+          // 🧹 Clean the old profile-images before seeding new ones
+          Storage::disk('public')->deleteDirectory('profile-images');
+          Storage::disk('public')->makeDirectory('profile-images');
           
-            'email' => 'ahmed@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'patient',
-            'email_verified_at' => now(),
-        ]);
+        $users = [
+            // Patients
+            ['email' => 'khalid@example.com',     'role' => 'patient', 'image' => 'khalid.jpg'],
+            ['email' => 'mohsen@example.com',     'role' => 'patient', 'image' => 'mohsen.jpg'],
+            ['email' => 'ahmed@example.com',      'role' => 'patient', 'image' => 'ahmed.jpg'],
 
-        // Create sample doctor users
-        User::create([
-           
-            'email' => 'omar@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'doctor',
-            'email_verified_at' => now(),
-        ]);
+            // Doctors
+            ['email' => 'omar@example.com',       'role' => 'doctor',  'image' => 'omar.jpg'],
+            ['email' => 'ali@example.com',        'role' => 'doctor',  'image' => 'ali.png'],
+            ['email' => 'fatima@example.com',     'role' => 'doctor',  'image' => 'fatima.png'],
 
-        User::create([
-           
-            'email' => 'ali@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'doctor',
-            'email_verified_at' => now(),
-        ]);
+            // Clinics
+            ['email' => 'alzayed@example.com',    'role' => 'clinic',  'image' => 'alzayed.jpg'],
+            ['email' => 'healthplus@example.com', 'role' => 'clinic',  'image' => 'health.jpg'],
+            ['email' => 'alnoor@example.com',     'role' => 'clinic',  'image' => 'alnoor.jpg'],
 
-        User::create([
-            
-            'email' => 'fatima@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'doctor',
-            'email_verified_at' => now(),
-        ]);
+            // Labs
+            ['email' => 'medlab@example.com',     'role' => 'lab',     'image' => 'medlab.png'],
+            ['email' => 'biolab@example.com',     'role' => 'lab',     'image' => 'biolab.png'],
+        ];
 
-        // Create sample clinic users
-        User::create([
-            
-            'email' => 'alzayed@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'clinic',
-            'email_verified_at' => now(),
-        ]);
+        foreach ($users as $data) {
+            $source = public_path('images/users-data/' . $data['image']);
+            $uniqueName = uniqid() . '_' . time() . '.jpg';
+            $destination = 'profile-images/' . $uniqueName;
 
-        User::create([
-           
-            'email' => 'healthplus@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'clinic',
-            'email_verified_at' => now(),
-        ]);
+            // Use Laravel storage to save in storage/app/public/profile-images
+            if (file_exists($source)) {
+                Storage::disk('public')->putFileAs('profile-images', new File($source), $uniqueName);
+            }
 
-        User::create([
-            
-            'email' => 'alnoor@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'clinic',
-            'email_verified_at' => now(),
-        ]);
-
-        User::create([
-
-            'email' => 'medlab@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'lab',
-            'email_verified_at' => now(),
-        ]);
-
-        User::create([
-            
-            'email' => 'biolab@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'lab',
-            'email_verified_at' => now(),
-        ]);
-     
+            User::create([
+                'email' => $data['email'],
+                'password' => Hash::make('password123'),
+                'role' => $data['role'],
+                'email_verified_at' => now(),
+                'profile_image' =>$destination, // store relative path
+            ]);
+        }
     }
 }

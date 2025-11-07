@@ -25,8 +25,8 @@ class ClinicSeeder extends Seeder
                     $clinicData = [
                         'user_id' => $user->id,
                         'clinic_name' => 'Alzayed Clinic',
-                        'phone_number' => '+1555123456',
-                        'address' => '100 Medical Plaza, Downtown, NY 10001',
+                        'phone_number' => '0785515555',
+                        'address' => 'Amman, Tla`a Al-ali',
                     ];
                     break;
                     
@@ -34,8 +34,8 @@ class ClinicSeeder extends Seeder
                     $clinicData = [
                         'user_id' => $user->id,
                         'clinic_name' => 'Health Plus Clinic',
-                        'phone_number' => '+1555123457',
-                        'address' => '250 Wellness Drive, Midtown, CA 90210',
+                        'phone_number' => '0790115555',
+                        'address' => 'Amman, 8th circle',
                     ];
                     break;
                     
@@ -43,8 +43,8 @@ class ClinicSeeder extends Seeder
                     $clinicData = [
                         'user_id' => $user->id,
                         'clinic_name' => 'Al-Noor Clinic',
-                        'phone_number' => '+1555123458',
-                        'address' => '500 Healthcare Avenue, Uptown, IL 60601',
+                        'phone_number' => '0775554444',
+                        'address' => 'Zarqa',
                     ];
                     break;
             }

@@ -23,24 +23,24 @@ class PatientSeeder extends Seeder
             
             // Match patient data based on email
             switch ($user->email) {
-                case 'john@example.com':
+                case 'khalid@example.com':
                     $patientData = [
                         'user_id' => $user->id,
-                        'full_name' => 'John Doe',
-                        'phone_number' => '+1234567890',
+                        'full_name' => 'Khalid Al-ali',
+                        'phone_number' => '0791122333',
                         'date_of_birth' => '1990-05-15',
-                        'address' => '123 Main Street, New York, NY 10001',
+                        'address' => 'Amman, swaileh',
                         'insurance_id'=>$insurance ? $insurance->insurance_id : null
                     ];
                     break;
                     
-                case 'jane@example.com':
+                case 'mohsen@example.com':
                     $patientData = [
                         'user_id' => $user->id,
-                        'full_name' => 'Jane Smith',
-                        'phone_number' => '+1234567891',
+                        'full_name' => 'Mohsen Mansour',
+                        'phone_number' => '0789988777',
                         'date_of_birth' => '1985-08-22',
-                        'address' => '456 Oak Avenue, Los Angeles, CA 90210',
+                        'address' => 'Zarqa',
                         'insurance_id'=>$insurance ? $insurance->insurance_id : null 
                     ];
                     break;
@@ -49,9 +49,9 @@ class PatientSeeder extends Seeder
                     $patientData = [
                         'user_id' => $user->id,
                         'full_name' => 'Ahmed Hassan',
-                        'phone_number' => '+1234567892',
+                        'phone_number' => '0793322111',
                         'date_of_birth' => '1992-12-10',
-                        'address' => '789 Pine Road, Chicago, IL 60601',
+                        'address' => 'Amman, 7th circle',
                         'insurance_id'=>$insurance ? $insurance->insurance_id : null 
                     ];
                     break;

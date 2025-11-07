@@ -26,7 +26,7 @@ class LabSeeder extends Seeder
                     $labData = [
                         'user_id' => $user->id,
                         'lab_name' => 'MedLab',
-                        'phone_number' => '+1555123459',
+                        'phone_number' => '0791234567',
                         'address' => 'Amman, Jordan',
                     ];
                     break;
@@ -34,7 +34,7 @@ class LabSeeder extends Seeder
                     $labData = [
                         'user_id' => $user->id,
                         'lab_name' => 'BioLab',
-                        'phone_number' => '+1555123460',
+                        'phone_number' => '0797654321',
                         'address' => 'Amman, Jordan',
                     ];
                     break;

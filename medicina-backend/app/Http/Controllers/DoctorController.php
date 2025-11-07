@@ -68,6 +68,7 @@ class DoctorController extends Controller
                 'user:id,profile_image', // Get user profile image
                 'clinics:id,clinic_name,address,user_id' // Get associated clinics with address
             ])
+            
             ->first();
 
         if (!$doctor) {
@@ -82,7 +83,7 @@ class DoctorController extends Controller
 
         // Get clinics with their insurance information
         $clinics = Clinic::whereIn('user_id', $clinicIds)
-            ->with(['insurances:insurance_id,name'])
+            ->with(['insurances:insurance_id,name','user:id,profile_image'])
             ->get(['id', 'clinic_name', 'address', 'user_id']);
 
         // Transform the data to include profile image URL, clinic names, and insurances
@@ -97,6 +98,7 @@ class DoctorController extends Controller
                     'id' => $clinic->user_id,
                     'name' => $clinic->clinic_name,
                     'address' => $clinic->address,
+                    'profile_image_url'=>$clinic->user->profile_image_url ?? null,
                     'insurances' => $clinic->insurances->map(function ($insurance) {
                         return [
                             'id' => $insurance->insurance_id,
