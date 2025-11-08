@@ -110,7 +110,7 @@ const PatientLabResults = () => {
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">جاري التحميل...</span>
           </div>
-          <p className="mt-3 text-muted">جاري تحميل نتائج الفحوصات...</p>
+          <p className="mt-3 text-muted">جاري التحميل ...</p>
         </div>
       ) : (
         <div className="patient-lab-results-content">

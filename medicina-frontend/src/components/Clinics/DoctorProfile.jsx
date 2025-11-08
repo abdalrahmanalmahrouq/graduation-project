@@ -54,12 +54,12 @@ function DoctorProfile() {
 
     if (loading) {
         return (
-            <Container className="pt-5 text-center">
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">جاري التحميل...</span>
-                </Spinner>
-                <p className="mt-3">جاري تحميل بيانات الطبيب...</p>
-            </Container>
+            <div className="text-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">جاري التحميل...</span>
+            </div>
+            <p className="mt-3 text-muted">جاري التحميل ...</p>
+          </div>
         );
     }
 

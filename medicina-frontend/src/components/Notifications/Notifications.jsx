@@ -78,6 +78,7 @@ const Notifications = () => {
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">جاري التحميل...</span>
           </div>
+          <p className="mt-3 text-muted">جاري التحميل ...</p>
         </div>
       ) : (
         <div className="notifications-content">

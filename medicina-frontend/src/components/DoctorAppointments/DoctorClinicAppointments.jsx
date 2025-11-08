@@ -125,11 +125,12 @@ const DoctorClinicAppointments = () => {
 
       {/* Content */}
       {loading ? (
-        <div className="d-flex justify-content-center align-items-center" style={{ height: "400px" }}>
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">جاري التحميل...</span>
-          </div>
-        </div>
+         <div className="text-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">جاري التحميل...</span>
+            </div>
+            <p className="mt-3 text-muted">جاري التحميل ...</p>
+         </div>
       ) : error ? (
         <div className="alert-block alert-block--danger">{error}</div>
       ) : appointments.length === 0 ? (

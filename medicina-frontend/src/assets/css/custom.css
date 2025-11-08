@@ -4604,11 +4604,12 @@ box-shadow: 0 6px 20px rgba(61, 131, 192, 0.3);
 
 /* Booking Action Card */
 .booking-action-card {
-background:var(--medicina-card-background-color);
+background:var(--background-color);
 border-radius: 20px;
 padding: 2rem;
 color: white;
-box-shadow: 0 15px 35px rgba(196, 196, 196, 0.3);
+box-shadow: 0 15px 35px rgba(196, 196, 196, 0.3),
+0 -15px 35px rgba(196, 196, 196, 0.3);
 animation: slideInUp 0.5s ease-out;
 }
 
@@ -4650,8 +4651,8 @@ color: var(--default-color);
 }
 
 .booking-btn {
-background: white !important;
-color: var(--accent-color) !important;
+background: var(--accent-color) !important;
+color: var(--background-color) !important;
 border: none;
 border-radius: 12px;
 padding: 0.75rem 2rem;
@@ -4662,7 +4663,7 @@ box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
 }
 
 .booking-btn:hover {
-background: #f8fafc !important;
+background: #367ec7 !important;
 transform: translateY(-3px);
 box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
 }
