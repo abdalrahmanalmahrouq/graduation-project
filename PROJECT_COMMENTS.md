@@ -147,3 +147,10 @@ from booked to completed next step to operate the medical record so he will be e
 **Purpose:**  
 < enhance the seeders data and upload new profile picture for each user so now when you make --seed a profile picture will be inserted
 so the overall design will be so great , also the uploaded pictures from the seeder where gone to backend storage. >
+
+
+### Commit
+
+`  make the loading spinner consistent for all component ` Nov/08
+**Purpose:**  
+< to make the spinner for loading icon the same for all components >
