@@ -154,3 +154,10 @@ so the overall design will be so great , also the uploaded pictures from the see
 `  make the loading spinner consistent for all component ` Nov/08
 **Purpose:**  
 < to make the spinner for loading icon the same for all components >
+
+
+### Commit
+
+` feat: enable each doctor to upload,read medical record for patient for specific appointment ` Nov/09
+**Purpose:**  
+< now the doctor can upload,read medical consultation for booked patients for specific appointment >
