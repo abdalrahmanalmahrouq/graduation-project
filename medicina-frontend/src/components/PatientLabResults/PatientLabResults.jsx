@@ -129,6 +129,13 @@ const PatientLabResults = () => {
                   <div className="patient-lab-result-icon">
                     <i className="fa-solid fa-file-medical"></i>
                   </div>
+                  {result.appointment && (
+                    <div className="patient-lab-result-appointment">
+                      <i className="fa-solid fa-calendar ms-2"></i>
+                      <span className="detail-label">معرف الموعد:</span>
+                      <span className="detail-value">{formatDate(result.appointment_id)}</span>
+                    </div>
+                  )}
                   <div className="patient-lab-result-content">
                     <div className="patient-lab-result-header-info">
                       <h5 className="patient-lab-result-title">
@@ -140,6 +147,15 @@ const PatientLabResults = () => {
                       </span>
                     </div>
                     
+                    <div className="patient-lab-result-details">
+                      {result.appointment_id && (
+                        <div className="patient-lab-result-detail-item">
+                          <i className="fa-solid fa-calendar ms-2"></i>
+                          <span className="detail-label">رقم الموعد:</span>
+                          <span className="detail-value">{result.appointment_id}</span>
+                        </div>
+                      )}              
+                    </div>
                     <div className="patient-lab-result-details">
                       {result.lab && result.lab.lab_name && (
                         <div className="patient-lab-result-detail-item">

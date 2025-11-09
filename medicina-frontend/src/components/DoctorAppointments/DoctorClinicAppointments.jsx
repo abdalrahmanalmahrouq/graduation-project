@@ -72,23 +72,10 @@ const DoctorClinicAppointments = () => {
     }
   };
 
-  const handleFinishAppointment = async (appointment) => {
+  const handleFinishAppointment = (appointment) => {
     if (!appointment?.id) return;
-    try {
-      await axios.put(`/appointments/finish/${appointment.id}`);
-      setAppointments((prev) => prev.filter((a) => a.id !== appointment.id));
-      setMessage({
-        type:'success',
-        text:'appointment completed successfully'
-      });
-    } catch (err) {
-      console.error("Failed to finish appointment:", err);
-      setMessage({
-        type:'failed',
-        text:'appointment completed failed'
-      });
-      alert("فشل إنهاء الموعد");
-    }
+    // Navigate to medical record creation page before finishing
+    navigate(`/doctor/appointments/${appointment.id}/medical-record`);
   };
 
   return (
@@ -186,19 +173,28 @@ const DoctorClinicAppointments = () => {
               </div>
 
               <div className="appointment-card__footer">
-                <button
-                  className="btn-action btn-action--primary"
-                  onClick={() => handleOpenPatientProfile(a)}
-                  disabled={!a.patient?.user_id}
-                >
-                  <i className="bi bi-file-medical"></i> السجل الطبي
-                </button>
                 {status === "booked" && (
+                  <>
+                    <button
+                      className="btn-action btn-action--primary"
+                      onClick={() => navigate(`/doctor/appointments/${a.id}/medical-record`)}
+                    >
+                      <i className="bi bi-file-medical"></i> السجل الطبي
+                    </button>
+                    <button
+                      className="btn-action btn-action--success"
+                      onClick={() => handleFinishAppointment(a)}
+                    >
+                      <i className="bi bi-check2"></i> إنهاء الموعد
+                    </button>
+                  </>
+                )}
+                {status === "completed" && (
                   <button
-                    className="btn-action btn-action--success"
-                    onClick={() => handleFinishAppointment(a)}
+                    className="btn-action btn-action--primary"
+                    onClick={() => navigate(`/doctor/appointments/${a.id}/medical-record`)}
                   >
-                    <i className="bi bi-check2"></i> إنهاء الموعد
+                    <i className="bi bi-eye"></i> عرض السجل
                   </button>
                 )}
               </div>

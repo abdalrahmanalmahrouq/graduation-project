@@ -9,6 +9,7 @@ const LabResultRequest = () => {
   const [approvedRequest, setApprovedRequest] = useState(null);
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [uploadData, setUploadData] = useState({
+    appointment_id: '',
     examination_title: '',
     notes: '',
     file: null
@@ -67,6 +68,7 @@ const LabResultRequest = () => {
     setMessage({ type: '', text: '' });
 
     const formData = new FormData();
+    formData.append('appointment_id', uploadData.appointment_id);
     formData.append('examination_title', uploadData.examination_title);
     formData.append('notes', uploadData.notes);
     formData.append('file', uploadData.file);
@@ -85,6 +87,7 @@ const LabResultRequest = () => {
       setShowUploadForm(false);
       setApprovedRequest(null);
       setUploadData({
+        appointment_id: '',
         examination_title: '',
         notes: '',
         file: null
@@ -185,6 +188,20 @@ const LabResultRequest = () => {
               تمت الموافقة! يمكنك الآن رفع نتيجة الفحص للمريض
             </div>
             <form onSubmit={(e) => handleUploadSubmit(e, approvedRequest.id)}>
+              <div className="mb-3">
+                <label htmlFor="appointmentId" className="form-label">
+                  معرف الموعد (Appointment ID)
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="appointmentId"
+                  value={uploadData.appointment_id}
+                  onChange={(e) => setUploadData({...uploadData, appointment_id: e.target.value})}
+                  placeholder="أدخل معرف الموعد"
+                  required
+                />
+              </div>
               <div className="mb-3">
                 <label htmlFor="examinationTitle" className="form-label">
                   عنوان الفحص

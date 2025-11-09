@@ -83,6 +83,7 @@ class LabResultController extends Controller
         $path = $req->file('file')->store('lab-results', 'public');
 
         $labResult->update([
+            'appointment_id' => $req->appointment_id,
             'examination_title' => $req->examination_title,
             'notes'             => $req->notes,
             'file_path'         => $path,
@@ -92,6 +93,6 @@ class LabResultController extends Controller
             'success' => true,
             'message' => 'Lab result saved.',
             'data'    => $labResult->fresh(),
-        ]);
+        ], 201);
     }
 }

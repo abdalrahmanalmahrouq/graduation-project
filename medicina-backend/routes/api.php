@@ -5,6 +5,7 @@ use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\LabResultController;
+use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionControllers\AuthController;
@@ -107,6 +108,10 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function(){
     Route::post('doctors/add-bio',[DoctorController::class,'addBio']);
     Route::get('doctors/get-bio',[DoctorController::class,'getBio']);
     Route::post('doctors/update-bio',[DoctorController::class,'updateBio']);
+    Route::get('appointment/{appointment_id}/medical-record/create',[MedicalRecordController::class,'create']);
+    Route::post('appointment/{appointment_id}/medical-record',[MedicalRecordController::class,'store']);
+    Route::get('medical-records',[MedicalRecordController::class,'index']);
+    Route::get('medical-records/{record_id}',[MedicalRecordController::class,'show']);
 });
 
 

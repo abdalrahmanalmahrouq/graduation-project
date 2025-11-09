@@ -18,6 +18,8 @@ return new class extends Migration
         $table->string('patient_id');
         $table->foreign('patient_id')->references('user_id')->on('patients')->onDelete('cascade');
         $table->enum('status',['pending','approved','rejected'])->default('pending');
+        $table->unsignedBigInteger('appointment_id')->nullable();
+        $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('set null');
         $table->string('examination_title')->nullable();
         $table->text('notes')->nullable();
         $table->string('file_path')->nullable();

@@ -14,6 +14,7 @@ class LabResult extends Model
         'lab_id',
         'patient_id',
         'status',
+        'appointment_id',
         'examination_title',
         'notes',
         'file_path',
@@ -38,6 +39,10 @@ class LabResult extends Model
 
     public function patient(){
         return $this->belongsto(Patient::class, 'patient_id', 'user_id');
+    }
+
+    public function appointment(){
+        return $this->belongsto(Appointment::class, 'appointment_id', 'id');
     }
 
     /**

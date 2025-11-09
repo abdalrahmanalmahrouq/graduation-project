@@ -24,4 +24,13 @@ class Appointment extends Model
     public function clinic(){
         return $this->belongsTo(Clinic::class, 'clinic_id','user_id');
     }
+
+    // Each appointment has many lab results
+    public function labResults(){
+        return $this->hasMany(LabResult::class);
+    }
+
+    public function medicalRecord() {
+        return $this->hasOne(MedicalRecord::class);
+    }
 }
