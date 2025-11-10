@@ -132,7 +132,7 @@ const DoctorClinicAppointments = () => {
               <div className="appointment-card__header">
                 <div className="appointment-card__identity">
                   <div className="avatar-circle">
-                    <span>{(a.patient?.full_name || "م")[0]}</span>
+                    <span>{a.patient?.user?.profile_image ? <img src={`/storage/${a.patient?.user?.profile_image}`}  className="avatar-image" alt="Patient" /> : <i className="bi bi-person"></i>}</span>
                   </div>
                   <div className="identity-text">
                     <div
@@ -182,7 +182,7 @@ const DoctorClinicAppointments = () => {
                       <i className="bi bi-file-medical"></i> السجل الطبي
                     </button>
                     <button
-                      className="btn-action btn-action--success"
+                      className="btn-action btn-action--medicina"
                       onClick={() => handleFinishAppointment(a)}
                     >
                       <i className="bi bi-check2"></i> إنهاء الموعد

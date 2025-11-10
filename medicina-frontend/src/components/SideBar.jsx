@@ -128,18 +128,19 @@ export default function Sidebar() {
                 <span>التقارير الطبية</span>
               </a>
               <ul className="sub-list">
+               <li>
+                  <NavLink to="/patient/medical-records">
+                    <i className={`fa-solid fa-file-medical medicina-theme-icon pb-2`}></i>
+                    <span>السجل الطبي</span>
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink to="/patient/lab-results">
                     <i className={`fa-solid fa-flask medicina-theme-icon pb-2`}></i>
                     <span>تقارير المختبرات</span>
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/patient/medical-records">
-                    <i className={`fa-solid fa-file-medical medicina-theme-icon pb-2`}></i>
-                    <span>السجل الطبي</span>
-                  </NavLink>
-                </li>
+               
 
                 
               </ul>

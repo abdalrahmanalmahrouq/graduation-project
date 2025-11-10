@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LabResult;
+use App\Models\MedicalRecord;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -75,6 +76,37 @@ class PatientController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while fetching patient lab results',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getPatientMedicalRecords()
+    {
+        try{
+
+            $userId=auth()->id();
+            $medicalRecords=MedicalRecord::where('patient_id',$userId)
+            ->select('id','appointment_id','lab_result_id','doctor_id','consultation','prescription')
+            ->with([
+                'appointment:id,clinic_id,appointment_date,starting_time,ending_time,status',
+                'appointment.clinic:user_id,clinic_name',
+                'appointment.clinic.user:id,profile_image',
+                'doctor:user_id,full_name',
+                'doctor.user:id,profile_image',
+                'labResult:id,appointment_id,examination_title,notes,file_path,status'
+            ])
+            ->orderBy('created_at','desc')
+            ->paginate(10);
+            return response()->json([
+                'success' => true,
+                'medicalRecords' => $medicalRecords
+            ], 200);
+        }catch(\Exception $e){
+            Log::error('Error fetching patient medical records: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching patient medical records',
                 'error' => $e->getMessage()
             ], 500);
         }

@@ -116,7 +116,7 @@ class AppointmentController extends Controller
         $appointments=Appointment::where('doctor_id', $doctor_id)
         ->where('clinic_id', $clinic_id)
         ->where('status', 'booked')
-        ->with(['patient'])
+        ->with(['patient','patient.user:id,profile_image'])
         ->get();
         return response()->json(['appointments' => $appointments], 200);
     }
@@ -133,7 +133,7 @@ class AppointmentController extends Controller
         $appointments=Appointment::where('doctor_id', $doctor_id)
         ->where('clinic_id', $clinic_id)
         ->where('status', 'completed')
-        ->with(['patient'])
+        ->with(['patient','patient.user:id,profile_image'])
         ->get();
         return response()->json(['appointments' => $appointments], 200);
     }
@@ -143,7 +143,7 @@ class AppointmentController extends Controller
         $appointments=Appointment::where('doctor_id', $doctor_id)
         ->where('clinic_id', $clinic_id)
         ->where('status', 'cancelled')
-        ->with(['patient'])
+        ->with(['patient','patient.user:id,profile_image'])
         ->get();
         return response()->json(['appointments' => $appointments], 200);
     }

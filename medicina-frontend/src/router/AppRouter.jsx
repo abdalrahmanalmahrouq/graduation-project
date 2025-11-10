@@ -41,6 +41,7 @@ import LabResultRequestPage from "../pages/LabResultRequestPage";
 import NotificationsPage from "../pages/NotificationsPage";
 import PatientLabResultsPage from "../pages/PatientLabResultsPage";
 import MedicalRecordPage from "../pages/MedicalRecordPage";
+import PatientMedicalRecordPage from "../pages/PatientMedicalRecordPage";
 
 const AppRouter = () => {
 	useEffect(() => {
@@ -128,6 +129,15 @@ const AppRouter = () => {
 					element={
 						<ProtectedRoute allowedRoles={["patient"]}>
 							<PastAppointmentPage />
+						</ProtectedRoute>
+					}
+				/>
+
+				<Route
+					path="/patient/medical-records"
+					element={
+						<ProtectedRoute allowedRoles={["patient"]}>
+							<PatientMedicalRecordPage />
 						</ProtectedRoute>
 					}
 				/>

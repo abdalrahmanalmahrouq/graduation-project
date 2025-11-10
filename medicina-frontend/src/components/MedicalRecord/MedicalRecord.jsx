@@ -195,7 +195,7 @@ const MedicalRecord = () => {
 
   return (
     <div className="medical-record-container">
-      <Header />
+      
 
       {message.text && (
         <div
@@ -209,14 +209,15 @@ const MedicalRecord = () => {
       )}
 
       {loading ? (
-        <div className="text-center py-5">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">جاري التحميل...</span>
-          </div>
-          <p className="mt-3 text-muted">جاري التحميل ...</p>
-        </div>
-      ) : (
+            <div className="text-center py-5">
+            <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">جاري التحميل...</span>
+            </div>
+            <p className="mt-3 text-muted">جاري التحميل ...</p>
+            </div>
+        ) : (
         <>
+          <Header />
           <AppointmentSummary />
 
           <div className="medical-record-content">
@@ -324,7 +325,7 @@ const MedicalRecord = () => {
                 </button>
                 {appointment?.status !== "completed" && (
                   <button
-                    className="btn-action btn-action--primary"
+                    className="btn-action btn-action--medicina"
                     type="button"
                     onClick={handleSaveAndFinish}
                     disabled={saving}
