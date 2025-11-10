@@ -161,3 +161,9 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` feat: enable each doctor to upload,read medical record for patient for specific appointment ` Nov/09
 **Purpose:**  
 < now the doctor can upload,read medical consultation for booked patients for specific appointment >
+
+### Commit
+
+`  feat: enable the patient to access his medical record with associated lab result for each appointment` Nov/10
+**Purpose:**  
+< now the patient can access his medical record and see the results with lab result that is associated with each medical record for every completed appointment >
