@@ -1,6 +1,6 @@
 ### Commit
 
-`  ` Month/Day
+` ` Month/Day
 **Purpose:**  
 < >
 
@@ -167,3 +167,10 @@ so the overall design will be so great , also the uploaded pictures from the see
 `  feat: enable the patient to access his medical record with associated lab result for each appointment` Nov/10
 **Purpose:**  
 < now the patient can access his medical record and see the results with lab result that is associated with each medical record for every completed appointment >
+
+
+### Commit
+
+` feat: enable each doctor to see all his patients in one page for all associated clinics ` Nov/11
+**Purpose:**  
+< now each doctor can access all his patients in one page, he can also filter by associated clinic or appointment status >
