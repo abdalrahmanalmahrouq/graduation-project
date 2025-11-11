@@ -268,10 +268,10 @@ export default function Sidebar() {
               </NavLink>
             </li>
             <li>
-              <a href="">
+              <NavLink to="/doctor/all-appointments">
                 <i className={`fa-solid fa-user-injured medicina-theme-icon pb-2`}></i>
                 <span>المرضى</span>
-              </a>
+              </NavLink>
             </li>
             
            

@@ -31,4 +31,11 @@ class Doctor extends Model
     public function clinics(){
         return $this->belongsToMany(Clinic::class,'clinic_doctor', 'doctor_id', 'clinic_id', 'user_id', 'user_id');
     }
+
+    // Each doctor can have many appointments
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id', 'user_id');
+    }
+   
 }

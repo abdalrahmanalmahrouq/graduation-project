@@ -6,6 +6,7 @@ use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -58,7 +59,7 @@ class ProfileController extends Controller
         $user = $request->user();
         
         // Log the request data for debugging
-        \Log::info('Profile update request:', [
+        Log::info('Profile update request:', [
             'user_id' => $user->id,
             'user_role' => $user->role,
             'request_data' => $request->all(),
@@ -131,9 +132,9 @@ class ProfileController extends Controller
 
         try {
             $validated = $request->validate($validationRules, $messages);
-            \Log::info('Validation passed:', $validated);
+            Log::info('Validation passed:', $validated);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            \Log::error('Validation failed:', $e->errors());
+            Log::error('Validation failed:', $e->errors());
             return response()->json(['error' => 'Validation failed', 'details' => $e->errors()], 422);
         }
 
@@ -141,11 +142,11 @@ class ProfileController extends Controller
         $imageProcessed = false;
         
         if ($request->hasFile('profile_image') && $request->file('profile_image')->isValid()) {
-            \Log::info('Processing profile image upload');
+            Log::info('Processing profile image upload');
             
             // Delete old profile image if exists
             if ($user->profile_image) {
-                \Log::info('Deleting old profile image:', ['old_path' => $user->profile_image]);
+                Log::info('Deleting old profile image:', ['old_path' => $user->profile_image]);
                 if (Storage::disk('public')->exists($user->profile_image)) {
                     Storage::disk('public')->delete($user->profile_image);
                 }
@@ -161,15 +162,15 @@ class ProfileController extends Controller
             $fileName = uniqid() . '_' . time() . '.' . $uploadedFile->getClientOriginalExtension();
             $imagePath = $uploadedFile->storeAs('profile-images', $fileName, 'public');
             
-            \Log::info('New image stored at:', ['storage_path' => $imagePath]);
+            Log::info('New image stored at:', ['storage_path' => $imagePath]);
             
             $user->profile_image = $imagePath;
             $user->save();
             
-            \Log::info('Profile image updated in database');
+            Log::info('Profile image updated in database');
             $imageProcessed = true;
         } else {
-            \Log::info('No valid image file found in request');
+            Log::info('No valid image file found in request');
         }
 
         // Update profile based on role
@@ -179,7 +180,7 @@ class ProfileController extends Controller
                 $updateData = array_filter($validated, function($key) {
                     return in_array($key, ['full_name', 'phone_number', 'date_of_birth', 'address', 'insurance_id']);
                 }, ARRAY_FILTER_USE_KEY);
-                \Log::info('Updating patient profile:', $updateData);
+                Log::info('Updating patient profile:', $updateData);
                 if (!empty($updateData)) {
                     $user->patient->update($updateData);
                 }
@@ -188,7 +189,7 @@ class ProfileController extends Controller
                 $updateData = array_filter($validated, function($key) {
                     return in_array($key, ['full_name', 'phone_number', 'specialization', 'consultation_duration']);
                 }, ARRAY_FILTER_USE_KEY);
-                \Log::info('Updating doctor profile:', $updateData);
+                Log::info('Updating doctor profile:', $updateData);
                 if (!empty($updateData)) {
                     $user->doctor->update($updateData);
                 }
@@ -197,7 +198,7 @@ class ProfileController extends Controller
                 $updateData = array_filter($validated, function($key) {
                     return in_array($key, ['clinic_name', 'phone_number', 'address']);
                 }, ARRAY_FILTER_USE_KEY);
-                \Log::info('Updating clinic profile:', $updateData);
+                Log::info('Updating clinic profile:', $updateData);
                 if (!empty($updateData)) {
                     $user->clinic->update($updateData);
                 }
@@ -206,14 +207,14 @@ class ProfileController extends Controller
                 $updateData = array_filter($validated, function($key) {
                     return in_array($key, ['lab_name', 'phone_number', 'address']);
                 }, ARRAY_FILTER_USE_KEY);
-                \Log::info('Updating lab profile:', $updateData);
+                Log::info('Updating lab profile:', $updateData);
                 if (!empty($updateData)) {
                     $user->lab->update($updateData);
                 }
                 break;
         }
 
-        \Log::info('Profile update completed successfully');
+        Log::info('Profile update completed successfully');
 
         return response()->json([
             'message' => 'Profile updated successfully',

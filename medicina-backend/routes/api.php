@@ -108,6 +108,7 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function(){
     Route::post('doctors/add-bio',[DoctorController::class,'addBio']);
     Route::get('doctors/get-bio',[DoctorController::class,'getBio']);
     Route::post('doctors/update-bio',[DoctorController::class,'updateBio']);
+    Route::get('doctors/get-all-patients-appointments-with-medical-record',[DoctorController::class,'getAllPatientsAppointmentsWithMedicalRecord']);
     Route::get('appointment/{appointment_id}/medical-record/create',[MedicalRecordController::class,'create']);
     Route::post('appointment/{appointment_id}/medical-record',[MedicalRecordController::class,'store']);
     Route::get('medical-records',[MedicalRecordController::class,'index']);

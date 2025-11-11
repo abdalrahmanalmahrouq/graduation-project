@@ -42,6 +42,7 @@ import NotificationsPage from "../pages/NotificationsPage";
 import PatientLabResultsPage from "../pages/PatientLabResultsPage";
 import MedicalRecordPage from "../pages/MedicalRecordPage";
 import PatientMedicalRecordPage from "../pages/PatientMedicalRecordPage";
+import DoctorAllAppointmentsPage from "../pages/DoctorAllAppointmentsPage";
 
 const AppRouter = () => {
 	useEffect(() => {
@@ -205,6 +206,16 @@ const AppRouter = () => {
                         </ProtectedRoute>
                     }
                 />
+
+				<Route
+                    path="/doctor/all-appointments"
+                    element={
+                        <ProtectedRoute allowedRoles={["doctor"]}>
+                            <DoctorAllAppointmentsPage />
+                        </ProtectedRoute>
+                    }
+                />
+
 				<Route path="/unauthorized" element={<Unauthorized />} />
 				<Route path="/404" element={<NotFound />} />
 

@@ -136,8 +136,8 @@ const DoctorClinicAppointments = () => {
                   </div>
                   <div className="identity-text">
                     <div
-                      className="name"
                       onClick={() => handleOpenPatientProfile(a)}
+                      style={{cursor: 'pointer', color: 'var(--accent-color)', textDecoration: 'underline'}}
                     >
                       {a.patient?.full_name || "غير محدد"}
                     </div>
@@ -176,7 +176,7 @@ const DoctorClinicAppointments = () => {
                 {status === "booked" && (
                   <>
                     <button
-                      className="btn-action btn-action--primary"
+                      className="btn-action btn-action--secondary"
                       onClick={() => navigate(`/doctor/appointments/${a.id}/medical-record`)}
                     >
                       <i className="bi bi-file-medical"></i> السجل الطبي

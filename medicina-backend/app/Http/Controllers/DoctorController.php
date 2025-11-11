@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use App\Models\Clinic;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class DoctorController extends Controller
 {
@@ -120,7 +120,9 @@ class DoctorController extends Controller
         $doctor=$user->doctor;
         
         $clinics=$doctor->clinics()
-        ->wherePivot('deleted_at', null)
+        ->whereHas('user', function ($query) {
+            $query->whereNull('deleted_at');
+        })
         ->with('user:id,email,profile_image')
         ->get(['clinics.user_id', 'clinics.clinic_name', 'clinics.address', 'clinics.phone_number']);
 
@@ -162,6 +164,39 @@ class DoctorController extends Controller
         $doctor->bio=$request->bio;
         $doctor->save();
         return response()->json(['message' => 'Bio updated successfully.'], 200);
+    }
+
+    public function getAllPatientsAppointmentsWithMedicalRecord(Request $request)
+    {
+        try{
+            $doctor=auth()->user()->doctor;
+            
+            $appointment = $doctor->appointments()
+            ->where(function ($q) {
+                $q->whereHas('clinic.user', fn($u) => $u->whereNull('deleted_at'))
+                  ->whereHas('patient.user', fn($u) => $u->whereNull('deleted_at'));
+            })
+            ->whereNotIn('status',['available','no_show'])
+            ->with([
+                'patient:user_id,full_name',
+                'patient.user:id,profile_image',
+                'clinic:user_id,clinic_name',
+                'medicalRecord',
+                'medicalRecord.labResult',
+            ])
+            ->orderBy('appointment_date','desc')
+            ->get();
+            return response()->json([
+                'success' => true,
+                'appointments' => $appointment
+            ], 200);
+        }catch(\Exception $e){
+            Log::error('Error fetching all patients appointments with medical record: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching all patients appointments with medical record',
+                'error' => $e->getMessage()], 500);
+        }
     }
 }
 
