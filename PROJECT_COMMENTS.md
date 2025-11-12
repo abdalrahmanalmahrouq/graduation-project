@@ -174,3 +174,10 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` feat: enable each doctor to see all his patients in one page for all associated clinics ` Nov/11
 **Purpose:**  
 < now each doctor can access all his patients in one page, he can also filter by associated clinic or appointment status >
+
+
+### Commit
+
+` Add Loading component to reduce the redundancy` Nov/12
+**Purpose:**  
+< now the loading is more flexible and reusable >
