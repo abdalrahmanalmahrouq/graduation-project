@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddInsuranceModal from './AddInsuranceModal';
+import Loading from '../Loading';
 
 const ClinicInsuranceManagement = () => {
   const [insurances, setInsurances] = useState([]);
@@ -115,12 +116,7 @@ const ClinicInsuranceManagement = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center py-5">
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">جاري التحميل...</span>
-      </div>
-      <p className="mt-3 text-muted">جاري التحميل ...</p>
-    </div>
+      <Loading />
     );
   }
 

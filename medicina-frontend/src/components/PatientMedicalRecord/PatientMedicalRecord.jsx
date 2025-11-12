@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import defaultimage from "../../assets/img/profpic.png"
+import Loading from "../Loading";
 const PatientMedicalRecords = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -73,12 +74,7 @@ const PatientMedicalRecords = () => {
   </header>
 
         {loading ? (
-            <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">جاري التحميل...</span>
-            </div>
-            <p className="mt-3 text-muted">جاري التحميل ...</p>
-            </div>
+            <Loading />
         ) : records.length === 0 ? (
             /* Empty State */
             <div className="patient-lab-results-empty-state">

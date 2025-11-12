@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import defaultImage from '../assets/img/profpic.png';
 import axios from 'axios';
+import Loading from './Loading';
 
 
 const DoctorCard = ({ doctor, onManage, onDelete }) => {
@@ -323,12 +324,7 @@ const DoctorList = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">جاري التحميل...</span>
-            </div>
-            <p className="mt-3 text-muted">جاري التحميل ...</p>
-          </div>
+      <Loading />
     );
   }
 

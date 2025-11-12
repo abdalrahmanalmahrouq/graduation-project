@@ -6,6 +6,7 @@ import defaultImage from '../../assets/img/profpic.png';
 
 import TopPageDetails from '../TopPageDetails/TopPageDetails';
 import { titles } from '../../data/clinicsData';
+import Loading from '../Loading';
 
 function AllClinics() {
     const { directory } = useParams();
@@ -46,12 +47,7 @@ function AllClinics() {
         return (
             <>
                 <TopPageDetails pageTitle={titles[directory] || 'العيادات'} />
-                <div className="text-center py-5">
-                    <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">جاري التحميل...</span>
-                    </div>
-                    <p className="mt-3 text-muted">جاري التحميل ...</p>
-                </div>
+                <Loading />
             </>
         );
     }

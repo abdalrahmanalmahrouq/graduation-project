@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loading from "../Loading";
 
 const tabs = [
   { key: "booked", label: "محجوزة", icon: "bi bi-calendar-check" },
@@ -112,12 +113,7 @@ const DoctorClinicAppointments = () => {
 
       {/* Content */}
       {loading ? (
-         <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">جاري التحميل...</span>
-            </div>
-            <p className="mt-3 text-muted">جاري التحميل ...</p>
-         </div>
+         <Loading />
       ) : error ? (
         <div className="alert-block alert-block--danger">{error}</div>
       ) : appointments.length === 0 ? (

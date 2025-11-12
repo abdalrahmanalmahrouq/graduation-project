@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/img/profpic.png';
 import axios from 'axios';
 import ImageCropModal from './ImageCropModal';
+import Loading from '../Loading';
 
 
 const UserAccount = ({ token }) => {
@@ -385,12 +386,7 @@ const UserAccount = ({ token }) => {
   // Loading component with modern design
   if (isLoading) {
     return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">جاري التحميل...</span>
-        </div>
-        <p className="mt-3 text-muted">جاري التحميل ...</p>
-     </div>
+      <Loading />
     );
   }
 

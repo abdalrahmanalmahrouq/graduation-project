@@ -7,6 +7,7 @@ import namebanner from '../../assets/img/theme/name.png';
 import phonebanner from '../../assets/img/theme/phone.png';
 import datebanner from '../../assets/img/theme/date-of-birth.png';
 import locationbanner from '../../assets/img/theme/location.png';
+import Loading from '../Loading';
 
 const PatientData = () => {
   const { user_id } = useParams();
@@ -35,12 +36,7 @@ const PatientData = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">جاري التحميل...</span>
-        </div>
-        <p className="mt-3 text-muted">جاري التحميل ...</p>
-      </div>
+      <Loading />
     );
   }
 

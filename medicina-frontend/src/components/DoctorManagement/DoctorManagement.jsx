@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import defaultImage from '../../assets/img/profpic.png';
+import Loading from '../Loading';
 
 
 const DoctorManagement = () => {
@@ -212,12 +213,7 @@ const DoctorManagement = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">جاري التحميل...</span>
-        </div>
-        <p className="mt-3 text-muted">جاري التحميل ...</p>
-      </div>
+      <Loading />
     );
   }
 

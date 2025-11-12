@@ -5,6 +5,7 @@ import AppointmentTable from './AppointmentTable';
 import axios from 'axios';
 import defaultImage from '../../assets/img/profpic.png';
 import DoctorHeaderCard from '../DoctorHeaderCard';
+import Loading from '../Loading';
 
 function  AppointmentsSchedule  () {
     const { id } = useParams();
@@ -55,12 +56,7 @@ function  AppointmentsSchedule  () {
 
     if (loading) {
         return (
-            <div className="text-center py-5">
-                <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">جاري التحميل...</span>
-                </div>
-                <p className="mt-3 text-muted">جاري التحميل ...</p>
-            </div>
+            <Loading />
         );
     }
 

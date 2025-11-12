@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { Spinner, Form, Row, Col, Card } from 'react-bootstrap';
+import Loading from '../Loading';
 
 const AppointmentTable = ({ doctorId, clinicId }) => {
   const [appointments, setAppointments] = useState([]);
@@ -107,12 +108,7 @@ const AppointmentTable = ({ doctorId, clinicId }) => {
 
   if (loading) {
     return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">جاري التحميل...</span>
-        </div>
-        <p className="mt-3 text-muted">جاري التحميل ...</p>
-      </div>
+      <Loading />
     );
   }
 

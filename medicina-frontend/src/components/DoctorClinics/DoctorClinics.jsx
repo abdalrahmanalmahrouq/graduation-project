@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../Loading';
 
 const DoctorClinics = () => {
   const [clinics, setClinics] = useState([]);
@@ -30,12 +31,7 @@ const DoctorClinics = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">جاري التحميل...</span>
-        </div>
-        <p className="mt-3 text-muted">جاري التحميل ...</p>
-      </div>
+      <Loading />
     );
   }
 

@@ -3,6 +3,7 @@ import { Button, Card, Container, Nav, Row, Spinner, Alert, Form, Badge, Col } f
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DoctorHeaderCard from '../DoctorHeaderCard';
+import Loading from '../Loading';
 
 
 
@@ -54,12 +55,7 @@ function DoctorProfile() {
 
     if (loading) {
         return (
-            <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">جاري التحميل...</span>
-            </div>
-            <p className="mt-3 text-muted">جاري التحميل ...</p>
-          </div>
+          <Loading />
         );
     }
 

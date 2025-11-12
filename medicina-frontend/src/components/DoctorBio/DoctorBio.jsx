@@ -4,6 +4,7 @@ import axios from 'axios';
 import editbanner from '../../assets/img/theme/edit.png';
 import arrowbanner from '../../assets/img/theme/arrow.png';
 import biobanner from '../../assets/img/theme/bio.png'; 
+import Loading from '../Loading';
 
 const DoctorBio = () => {
   const navigate = useNavigate();
@@ -87,12 +88,7 @@ const DoctorBio = () => {
   // Loading component
   if (isLoadingBio) {
     return (
-          <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">جاري التحميل...</span>
-            </div>
-            <p className="mt-3 text-muted">جاري التحميل ...</p>
-          </div>
+        <Loading />
     );
   }
 
