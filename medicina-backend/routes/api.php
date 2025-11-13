@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
@@ -146,6 +147,9 @@ Route::middleware(['auth:sanctum', 'role:clinic'])->group(function(){
     Route::post('clinic/add-insurances',[InsuranceController::class,'addInsurancesForClinic']); // this route will add insurance company for each clinic
     Route::delete('clinic/delete-insurances',[InsuranceController::class,'deleteInsuranceForClinic']);// this route will soft delete an associated insurance company for the clinic
     Route::post('clinic/restore-insurances',[InsuranceController::class,'restoreInsuranceForClinic']);// this route will restore a soft deleted insurance company for the clinic
+    Route::get('clinic/dashboard',[DashboardController::class, 'clinicDashboard']);
+    Route::get('clinic/get-five-insurances-companies',[DashboardController::class, 'getFiveInsurancesCompanies']);
+    Route::get('clinic/get-five-patients',[DashboardController::class, 'getFivePatients']);
 });
 
 

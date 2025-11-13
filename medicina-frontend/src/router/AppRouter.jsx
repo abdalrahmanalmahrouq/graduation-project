@@ -43,6 +43,7 @@ import PatientLabResultsPage from "../pages/PatientLabResultsPage";
 import MedicalRecordPage from "../pages/MedicalRecordPage";
 import PatientMedicalRecordPage from "../pages/PatientMedicalRecordPage";
 import DoctorAllAppointmentsPage from "../pages/DoctorAllAppointmentsPage";
+import DashboardPage from "../pages/DashboardPage";
 
 const AppRouter = () => {
 	useEffect(() => {
@@ -248,6 +249,14 @@ const AppRouter = () => {
 					element={
 						<ProtectedRoute allowedRoles={["clinic"]}>
 							<ClinicInsurancePage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/clinic/dashboard"
+					element={
+						<ProtectedRoute allowedRoles={["clinic"]}>
+							<DashboardPage />
 						</ProtectedRoute>
 					}
 				/>

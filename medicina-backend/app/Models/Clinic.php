@@ -39,4 +39,21 @@ class Clinic extends Model
             ->withTimestamps()
             ->withPivot(['created_at', 'updated_at', 'deleted_at']);
     }
+
+
+    //Each clinic can have multiple patients
+    public function patients(){
+        return $this->belongsToMany(
+            Patient::class,
+            'appointments',
+            'clinic_id',
+            'patient_id',
+            'user_id',
+            'user_id'
+        )->distinct();
+    }
+
+    public function appointments(){
+        return $this->hasMany(Appointment::class,'clinic_id','user_id');
+    }
 }

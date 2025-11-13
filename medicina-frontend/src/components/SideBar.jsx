@@ -195,10 +195,10 @@ export default function Sidebar() {
               </a>
             </li>
             <li>
-              <a href="">
+              <NavLink to="/clinic/dashboard">
                 <i className={`fa-solid fa-square-poll-vertical medicina-theme-icon pb-2`}></i>
                 <span>داشبورد</span>
-              </a>
+              </NavLink>
             </li>
             <li>
               <NavLink 

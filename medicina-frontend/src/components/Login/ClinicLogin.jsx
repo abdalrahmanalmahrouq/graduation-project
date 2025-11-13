@@ -39,7 +39,7 @@ export default function ClinicLogin() {
               // ✅ Store data (backend already validated role)
               localStorage.setItem('token', response.data.access_token);
               localStorage.setItem('user', JSON.stringify(profileResponse.data));
-              navigate('/clinic/account');
+              navigate('/clinic/dashboard');
             })
             .catch((profileError) => {
               console.error('Failed to fetch profile:', profileError);

@@ -37,7 +37,7 @@ export default function DoctorLogin() {
                   // ✅ Store data (backend already validated role)
                   localStorage.setItem('token', response.data.access_token);
                   localStorage.setItem('user', JSON.stringify(profileResponse.data));
-                  navigate('/doctor/account');
+                  navigate('/doctor/clinics');
                 })
                 .catch((profileError) => {
                   console.error('Failed to fetch profile:', profileError);
