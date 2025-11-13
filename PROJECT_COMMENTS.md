@@ -181,3 +181,9 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` Add Loading component to reduce the redundancy` Nov/12
 **Purpose:**  
 < now the loading is more flexible and reusable >
+
+### Commit
+
+` feat: enable each clinic to see some statistics on dashboard page` Nov/13
+**Purpose:**  
+< now every clinic can access and see some statistics on dashboard page >
