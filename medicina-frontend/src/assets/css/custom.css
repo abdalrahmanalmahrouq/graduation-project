@@ -8581,7 +8581,7 @@ box-shadow: none;
 .patient-lab-results-container {
   min-height: 80vh;
   min-width: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%);
+  /* background: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%); */
   border-radius: 20px;
   padding: 1rem 0;
 }
@@ -9634,7 +9634,7 @@ box-shadow: none;
 
 .patient-medical-records-container {
   padding: 2rem 2.5rem;
-  background-color: #f7f9fb;
+  /* background-color: #f7f9fb; */
   border-radius: 20px;
   min-width: 90vh;
   min-height: 80vh;
