@@ -255,3 +255,8 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 - Approve/reject registrations (especially clinics, doctors, labs)
 - Monitor users, appointments, reports via dashboard
 - Manage insurance companies globally
+
+
+TODO:
+ - Validation for doctors that their schedule don't conflict
+ - Patient should get banned if exceeded a number of no_show
