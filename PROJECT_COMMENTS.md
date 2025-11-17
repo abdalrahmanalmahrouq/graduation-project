@@ -187,3 +187,9 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` feat: enable each clinic to see some statistics on dashboard page` Nov/13
 **Purpose:**  
 < now every clinic can access and see some statistics on dashboard page >
+
+### Commit
+
+` feat: enhance the notifications page for the patient user ` Nov/17
+**Purpose:**  
+< now the patient will know when the lab or doctor upload any results for his account>
