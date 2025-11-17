@@ -4361,6 +4361,10 @@ border-radius: 16px 16px 0 0;
 border-bottom: 1px solid #e2e8f0;
 }
 
+.modern-tabs-container-notifications {
+  
+  padding: 1rem 2rem;
+}
 .modern-nav-tabs {
 border: none;
 gap: 0.5rem;
@@ -8407,7 +8411,10 @@ box-shadow: none;
 }
 
 .notifications-content {
-  padding: 0 2rem;
+  /* padding: 3rem; */
+  
+  border-radius: 20px;
+  /* background: linear-gradient(135deg, #f8f9fa 0%, #f8f9fa 100%); */
 }
 
 .notifications-empty-state {
@@ -8459,7 +8466,7 @@ box-shadow: none;
 
 .notification-icon {
   background: linear-gradient(135deg, var(--medicina-card-background-color) 0%, #2980b9 100%);
-  color: white;
+  color: var(--heading-color);
   width: 60px;
   height: 60px;
   border-radius: 15px;

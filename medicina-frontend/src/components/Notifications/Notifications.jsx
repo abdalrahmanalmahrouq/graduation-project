@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Nav } from 'react-bootstrap'
 import Loading from '../Loading';
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState([]);
+  const [labNotifications, setLabNotifications] = useState([]);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+  const [readNotifications, setReadNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("nonReadNotifications")
   const [message, setMessage] = useState({ type: '', text: '' });
   const [processingId, setProcessingId] = useState(null);
 
@@ -15,8 +19,10 @@ const Notifications = () => {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/lab-results/notifications');
-      setNotifications(response.data.notifications || []);
+      const response = await axios.get('/notifications');
+      setLabNotifications(response.data.labNotifications || []);
+      setUnreadNotifications(response.data.unreadNotifications || []);
+      setReadNotifications(response.data.readNotifications || []);
     } catch (error) {
       console.error('Error fetching notifications:', error);
       setMessage({ type: 'error', text: 'حدث خطأ أثناء تحميل الإشعارات' });
@@ -40,7 +46,9 @@ const Notifications = () => {
       });
 
       // Remove notification from list
-      setNotifications(notifications.filter(n => n.id !== labResultId));
+      setLabNotifications(prev =>
+        prev.filter(n => n.id !== labResultId)
+      );
     } catch (error) {
       const errorMsg = error.response?.data?.message || 'حدث خطأ أثناء معالجة الطلب';
       setMessage({ type: 'error', text: errorMsg });
@@ -49,6 +57,26 @@ const Notifications = () => {
     }
   };
 
+  const handleMarkAsRead = async (id) => {
+    try {
+      await axios.patch(`/notifications/${id}/read`);
+      setMessage({ 
+        type: 'success', 
+        text: 'تمت القراءة بنجاج'
+      });
+      setUnreadNotifications(prev => prev.filter(n => n.id !== id));
+      setReadNotifications(prev => [
+        ...prev,
+        unreadNotifications.find(n => n.id === id)
+      ]);
+    } catch (error) {
+      console.error("Mark read error:", error);
+    }
+  };
+
+  const handleTabSelect = (selectedKey) => {
+    setActiveTab(selectedKey);
+  }
   return (
     <div className="notifications-container">
       {/* Header Section */}
@@ -60,7 +88,7 @@ const Notifications = () => {
             </div>
             <div className="notifications-title-text">
               <h1 className="notifications-main-title">الإشعارات</h1>
-              <p className="notifications-subtitle">طلبات نتائج الفحوصات المعملية</p>
+              <p className="notifications-subtitle"> جميع اشعارات المريض المقروءة و الغير المقروءة في العيادة</p>
             </div>
           </div>
         </div>
@@ -77,18 +105,40 @@ const Notifications = () => {
       {loading ? (
         <Loading />
       ) : (
+
+        <div>
+           <div className="modern-tabs-container-notifications" >
+              <Nav variant="pills" activeKey={activeTab} onSelect={handleTabSelect} className="modern-nav-tabs">
+                  <Nav.Item>
+                      <Nav.Link eventKey="nonReadNotifications" className="modern-nav-link">
+                          <i className="fas fa-bell me-2"></i>
+                         الاشعارات الغير المقروءة
+                      </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                      <Nav.Link eventKey="ReadNotifications" className="modern-nav-link">
+                          <i className="fas fa-bell-slash me-2"></i>
+                         كل الاشعارات
+                      </Nav.Link>
+                  </Nav.Item>
+              </Nav>
+          </div>
         <div className="notifications-content">
-          {notifications.length === 0 ? (
-            <div className="notifications-empty-state">
+
+
+          {activeTab === "nonReadNotifications" && (
+            <div>
+            {unreadNotifications.length === 0 && labNotifications.length === 0 ? (
+              <div className="notifications-empty-state">
               <div className="empty-state-icon">
                 <i className="fa-solid fa-bell-slash"></i>
               </div>
               <h3>لا توجد إشعارات</h3>
-              <p>لا توجد طلبات فحوصات معملية في الوقت الحالي</p>
+              <p>لا توجد اشعارات في الوقت الحالي</p>
             </div>
-          ) : (
-            <div className="notifications-list">
-              {notifications.map((notification) => (
+            ): (
+              <div className="notifications-list">
+              {labNotifications.map((notification) => (
                 <div key={notification.id} className="notification-card">
                   <div className="notification-icon">
                     <i className="fa-solid fa-flask"></i>
@@ -133,8 +183,115 @@ const Notifications = () => {
                   </div>
                 </div>
               ))}
-            </div>
+  
+              {unreadNotifications.map((notification) => (
+                <div key={notification.id} className="notification-card">
+                  <div className="notification-icon">
+                    {/* Choose icon based on type */}
+                    {notification.type === "lab_result_uploaded" && (
+                      <i className="fa-solid fa-flask"></i>
+                    )}
+                    {notification.type === "medical_record_uploaded" && (
+                      <i className="fa-solid fa-notes-medical"></i>
+                    )}
+                    {notification.type !== "lab_result_uploaded" &&
+                      notification.type !== "medical_record_uploaded" && (
+                        <i className="fa-solid fa-bell"></i>
+                    )}
+                  </div>
+  
+                  <div className="notification-content">
+                    <h5 className="notification-title">
+                      {notification.title}
+                    </h5>
+  
+                    <p className="notification-text">
+                      {notification.message}
+                    </p>
+  
+                    <div className="notification-meta">
+                      <span className="notification-time">
+                        <i className="fa-regular fa-clock ms-1"></i>
+                        {new Date(notification.created_at).toLocaleString('en-UK')}
+                      </span>
+                    </div>
+                  </div>
+  
+                  <div className="notification-actions">
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => handleMarkAsRead(notification.id)}
+                    >
+                      <i className="fa-solid fa-check-double ms-1"></i>
+                      تحديد كمقروء
+                    </button>
+                  </div>
+                </div>
+              ))}
+              </div>
+            )}
+           </div>
           )}
+         
+         {activeTab === "ReadNotifications" && (
+          <div>
+             {readNotifications.length === 0 && labNotifications.length === 0 ? (
+              <div className="notifications-empty-state">
+              <div className="empty-state-icon">
+                <i className="fa-solid fa-bell-slash"></i>
+              </div>
+              <h3>لا توجد إشعارات</h3>
+              <p>لا توجد اشعارات في الوقت الحالي</p>
+            </div>
+             ): (
+              <div className="notifications-list">
+              {readNotifications.map((notification) => (
+                <div key={notification.id} className="notification-card">
+                  <div className="notification-icon">
+                    {/* Choose icon based on type */}
+                    {notification.type === "lab_result_uploaded" && (
+                      <i className="fa-solid fa-flask"></i>
+                    )}
+                    {notification.type === "medical_record_uploaded" && (
+                      <i className="fa-solid fa-notes-medical"></i>
+                    )}
+                    {notification.type !== "lab_result_uploaded" &&
+                      notification.type !== "medical_record_uploaded" && (
+                        <i className="fa-solid fa-bell"></i>
+                    )}
+                  </div>
+  
+                  <div className="notification-content">
+                    <h5 className="notification-title">
+                      {notification.title}
+                    </h5>
+  
+                    <p className="notification-text">
+                      {notification.message}
+                    </p>
+  
+                    <div className="notification-meta">
+                      <span className="notification-time">
+                        <i className="fa-regular fa-clock ms-1"></i>
+                        {new Date(notification.created_at).toLocaleString('en-UK')}
+                      </span>
+                    </div>
+                  </div>
+  
+                  <div className="notification-actions">
+                    <div className="text-brand">
+                      <i className="fa-solid fa-check-double ms-1"></i>
+                      مقروء
+                    </div>
+                  </div>
+                </div>
+              ))}
+              </div>
+             )}
+          </div>
+         )}
+         
+          </div>
         </div>
       )}
     </div>

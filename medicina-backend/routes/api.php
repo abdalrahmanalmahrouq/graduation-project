@@ -156,14 +156,15 @@ Route::middleware(['auth:sanctum', 'role:clinic'])->group(function(){
 
 // Lab Result Routes
 // PATIENT → get notifications (pending requests)
-Route::middleware(['auth:sanctum', 'role:patient'])->get('/lab-results/notifications', [LabResultController::class, 'getPatientNotifications']);
+Route::middleware(['auth:sanctum', 'role:patient'])->get('/notifications', [PatientController::class, 'getPatientNotifications']);
+Route::middleware(['auth:sanctum', 'role:patient'])->patch('/notifications/{id}/read', [PatientController::class, 'markAsRead']);
 // PATIENT → accept/reject
-Route::middleware(['auth:sanctum', 'role:patient'])->patch('/lab-results/{labResult}/respond', [LabResultController::class, 'respond']);
+Route::middleware(['auth:sanctum', 'role:patient'])->patch('/lab-results/{id}/respond', [LabResultController::class, 'respond']);
 
 Route::middleware(['auth:sanctum', 'role:lab'])->group(function(){
     Route::get('/lab-results/requests', [LabResultController::class, 'getLabRequests']);// LAB → get all their requests
     Route::post('/lab-results/request', [LabResultController::class, 'createRequest']);// LAB → create pending request
-    Route::post('/lab-results/{labResult}/upload', [LabResultController::class, 'uploadDetails']);// LAB → upload details+file once approved
+    Route::post('/lab-results/{id}/upload', [LabResultController::class, 'uploadDetails']);// LAB → upload details+file once approved
 });
 
 

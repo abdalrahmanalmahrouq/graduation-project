@@ -62,9 +62,10 @@ const ToolBar = ({ token }) => {
 
   const fetchNotificationCount = async () => {
     try {
-      const response = await axios.get('/lab-results/notifications');
-      const notifications = response.data.notifications || [];
-      setNotificationCount(notifications.length);
+      const response = await axios.get('/notifications');
+      const labNotifications = response.data.labNotifications || [];
+      const notifications = response.data.notifications|| [];
+      setNotificationCount(notifications.length + labNotifications.length);
     } catch (error) {
       console.error('Failed to fetch notification count:', error);
       // Set count to 0 on error to avoid showing incorrect badge

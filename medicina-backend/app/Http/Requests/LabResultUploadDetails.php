@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\LabResult;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,7 +23,7 @@ class LabResultUploadDetails extends FormRequest
      */
     public function rules(): array
     {
-        $labResult = $this->route('labResult');
+        $labResult = LabResult::find($this->route('id'));
         return [
             'examination_title' => 'required|string|max:255',
             'notes' => 'nullable|string',

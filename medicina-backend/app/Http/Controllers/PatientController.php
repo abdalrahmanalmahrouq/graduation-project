@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LabResult;
 use App\Models\MedicalRecord;
+use App\Models\Notifications;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -110,6 +111,60 @@ class PatientController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    // Get notifications for patients
+    public function getPatientNotifications(Request $request) {
+        $user = $request->user();
+        
+        $labNotifications = LabResult::where('patient_id', $user->id)
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $unread = Notifications::where('user_id',$user->id)
+        ->where('is_read',0)
+        ->orderBy('created_at','desc')
+        ->get();    
+
+
+        $read = Notifications::where('user_id',$user->id)
+        ->where('is_read',1)
+        ->orderBy('created_at','desc')
+        ->get();    
+
+        
+        return response()->json([
+            'success' => true,
+            'labNotifications' => $labNotifications,
+            'unreadNotifications' => $unread,
+            'readNotifications' => $read
+        ]);
+    }
+
+    public function markAsRead($id){
+        $notification = Notifications::find($id);
+        $user = auth()->id();
+        if(!$notification){
+            return response()->json([
+                'success' => false,
+                'message' => "Notification not found "
+            ],404);
+        }
+
+        if($user !== $notification->user_id){
+            return response()->json([
+                'success' => false,
+                'message' => 'you are not authorized to read this notification'
+            ],403);
+        }
+        $notification -> is_read = 1;
+        $notification -> save();
+
+        return response()->json([
+            'success' => true
+        ]);
+
     }
 }
 
