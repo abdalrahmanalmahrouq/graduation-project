@@ -12,7 +12,7 @@ class DashboardController extends Controller
     try{
     $clinic = auth()->user()->clinic;
 
-    $doctorsCount = $clinic->doctors()->whereHas('user', fn($q) => $q->whereNull('deleted_at'))->count();
+    $doctorsCount = $clinic->doctors()->whereHas('clinics')->whereHas('user', fn($q) => $q->whereNull('deleted_at'))->count();
     $patientsCount = $clinic->patients()->whereHas('user', fn($q) => $q->whereNull('deleted_at'))
     ->distinct('patients.user_id')->count('patients.user_id');
     $appointmentsCount = $clinic->appointments()->count();

@@ -29,7 +29,9 @@ class Doctor extends Model
 
     //Each doctor can belong to multiple clinics
     public function clinics(){
-        return $this->belongsToMany(Clinic::class,'clinic_doctor', 'doctor_id', 'clinic_id', 'user_id', 'user_id');
+        return $this->belongsToMany(Clinic::class,'clinic_doctor', 'doctor_id', 'clinic_id', 'user_id', 'user_id')
+        ->withPivot('deleted_at')
+        ->wherePivotNull('deleted_at');
     }
 
     // Each doctor can have many appointments

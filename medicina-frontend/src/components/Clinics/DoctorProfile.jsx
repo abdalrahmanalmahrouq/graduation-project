@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DoctorHeaderCard from '../DoctorHeaderCard';
 import Loading from '../Loading';
+import NotFound from '../../pages/NotFound';
 
 
 
@@ -39,6 +40,7 @@ function DoctorProfile() {
             
             const response = await axios.get(`/doctors/profile/${id}`);
             
+            
             if (response.data.success) {
                 setDoctor(response.data.doctor);
             } else {
@@ -61,11 +63,7 @@ function DoctorProfile() {
 
     if (error) {
         return (
-            <Container className="pt-5 text-center">
-                <Alert variant="danger">
-                    {error}
-                </Alert>
-            </Container>
+            <NotFound/>
         );
     }
 

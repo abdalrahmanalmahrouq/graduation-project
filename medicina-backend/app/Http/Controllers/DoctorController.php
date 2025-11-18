@@ -9,61 +9,104 @@ use Illuminate\Support\Facades\Log;
 class DoctorController extends Controller
 {
     // Get all doctors by specialization for the frontend directory page
-    public function getDoctorsBySpecialization(Request $request, $specialization){
-        // Map frontend clinic types to database specializations (English)
-        $specializationMapping = [
-            'Pediatrics' => 'Pediatrics',
-            'Ophthalmology' => 'Ophthalmology', 
-            'Dentistry' => 'Dentistry',
-            'Gynecology' => 'Gynecology',
-            'Cardiology' => 'Cardiology',
-            'Dermatology' => 'Dermatology',
-            'neurology' => 'Neurology',
-            'orthopedic' => 'Orthopedics',
-            'ENT' => 'ENT',
-            'Gastroenterology' => 'Gastroenterology',
-            'Pulmonology' => 'Pulmonology',
-            'digestive' => 'Gastroenterology'
-        ];
+    public function getDoctorsBySpecialization(Request $request, $specialization)
+{
+            // Use the path parameter OR request body
+            $specialization = $specialization ?? $request->specialization;
 
-        // Get the database specialization from the mapping
-        $dbSpecialization = $specializationMapping[$specialization] ?? $specialization;
+            // 1. Normalize input
+            $input = trim(mb_strtolower($specialization));
+            $input = str_replace(['أ', 'إ', 'آ'], 'ا', $input);
 
-        // Get doctors with their user data and associated clinics
-        $doctors = Doctor::where('specialization', $dbSpecialization)
+            // 2. Map all common Arabic/English variations → search synonyms
+            $specializationMapping = [
+                // Pediatrics
+                'pediatrics' => ['pediatrics', 'pediatric', 'طب اطفال', 'اخصائي اطفال', 'اطفال'],
+                'اخصائي اطفال' => ['pediatrics', 'اخصائي اطفال', 'اطفال'],
+                'اطفال' => ['pediatrics', 'اخصائي اطفال', 'اطفال'],
+                'طب اطفال' => ['pediatrics', 'اخصائي اطفال', 'اطفال'],
+
+                // Cardiology
+                'cardiology' => ['cardiology', 'قلب', 'اخصائي قلب'],
+                'قلب' => ['cardiology', 'قلب', 'اخصائي قلب'],
+                'اخصائي قلب' => ['cardiology', 'قلب', 'اخصائي قلب'],
+
+                // Neurology
+                'neurology' => ['neurology', 'اعصاب', 'طبيب اعصاب'],
+                'اعصاب' => ['neurology', 'اعصاب', 'طبيب اعصاب'],
+
+                // Dermatology
+                'dermatology' => ['dermatology', 'جلدية', 'طبيب جلدية'],
+                'جلدية' => ['dermatology', 'جلدية', 'طبيب جلدية'],
+
+                // Dentistry
+                'dentistry' => ['dentistry', 'اسنان', 'طبيب اسنان'],
+                'اسنان' => ['dentistry', 'اسنان', 'طبيب اسنان'],
+
+                // ENT
+                'ent' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة'],
+                'انف' => ['ent', 'انف', 'اذن', 'حنجرة'],
+                'اذن' => ['ent', 'انف', 'اذن', 'حنجرة'],
+
+                // Gastroenterology (digestive)
+                'gastroenterology' => ['gastroenterology', 'جهاز هضمي', 'هضمي'],
+                'digestive' => ['gastroenterology', 'جهاز هضمي', 'هضمي'],
+                'هضمي' => ['gastroenterology', 'جهاز هضمي', 'هضمي'],
+            ];
+
+            // 3. Resolve synonyms (fallback: only input)
+            $searchTerms = $specializationMapping[$input] ?? [$input];
+
+            // Normalize each search term
+            $searchTerms = array_map(function ($term) {
+                $term = trim(mb_strtolower($term));
+                return str_replace(['أ', 'إ', 'آ'], 'ا', $term);
+            }, $searchTerms);
+
+            // 4. Query: match ANY Arabic/English version stored in DB
+            $doctors = Doctor::whereHas('clinics')  // this will make sure that the doctor is not deleted from clinic
+            ->whereHas('user', function($q) {
+                $q->whereNull('deleted_at');
+            })  //this will make sure that the doctor is not deleted 
+            ->where(function ($query) use ($searchTerms) {
+                foreach ($searchTerms as $term) {
+                    $query->orWhereRaw("REPLACE(LOWER(specialization), 'أ', 'ا') LIKE ?", ["%{$term}%"]);
+                }
+            })  // this will make the query also search if the doctor specialization saved in arabic 
             ->with([
-                'user:id,profile_image', // Get user profile image
-                'clinics:id,clinic_name,address,user_id' // Get associated clinics with address
+                'user:id,profile_image',
+                'clinics:id,clinic_name,address,user_id'
             ])
             ->get();
 
-        // Transform the data to include profile image URL and clinic names
-        $doctorsData = $doctors->map(function ($doctor) {
-            return [
-                'id' => $doctor->user_id,
-                'name' => $doctor->full_name,
-                'specialization' => $doctor->specialization,
-                'profile_image_url' => $doctor->user->profile_image_url ?? null,
-                'clinics' => $doctor->clinics->map(function ($clinic) {
-                    return [
-                        'id' => $clinic->user_id,
-                        'name' => $clinic->clinic_name,
-                        'address' => $clinic->address
-                    ];
-                })
-            ];
-        });
+            // 5. Transform output
+            $doctorsData = $doctors->map(function ($doctor) {
+                return [
+                    'id' => $doctor->id,
+                    'name' => $doctor->full_name,
+                    'specialization' => $doctor->specialization,
+                    'profile_image_url' => $doctor->user->profile_image_url ?? null,
+                    'clinics' => $doctor->clinics->map(function ($clinic) {
+                        return [
+                            'id' => $clinic->user_id,
+                            'name' => $clinic->clinic_name,
+                            'address' => $clinic->address,
+                        ];
+                    }),
+                ];
+            });
 
-        return response()->json([
-            'success' => true,
-            'doctors' => $doctorsData,
-        ]);
-    }
+            return response()->json([
+                'success' => true,
+                'doctors' => $doctorsData,
+            ]);
+}
+
 
     // Get doctor profile for the frontend profile page so the patient can see the doctor's profile and clinics associated with the doctor
     public function getDoctorProfile(Request $request, $id){
         // Get doctor with their user data and associated clinics
-        $doctor = Doctor::where('user_id', $id)
+        $doctor = Doctor::where('id', $id)
             ->with([
                 'user:id,profile_image', // Get user profile image
                 'clinics:id,clinic_name,address,user_id' // Get associated clinics with address
