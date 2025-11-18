@@ -193,3 +193,13 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` feat: enhance the notifications page for the patient user ` Nov/17
 **Purpose:**  
 < now the patient will know when the lab or doctor upload any results for his account>
+
+
+### Commit
+
+` Fix some system logical issues` Nov/18
+**Purpose:**  
+< the issues was the doctor private id was displayed for any user, to fix this just use the public key 
+ , other issue was when the clinic delete doctor the doctor still occurs in clinics page for the patient ,
+  other issue the same thing but for dashbaord clinic ,
+  other issue when the doctor enter his speciality in arabic and saved in arabic id database i solve it by make the query also search for arabic language. >
