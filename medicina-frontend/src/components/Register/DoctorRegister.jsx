@@ -8,11 +8,12 @@ export default function DoctorRegister() {
         const [full_name,setFullName]=useState('');
         const [email,setEmail]=useState('');
         const [phone_number,setPhoneNumber]=useState('');
-        const [password,setPassword]=useState('');
         const [specialization,setSpecialization]=useState('');
+        const [consultation_duration,setConsultaionDuration]=useState('');
+        const [password,setPassword]=useState('');
         const [password_confirmation,setConfirmPassword]=useState('');
         const [message,setMessage]=useState('');
-        const [errors,setErrors]=useState('');
+        const [errors, setErrors] = useState({});
         const navigate=useNavigate()
         const [loading,setLoading]=useState(false);
 
@@ -31,9 +32,11 @@ export default function DoctorRegister() {
                       full_name,
                       email,
                       phone_number,
+                      specialization,
+                      consultation_duration,
                       password,
-                      password_confirmation,
-                      specialization
+                      password_confirmation
+                      
                     };
 
                 axios.post('/register/doctor',data)
@@ -81,19 +84,30 @@ export default function DoctorRegister() {
                 </div>
                 <div className="form-group mt-4">
                         <label htmlFor="specialization">التخصص</label>
-                        <select className="form-control" name='specialization' required onChange={(e)=>setSpecialization(e.target.value)} searchable={true}>
-                        <option value="">اختر التخصص</option>
-                        <option value="اخصائي طب عام">اخصائي طب عام</option>
-                        <option value="اخصائي طب نفسي">اخصائي طب نفسي</option>
+                        <select className="form-control" name='specialization' required onChange={(e)=>setSpecialization(e.target.value)} >
+                        <option value="اخصائي اطفال">اخصائي اطفال</option>
+                        <option value="اخصائي عيون">اخصائي عيون</option>
                         <option value="اخصائي قلب">اخصائي قلب</option>
                         <option value="اخصائي عظام">اخصائي عظام</option>
                         <option value="اخصائي جلدية">اخصائي جلدية</option>
-                        <option value="اخصائي جراحة">اخصائي جراحة</option>
-                        <option value="اخصائي طب عقلي">اخصائي طب عقلي</option>
+                        <option value="اخصائي باطنية">اخصائي باطنية</option>
+                        <option value="اخصائي طب نسائية">اخصائي طب نسائية</option>
                         <option value="اخصائي اسنان">اخصائي اسنان</option>
-                        
+                        <option value="اخصائي جهاز تنفسي">اخصائي جهاز تنفسي</option>
+                        <option value="اخصائي جهاز هضمي">اخصائي جهاز هضمي</option>
+                        <option value="اخصائي انف اذن و حنجرة">اخصائي انف اذن و حنجرة</option>
+                        <option value="اخصائي اعصاب">اخصائي اعصاب</option>
                       </select>
                 </div>
+
+                <div className="form-group mt-4">
+                        <label htmlFor="consultation_duration"> مدة الاستشارة</label>
+                        <input type="text" className="form-control" placeholder="30 (الوقت بالدقيقة)" name='consultation_duration' required
+                        onChange={(e)=>setConsultaionDuration(e.target.value)} />
+                        {errors.consultation_duration && <div className="text-sm text-danger">{errors.consultation_duration[0]}</div>}
+
+                </div>
+
                 <div className="form-group mt-4">
                         <label htmlFor="password">كلمة المرور</label>
                         <input type="password" className="form-control" name='password' placeholder="أدخل كلمة المرور" required

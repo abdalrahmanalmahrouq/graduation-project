@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class DoctorRegisterController extends Controller
 {
     public function register(Request $request){
+        
         $trashedUser = User::onlyTrashed()
             ->where('email', $request->input('email'))
             ->where('role', 'doctor')
