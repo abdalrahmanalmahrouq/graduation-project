@@ -32,6 +32,36 @@ function DoctorProfile() {
             setFilteredClinics(doctor.clinics);
         }
     }, [doctor]);
+    
+    useEffect (() => {
+        const userData = localStorage.getItem('user');
+        const token = localStorage.getItem('token');
+
+        if(token && userData){
+            const user = JSON.parse(userData);
+
+            if(user.role === 'patient' && user.profile.insurance_id){
+                setSelectedInsurance(user.profile.insurance_id);
+            }
+        }
+    },[]);
+
+     // Handle insurance selection
+    useEffect(() => {
+        if(!selectedInsurance) {
+            setFilteredClinics(clinicsWithInsurances);
+        }else {
+            const filtered = clinicsWithInsurances.filter(clinic => 
+                clinic.insurances?.some(ins => ins.id == selectedInsurance)
+            );
+            setFilteredClinics(filtered);
+        }
+    },[selectedInsurance, clinicsWithInsurances]);
+
+    const onInsuranceChange = (e) => {
+        setSelectedInsurance(e.target.value);
+        setSelectedClinic('');
+    }
 
     const fetchDoctor = async () => {
         try {
@@ -93,22 +123,7 @@ function DoctorProfile() {
         return Array.from(insuranceMap.values());
     };
 
-    // Handle insurance selection
-    const handleInsuranceSelect = (insuranceId) => {
-        setSelectedInsurance(insuranceId);
-        setSelectedClinic(''); // Reset clinic selection
-        
-        if (!insuranceId) {
-            // If no insurance selected, show all clinics
-            setFilteredClinics(clinicsWithInsurances);
-        } else {
-            // Filter clinics that have the selected insurance
-            const filtered = clinicsWithInsurances.filter(clinic => 
-                clinic.insurances && clinic.insurances.some(insurance => insurance.id === insuranceId)
-            );
-            setFilteredClinics(filtered);
-        }
-    };
+    
 
     // Handle clinic selection
     const handleClinicSelect = (clinicId) => {
@@ -208,7 +223,7 @@ function DoctorProfile() {
                                                     </Form.Label>
                                                     <Form.Select 
                                                         value={selectedInsurance} 
-                                                        onChange={(e) => handleInsuranceSelect(e.target.value)}
+                                                        onChange={onInsuranceChange}
                                                         className="modern-select insurance-selector"
                                                     >
                                                         <option value="">جميع شركات التأمين</option>
