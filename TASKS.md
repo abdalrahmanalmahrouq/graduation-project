@@ -260,3 +260,5 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 TODO:
  - Validation for doctors that their schedule don't conflict
  - Patient should get banned if exceeded a number of no_show
+ - Paitent can ONLY book 1 appointment in a day for a clinic_doctor
+ - Paitent can NOT book more than 1 appointment in same time
