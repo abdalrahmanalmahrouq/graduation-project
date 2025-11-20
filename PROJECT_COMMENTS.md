@@ -203,3 +203,22 @@ so the overall design will be so great , also the uploaded pictures from the see
  , other issue was when the clinic delete doctor the doctor still occurs in clinics page for the patient ,
   other issue the same thing but for dashbaord clinic ,
   other issue when the doctor enter his speciality in arabic and saved in arabic id database i solve it by make the query also search for arabic language. >
+
+
+### Commit
+
+` fix the count in notification banner` Nov/20
+**Purpose:**  
+< fix some issue>
+
+### Commit
+
+` enhance the messages by setting time for them` Nov/20
+**Purpose:**  
+< this will set time for the message to disable after displaying for the user.>
+
+### Commit
+
+` enhance the insurance filtering when the patient is logged in` Nov/20
+**Purpose:**  
+< now when the patient see which doctor to make an appointment his insurance company will set automatically.>
