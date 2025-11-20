@@ -4,6 +4,7 @@ import profileImg from '../../assets/img/profpic.png';
 import axios from 'axios';
 import ImageCropModal from './ImageCropModal';
 import Loading from '../Loading';
+import { useFlashMessage } from '../../hooks/useFlashMessage';
 
 
 const UserAccount = ({ token }) => {
@@ -14,7 +15,7 @@ const UserAccount = ({ token }) => {
   const [editForm, setEditForm] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [message, setMessage] = useState({ type: '', text: '' });
+  const {message, setMessage} = useFlashMessage();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [insuranceOptions, setInsuranceOptions] = useState([]);

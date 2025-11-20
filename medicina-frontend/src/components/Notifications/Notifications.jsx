@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Nav } from 'react-bootstrap'
 import Loading from '../Loading';
-
+import { useFlashMessage } from '../../hooks/useFlashMessage';
 const Notifications = () => {
   const [labNotifications, setLabNotifications] = useState([]);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   const [readNotifications, setReadNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("nonReadNotifications")
-  const [message, setMessage] = useState({ type: '', text: '' });
+  const {message, setMessage} = useFlashMessage();
   const [processingId, setProcessingId] = useState(null);
 
   useEffect(() => {
@@ -235,7 +235,7 @@ const Notifications = () => {
          
          {activeTab === "ReadNotifications" && (
           <div>
-             {readNotifications.length === 0 && labNotifications.length === 0 ? (
+             {readNotifications.length === 0 ? (
               <div className="notifications-empty-state">
               <div className="empty-state-icon">
                 <i className="fa-solid fa-bell-slash"></i>
@@ -279,7 +279,7 @@ const Notifications = () => {
                   </div>
   
                   <div className="notification-actions">
-                    <div className="text-brand">
+                    <div className="text-success">
                       <i className="fa-solid fa-check-double ms-1"></i>
                       مقروء
                     </div>

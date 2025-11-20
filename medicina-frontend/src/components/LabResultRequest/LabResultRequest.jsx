@@ -199,7 +199,7 @@ const LabResultRequest = () => {
                   value={uploadData.appointment_id}
                   onChange={(e) => setUploadData({...uploadData, appointment_id: e.target.value})}
                   placeholder="أدخل معرف الموعد"
-                  required
+                  
                 />
               </div>
               <div className="mb-3">
