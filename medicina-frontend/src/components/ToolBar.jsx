@@ -64,7 +64,7 @@ const ToolBar = ({ token }) => {
     try {
       const response = await axios.get('/notifications');
       const labNotifications = response.data.labNotifications || [];
-      const notifications = response.data.notifications|| [];
+      const notifications = response.data.unreadNotifications|| [];
       setNotificationCount(notifications.length + labNotifications.length);
     } catch (error) {
       console.error('Failed to fetch notification count:', error);
