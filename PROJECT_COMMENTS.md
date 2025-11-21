@@ -222,3 +222,10 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` enhance the insurance filtering when the patient is logged in` Nov/20
 **Purpose:**  
 < now when the patient see which doctor to make an appointment his insurance company will set automatically.>
+
+
+### Commit
+
+` enhance the notifications page for the patient user` Nov/21
+**Purpose:**  
+< complete enhancing the notifications page for the pateitn user .>
