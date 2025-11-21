@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useFlashMessage } from '../../hooks/useFlashMessage';
 
 const LabResultRequest = () => {
   const [patientId, setPatientId] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+  const {message, setMessage} = useFlashMessage()
   const [pendingRequests, setPendingRequests] = useState([]);
   const [approvedRequest, setApprovedRequest] = useState(null);
   const [showUploadForm, setShowUploadForm] = useState(false);

@@ -8581,6 +8581,13 @@ box-shadow: none;
   }
 }
 
+.page-link{
+  color: var(--accent-color);
+}
+.page-link:hover{
+  color: var(--accent-color-hover);
+}
+
 /* ============================================
    Patient Lab Results Styles
    ============================================ */

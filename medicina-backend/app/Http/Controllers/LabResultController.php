@@ -50,9 +50,7 @@ class LabResultController extends Controller
         if(!$labResult) {
             return response()->json(['success'=>false,'message'=>'Request not found.'], 404);
         }
-        if($labResult->status !== 'pending') {
-            return response()->json(['success'=>false,'message'=>'Request not pending.'], 422);
-        }
+     
         if($labResult->patient_id !== $validator->user()->id) {
             return response()->json(['success'=>false,'message'=>'You are not authorized to respond to this request.'], 403);
         }

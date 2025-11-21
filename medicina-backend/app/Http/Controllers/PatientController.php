@@ -119,8 +119,17 @@ class PatientController extends Controller
         
         $labNotifications = LabResult::where('patient_id', $user->id)
             ->where('status', 'pending')
+            ->select('id','lab_id','status','created_at')
+            ->with('lab:user_id,lab_name')
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $labNotificationsDone = LabResult::where('patient_id', $user->id)
+        ->whereIn('status', ['approved','rejected'])
+        ->select('id','lab_id','status','approved_at','rejected_at')
+        ->with('lab:user_id,lab_name')
+        ->orderBy('created_at', 'desc')
+        ->get();    
 
         $unread = Notifications::where('user_id',$user->id)
         ->where('is_read',0)
@@ -137,6 +146,7 @@ class PatientController extends Controller
         return response()->json([
             'success' => true,
             'labNotifications' => $labNotifications,
+            'labNotificationsDone' => $labNotificationsDone,
             'unreadNotifications' => $unread,
             'readNotifications' => $read
         ]);
