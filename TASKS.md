@@ -13,8 +13,8 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 - Auth (CRUD)✅
 - Book, reschedule, cancel appointments (CRUD)⏳
 - View doctors and clinics✅
-- Read-only access to medical history & past appointments
-- Notifications (appointments, updates, reminders)
+- Read-only access to medical history & past appointments ✅
+- Notifications (appointments, updates, reminders) ✅
 - Search & filter clinics/doctors by:
   - Area
   - Supported insurance company✅
@@ -26,7 +26,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 - Manage appointments (CRUD)⏳
 - Read clinic-related patient logs and profiles⏳
 - Manage collaborated insurance companies (CRUD)✅
-- Dashboard includes:
+- Dashboard includes: ✅
   - Number of doctors
   - Number of patients
   - Attendance/No-show statistics
@@ -35,13 +35,10 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 **Doctor**
 - Auth (CRUD)✅
 - Access clinic appointments⏳
-- Create/Read patient medical records
-- Update past medical records with version control
-  - New record created per update using same `appointment_id`
-  - View full version history of patient visits
+- Create/Read patient medical records ✅
 
 **Lab**
-- Create entries in patient medical history (lab results, reports)
+- Create entries in patient medical history (lab results, reports) ✅
 
 ---
 
@@ -262,3 +259,6 @@ TODO:
  - Patient should get banned if exceeded a number of no_show
  - Paitent can ONLY book 1 appointment in a day for a clinic_doctor
  - Paitent can NOT book more than 1 appointment in same time
+ - connect the backend with fronend for appointment feature 
+ - test the whole system and make sure every thing is work as expected 
+ 
