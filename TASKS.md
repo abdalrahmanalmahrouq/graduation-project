@@ -261,4 +261,5 @@ TODO:
  - Paitent can NOT book more than 1 appointment in same time
  - connect the backend with fronend for appointment feature 
  - test the whole system and make sure every thing is work as expected 
+ - deploy the project 
  
