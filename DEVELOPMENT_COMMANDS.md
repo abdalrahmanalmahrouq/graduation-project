@@ -298,6 +298,10 @@ docker compose up --build
     sudo chown -R $USER:$USER /home/aboodlinux/projects/graduation-project
     ```
 
+// to link the pictures from the storage 
+docker compose exec backend php artisan storage:link
+
+
 // to give an edit permission  
 sudo chown -R aboodlinux:aboodlinux .
 sudo chown -R yaqoub:yaqoub .
