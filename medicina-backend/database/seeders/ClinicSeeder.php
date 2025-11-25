@@ -47,6 +47,15 @@ class ClinicSeeder extends Seeder
                         'address' => 'Zarqa',
                     ];
                     break;
+
+                case 'clinic@example.com':
+                    $clinicData = [
+                        'user_id' => $user->id,
+                        'clinic_name' => 'Example Clinic',
+                        'phone_number' => '0791231234',
+                        'address' => 'Irbid, Jordan',
+                    ];
+                    break;
             }
             
             if (!empty($clinicData)) {

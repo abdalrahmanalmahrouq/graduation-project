@@ -38,7 +38,15 @@ class LabSeeder extends Seeder
                         'address' => 'Amman, Jordan',
                     ];
                     break;
-                }
+                case 'lab@example.com':
+                    $labData = [
+                        'user_id' => $user->id,
+                        'lab_name' => 'Example Lab',
+                        'phone_number' => '0790001111',
+                        'address' => 'Irbid, Jordan',
+                    ];
+                    break;
+            }
 
             if (!empty($labData)) {
                 Lab::create($labData);

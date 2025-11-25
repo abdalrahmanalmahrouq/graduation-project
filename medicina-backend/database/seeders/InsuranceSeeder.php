@@ -44,5 +44,11 @@ class InsuranceSeeder extends Seeder
         foreach ($insurancesData as $data) {
             Insurance::create($data);
         }
+
+        // Only for testing purposes
+        Insurance::create([
+            'insurance_id' => 'ins1',
+            'name' => 'Example Insurance'
+        ]);
     }
 }

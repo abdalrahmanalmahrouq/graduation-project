@@ -27,5 +27,13 @@ class InsuranceClinicSeeder extends Seeder
                 ]);
             }
         }
+
+        // only for testing purposes
+        DB::table('insurances_clinics')->insert([
+            'insurance_id' => 'ins1',
+            'clinic_id' => 'cli1',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

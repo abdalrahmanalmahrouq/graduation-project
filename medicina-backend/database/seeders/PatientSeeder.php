@@ -55,6 +55,17 @@ class PatientSeeder extends Seeder
                         'insurance_id'=>$insurance ? $insurance->insurance_id : null 
                     ];
                     break;
+
+                case 'patient@example.com':
+                    $patientData = [
+                        'user_id' => $user->id,
+                        'full_name' => 'Example Patient',
+                        'phone_number' => '0790002222',
+                        'date_of_birth' => '1995-03-25',
+                        'address' => 'Irbid, Jordan',
+                        'insurance_id'=>$insurance ? $insurance->insurance_id : null 
+                    ];
+                    break;
             }
             
             if (!empty($patientData)) {

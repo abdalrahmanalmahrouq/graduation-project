@@ -77,5 +77,32 @@ class ClinicDoctorSeeder extends Seeder
                 }
             }
         }
+
+        // only for testing purposes
+        DB::table('clinic_doctor')->insert([
+            'clinic_id' => 'cli1',
+            'doctor_id' => 'doc1',
+            'weekly_schedule' => json_encode([
+                'sunday' => [],
+                'monday' => [],
+                'tuesday' => NULL,
+                'wednesday' => [
+                    'start_time' => '09:00',
+                    'end_time' => '17:00',
+                    'break_start' => '12:00',
+                    'break_end' => '13:00',
+                ],
+                'thursday' => [
+                    'start_time' => '09:00',
+                    'end_time' => '17:00',
+                    'break_start' => '12:00',
+                    'break_end' => '13:00',
+                    ],
+                'friday' => NULL,
+                'saturday' => [],
+            ]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
