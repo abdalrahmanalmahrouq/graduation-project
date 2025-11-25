@@ -79,10 +79,10 @@ class ClinicDoctorSeeder extends Seeder
         }
 
         // only for testing purposes
-        DB::table('clinic_doctor')->insert([
+        ClinicDoctor::create([
             'clinic_id' => 'cli1',
             'doctor_id' => 'doc1',
-            'weekly_schedule' => json_encode([
+            'weekly_schedule' => [
                 'sunday' => [],
                 'monday' => [],
                 'tuesday' => NULL,
@@ -100,7 +100,7 @@ class ClinicDoctorSeeder extends Seeder
                     ],
                 'friday' => NULL,
                 'saturday' => [],
-            ]),
+            ],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
