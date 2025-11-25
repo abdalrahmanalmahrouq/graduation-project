@@ -93,7 +93,7 @@ class ProfileController extends Controller
                     'full_name' => 'nullable|string|max:255',
                     'phone_number' => 'nullable|string|max:20|regex:/^[+]?[0-9\s\-\(\)]{7,20}$/|unique:doctors,phone_number,' . $user->doctor->id,
                     'specialization' => 'nullable|string|max:255',
-                    'consultation_duration' => 'nullable|integer|min:10|max:60',
+                    'consultation_duration' => 'required|integer|min:10|max:60',
                 ];
                 break;
             case 'clinic':
@@ -167,6 +167,7 @@ class ProfileController extends Controller
             $user->profile_image = $imagePath;
             $user->save();
             
+
             Log::info('Profile image updated in database');
             $imageProcessed = true;
         } else {
