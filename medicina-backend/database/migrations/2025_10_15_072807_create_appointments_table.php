@@ -13,17 +13,12 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->string('patient_id')->nullable();
-            $table->string('doctor_id');
-            $table->string('clinic_id');
+            $table->string('patient_id')->required();
             $table->foreign('patient_id')->references('user_id')->on('patients')->onDelete('cascade');
-            $table->foreign('doctor_id')->references('user_id')->on('doctors')->onDelete('cascade');
-            $table->foreign('clinic_id')->references('user_id')->on('clinics')->onDelete('cascade');
+            $table->string('appointment_id')->required();
+            $table->foreign('appointment_id')->references('id')->on('available_appointments')->onDelete('cascade');
             $table->date('appointment_date');
-            $table->string('day')->nullable();
-            $table->time('starting_time');
-            $table->time('ending_time');
-            $table->enum('status', ['available', 'booked', 'completed', 'cancelled', 'no_show'])->default('available');
+            $table->enum('status', ['booked', 'completed', 'cancelled', 'no_show'])->default('booked');
             $table->timestamps();
         });
     }

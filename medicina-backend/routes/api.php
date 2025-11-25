@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AvailableAppointmentController;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\InsuranceController;
@@ -17,7 +18,8 @@ use App\Http\Controllers\SessionControllers\ClinicRegisterController;
 use App\Http\Controllers\SessionControllers\DoctorRegisterController;
 use App\Http\Controllers\SessionControllers\PasswordResetController;
 use App\Http\Controllers\SessionControllers\LabRegisterController;
-
+use App\Http\Controllers\ClinicDoctorController;
+use App\Models\ClinicDoctor;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +101,10 @@ Route::middleware(['auth:sanctum', 'role:clinic'])->group(function(){
     Route::post('clinics/add-doctor', [ClinicController::class, 'addDoctor']);
     Route::get('clinics/get-doctors', [ClinicController::class, 'getDoctors']);
     Route::delete('clinics/delete-doctor-from-clinic', [ClinicController::class, 'deleteDoctor']);
+    Route::post('clinics/add-clinic-doctor', [ClinicDoctorController::class, 'addDoctor']);
 });
+Route::get('/clinic-doctors/ids', [ClinicDoctor::class, 'idsForEndPoint']);
+Route::get('valid-appointments', [AvailableAppointmentController::class, 'getValidAppointmentForEndpoint']);
 
 Route::get('doctors/by-specialization/{specialization}',[DoctorController::class,'getDoctorsBySpecialization']);
 Route::get('doctors/profile/{id}',[DoctorController::class,'getDoctorProfile']);
@@ -116,18 +121,18 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function(){
     Route::get('medical-records/{record_id}',[MedicalRecordController::class,'show']);
 });
 
-
-
-
 Route::middleware(['auth:sanctum'])->get('patients/by-user-id/{user_id}',[PatientController::class,'getPatientByUserId']);
 Route::middleware(['auth:sanctum','role:patient'])->get('patients/lab-results',[PatientController::class,'getPatientLabResults']);
 Route::middleware(['auth:sanctum','role:patient'])->get('patients/medical-records',[PatientController::class,'getPatientMedicalRecords']);
 
 Route::post('appointments/create',[AppointmentController::class,'createAppointment']);
-Route::get('appointments/available/{doctor_id}/{clinic_id}',[AppointmentController::class,'getAvailableDoctorClinicAppointment']);
-Route::get('appointments/booked/{doctor_id}/{clinic_id}',[AppointmentController::class,'getBookedDoctorClinicAppointment']);
-Route::get('appointments/completed/{doctor_id}/{clinic_id}',[AppointmentController::class,'getCompletedDoctorClinicAppointment']);
-Route::get('appointments/cancelled/{doctor_id}/{clinic_id}',[AppointmentController::class,'getCancelledDoctorClinicAppointment']);
+Route::patch('appointments/cancel',[AppointmentController::class,'cancelAppointment']);
+Route::patch('appointments/passed',[AppointmentController::class,'passedAppointment']);
+Route::patch('appointments/reschedule',[AppointmentController::class,'rescheduleAppointment']);
+Route::get('appointments/available',[AppointmentController::class,'getAvailableAppointment']);
+Route::get('appointments/booked',[AppointmentController::class,'getBookedAppointment']);
+Route::get('appointments/completed',[AppointmentController::class,'getCompletedAppointment']);
+Route::get('appointments/cancelled',[AppointmentController::class,'getCancelledAppointment']);
 Route::put('appointments/{appointment_id}',[AppointmentController::class,'updateAvailableDoctorClinicAppointment']);
 
 Route::delete('appointments/{appointment_id}',[AppointmentController::class,'deleteAvailableDoctorClinicAppointment']);
@@ -138,6 +143,7 @@ Route::get('appointments/all-appointments/{clinic_id}',[AppointmentController::c
 // Doctor: finish a booked appointment
 Route::middleware(['auth:sanctum','role:doctor'])->put('appointments/finish/{appointment_id}',[AppointmentController::class,'finishBookedAppointment']);
 
+Route::get('appointments/available_ids',[AvailableAppointmentController::class,'findAvailableAppointmentIdsNearInterval']);
 
 // Insurance Management Routes
 Route::get('insurances', [InsuranceController::class, 'index']);

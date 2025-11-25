@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Models\ClinicDoctor;
+use App\Services\AvailableAppointmentService;
 
 
 class ClinicController extends Controller
@@ -35,27 +37,22 @@ class ClinicController extends Controller
 
     // Add a doctor to a clinic
     public function addDoctor(Request $request){
-
-        $request->validate([
+        $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,user_id',
+            'weekly_schedule' => 'required|array',
         ]);
 
-        $user = auth()->user();
-        $clinic = $user->clinic;
+        $clinic = auth()->user()->id;
 
-        // Check if doctor exists in clinic (including soft-deleted ones)
-        $existingDoctorPivot = $clinic->doctors()
-        ->wherePivot('doctor_id', $request->doctor_id)
+        $assignedDoctor = ClinicDoctor::withTrashed()->where('clinic_id', $clinic)
+        ->where('doctor_id', $request->doctor_id)
         ->first();
 
-        if($existingDoctorPivot) {
+        if($assignedDoctor) {
             // Doctor exists in clinic
-            if($existingDoctorPivot->pivot->deleted_at) {
+            if($assignedDoctor->deleted_at) {
                 // Doctor was soft deleted, restore them
-                $clinic->doctors()->updateExistingPivot($request->doctor_id, [
-                    'deleted_at' => null,
-                    'updated_at' => now()
-                ]);
+                $assignedDoctor->restore();
                 return response()->json([
                     'success' => true,
                     'message' => 'Doctor restored to clinic successfully.'
@@ -69,24 +66,17 @@ class ClinicController extends Controller
             }
         } else {
             // Doctor doesn't exist in clinic, add them
-            $clinic->doctors()->attach($request->doctor_id, [
-                'weekly_schedule' => json_encode([
-                    "monday" => null,
-                    "tuesday" => null,
-                    "wednesday" => null,
-                    "thursday" => null,
-                    "friday" => null,
-                    "saturday" => null,
-                    "sunday" => null
-                ]),
-                'created_at' => now(), 
-                'updated_at' => now()
+            $clinicDoctor = ClinicDoctor::create([
+                'clinic_id' => $clinic,
+                'doctor_id' => $validated['doctor_id'],
+                'weekly_schedule' => $validated['weekly_schedule']
             ]);
-            return response()->json([
-                'success' => true,
-                'message' => 'Doctor added successfully.'
-            ], 200);
+            return response()->json(['message' => 'Doctor added to clinic successfully', 'data' => $clinicDoctor], 201);
         }
+
+        AvailableAppointmentService::generateFromWeeklySchedule($clinicDoctor);
+
+        return response()->json(['message' => 'Doctor added to clinic successfully', 'data' => $clinicDoctor], 201);
     }
 
     // Delete a doctor from a clinic

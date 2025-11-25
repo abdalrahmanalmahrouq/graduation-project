@@ -9,6 +9,8 @@ class Appointment extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    
  
     // Each appointment has one patient
     public function patient(){
@@ -32,5 +34,10 @@ class Appointment extends Model
 
     public function medicalRecord() {
         return $this->hasOne(MedicalRecord::class);
+    }
+
+    // Each appointment is linked to one available appointment slot
+    public function availableAppointment(){
+        return $this->belongsTo(AvailableAppointment::class, 'appointment_id', 'id');
     }
 }

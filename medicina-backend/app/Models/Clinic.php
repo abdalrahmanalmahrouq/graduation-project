@@ -56,4 +56,9 @@ class Clinic extends Model
     public function appointments(){
         return $this->hasMany(Appointment::class,'clinic_id','user_id');
     }
+
+    //Each clinic can have multiple available appointments
+    public function availableAppointments(){
+        return $this->hasManyThrough(AvailableAppointment::class, ClinicDoctor::class, 'clinic_id', 'clinic_doctor_id', 'user_id', 'id');
+    }
 }

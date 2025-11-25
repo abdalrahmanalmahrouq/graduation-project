@@ -40,4 +40,8 @@ class Doctor extends Model
         return $this->hasMany(Appointment::class, 'doctor_id', 'user_id');
     }
    
+    //Each doctor can have multiple available appointments
+    public function availableAppointments(){
+        return $this->hasMany(AvailableAppointment::class);
+    }
 }
