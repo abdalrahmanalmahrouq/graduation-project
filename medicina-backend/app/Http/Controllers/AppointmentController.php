@@ -334,7 +334,7 @@ class AppointmentController extends Controller
 
         $validAppointments = AvailableAppointment::idsFor($startingTime, $endingTime, $tolerance, $clinicDoctorIds);
 
-        return [$validAppointments, 'clinicDoctorIds' => $clinicDoctorIds];
+        // return [$validAppointments, 'clinicDoctorIds' => $clinicDoctorIds];
 
         if (empty($validAppointments)) {
             return response()->json(['message' => 'No available appointments found'], 200);
