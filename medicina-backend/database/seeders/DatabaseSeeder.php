@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             DoctorSeeder::class,
             ClinicSeeder::class,
             ClinicDoctorSeeder::class,
-            // AppointmentSeeder::class,
+            AppointmentSeeder::class,
             InsuranceClinicSeeder::class,
             LabSeeder::class,
             AdminSeeder::class,

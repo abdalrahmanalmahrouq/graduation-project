@@ -102,7 +102,7 @@ Route::middleware(['auth:sanctum', 'role:clinic'])->group(function(){
     Route::get('clinics/get-doctors', [ClinicController::class, 'getDoctors']);
     Route::delete('clinics/delete-doctor-from-clinic', [ClinicController::class, 'deleteDoctor']);
 });
-Route::get('/clinic-doctors/ids', [ClinicDoctor::class, 'idsForEndPoint']);
+Route::get('clinic-doctors/ids', [ClinicDoctor::class, 'idsForEndPoint']);
 Route::get('valid-appointments', [AvailableAppointmentController::class, 'getValidAppointmentForEndpoint']);
 
 Route::get('doctors/by-specialization/{specialization}',[DoctorController::class,'getDoctorsBySpecialization']);
