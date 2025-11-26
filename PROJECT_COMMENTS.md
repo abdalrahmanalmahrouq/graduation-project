@@ -229,3 +229,16 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` enhance the notifications page for the patient user` Nov/21
 **Purpose:**  
 < complete enhancing the notifications page for the pateitn user .>
+
+### Commit
+
+` handle the appointment seeder` Nov/26
+**Purpose:**  
+< now you can run seed for the appointment table but first you must adjust the order of the database creation like you cannot first migrate the available appointment before the appointment table so you must handle it .>
+
+
+### Commit
+
+` this will handle the order of the migration tables` Nov/26
+**Purpose:**  
+< this to handle what i told before in the last commit .>
