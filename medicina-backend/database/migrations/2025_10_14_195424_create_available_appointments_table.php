@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('available_appointments', function (Blueprint $table) {
             $table->string('id', 7)->primary();
-            $table->string('clinic_doctor_id')->foreign()->references('id')->on('clinic_doctor')->onDelete('cascade');
+            $table->unsignedBigInteger('clinic_doctor_id');
+            $table->foreign('clinic_doctor_id')->references('id')->on('clinic_doctor')->onDelete('cascade');
             $table->string('day');
             $table->time('starting_time');
             $table->time('ending_time');
             $table->timestamps();
+           
         });
     }
 

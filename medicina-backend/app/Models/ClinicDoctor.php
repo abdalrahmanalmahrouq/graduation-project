@@ -29,7 +29,7 @@ class ClinicDoctor extends Model
                 ->toArray();
     }
 
-    public static function idsForEndpoint(Request $request)
+    public static function idsForEndPoint(Request $request)
     {
         $validated = $request->validate([
             'doctor_id' => 'sometimes|string|exists:doctors,user_id',
