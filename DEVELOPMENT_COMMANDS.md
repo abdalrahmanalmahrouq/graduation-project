@@ -154,7 +154,11 @@ docker compose exec backend php artisan cache:clear
 docker compose exec backend php artisan config:clear
 docker compose exec backend php artisan route:clear
 docker compose exec backend php artisan view:clear
-
+# if you are not using docker 
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
 # Clear all caches at once
 docker compose exec backend php artisan optimize:clear
 
@@ -303,5 +307,5 @@ docker compose exec backend php artisan storage:link
 
 
 // to give an edit permission  
-sudo chown -R aboodlinux:aboodlinux .
+sudo chown -R $USER:$USER .
 sudo chown -R yaqoub:yaqoub .
