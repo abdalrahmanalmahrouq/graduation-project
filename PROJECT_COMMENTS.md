@@ -242,3 +242,11 @@ so the overall design will be so great , also the uploaded pictures from the see
 ` this will handle the order of the migration tables` Nov/26
 **Purpose:**  
 < this to handle what i told before in the last commit .>
+
+
+### Commit
+
+` instructions of how you can setup your project without using docker ` Nov/27
+**Purpose:**  
+< now you can follow this guide if you don't want use docker knowing you can do that without effecting docker setup so you can run your project 
+in different way but you must follow the instructions to know how >
