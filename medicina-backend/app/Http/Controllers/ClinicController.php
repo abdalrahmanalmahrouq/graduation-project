@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Resources\ClinicDoctorResource;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Models\ClinicDoctor;
 use App\Services\AvailableAppointmentService;
@@ -13,12 +15,12 @@ class ClinicController extends Controller
     {
         $user = auth()->user();
         $clinic = $user->clinic;
-        
+
         // Get all active doctors added to this clinic (exclude soft-deleted ones)
         $clinicDoctors = $clinic->doctors()
             ->wherePivot('deleted_at', null) // Only get doctors that are not soft-deleted
-            ->with('user:id,email,profile_image') // Load user data including profile image
-            ->get(['doctors.id', 'doctors.user_id', 'doctors.full_name', 'doctors.specialization', 'doctors.phone_number']);
+            ->with('user')
+            ->get();
 
         // Add profile image URL to each doctor
         $clinicDoctors->each(function ($doctor) {
@@ -29,14 +31,12 @@ class ClinicController extends Controller
             }
         });
 
-        return response()->json([
-            'success' => true,
-            'doctors' => $clinicDoctors
-        ]);
+        return ClinicDoctorResource::collection($clinicDoctors);
     }
 
     // Add a doctor to a clinic
-    public function addDoctor(Request $request){
+    public function addDoctor(Request $request)
+    {
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,user_id',
             'weekly_schedule' => 'required|array',
@@ -45,12 +45,12 @@ class ClinicController extends Controller
         $clinic = auth()->user()->id;
 
         $assignedDoctor = ClinicDoctor::withTrashed()->where('clinic_id', $clinic)
-        ->where('doctor_id', $request->doctor_id)
-        ->first();
+            ->where('doctor_id', $request->doctor_id)
+            ->first();
 
-        if($assignedDoctor) {
+        if ($assignedDoctor) {
             // Doctor exists in clinic
-            if($assignedDoctor->deleted_at) {
+            if ($assignedDoctor->deleted_at) {
                 // Doctor was soft deleted, restore them
                 $assignedDoctor->restore();
                 return response()->json([
@@ -71,7 +71,6 @@ class ClinicController extends Controller
                 'doctor_id' => $validated['doctor_id'],
                 'weekly_schedule' => $validated['weekly_schedule']
             ]);
-            return response()->json(['message' => 'Doctor added to clinic successfully', 'data' => $clinicDoctor], 201);
         }
 
         AvailableAppointmentService::generateFromWeeklySchedule($clinicDoctor);
@@ -79,36 +78,88 @@ class ClinicController extends Controller
         return response()->json(['message' => 'Doctor added to clinic successfully', 'data' => $clinicDoctor], 201);
     }
 
+    public function checkDoctor(Request $request)
+    {
+        $request->validate([
+            'doctor_id' => 'required|string'
+        ]);
+
+        $doctor = Doctor::where('user_id', $request->doctor_id)
+            ->select('id', 'user_id', 'full_name', 'specialization')
+            ->first();
+
+        if (!$doctor) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Doctor not found.'
+            ], 404);
+        }
+        ;
+
+        $clinicId = auth()->user()->clinic->user_id;
+
+        $existingRelation = ClinicDoctor::withTrashed()
+            ->where('clinic_id', $clinicId)
+            ->where('doctor_id', $doctor->user_id)
+            ->first();
+
+        if ($existingRelation) {
+            if ($existingRelation->deleted_at) {
+                return response()->json([
+                    'success' => true,
+                    'status' => 'trashed',
+                    'message' => 'Doctor was previously deleted.',
+                    'data' => $doctor
+                ]);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'status' => 'active',
+                    'message' => 'Doctor is already active in this clinic.',
+                    'data' => $doctor
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'status' => 'new',
+            'data' => $doctor
+        ]);
+
+    }
+
     // Delete a doctor from a clinic
-    public function deleteDoctor(Request $request){
-        try{
+    public function deleteDoctor(Request $request)
+    {
+        try {
             $request->validate([
                 'doctor_id' => 'required|exists:doctors,user_id',
             ]);
 
-            $user=auth()->user();
-            $clinic=$user->clinic;
+            $user = auth()->user();
+            $clinic = $user->clinic;
 
-            $doctorClinic=$clinic->doctors()
-            ->wherepivot('doctor_id', $request->doctor_id)
-            ->first();
+            $doctorClinic = $clinic->doctors()
+                ->wherepivot('doctor_id', $request->doctor_id)
+                ->first();
 
-            if(!$doctorClinic){
+            if (!$doctorClinic) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Doctor not found in clinic.'
                 ], 404);
             }
 
-             // Soft delete the relationship
-             $clinic->doctors()->updateExistingPivot($request->doctor_id, [
+            // Soft delete the relationship
+            $clinic->doctors()->updateExistingPivot($request->doctor_id, [
                 'deleted_at' => now()
             ]);
             return response()->json([
                 'success' => true,
                 'message' => 'Doctor removed from clinic successfully.'
             ], 200);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to remove doctor from clinic.',

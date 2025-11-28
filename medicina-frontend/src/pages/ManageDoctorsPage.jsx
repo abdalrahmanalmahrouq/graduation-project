@@ -8,7 +8,7 @@ export default function ManageDoctorsPage() {
   return (
     <div className="app-container" dir='rtl'>
       <Sidebar className='sidebar'/>
-      <ToolBar className='toolbar'/>
+      <ToolBar className='toolbar' />
       <main  className='content-area'>
         <DoctorList/>
       </main>
