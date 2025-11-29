@@ -306,6 +306,6 @@ docker compose up --build
 docker compose exec backend php artisan storage:link
 
 
-// to give an edit permission  
+// to give an edit permission .
 sudo chown -R $USER:$USER .
 sudo chown -R yaqoub:yaqoub .
