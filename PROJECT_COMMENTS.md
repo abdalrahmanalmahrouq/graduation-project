@@ -257,3 +257,5 @@ in different way but you must follow the instructions to know how >
 ` feat: now the clinic can add doctor with doctor weekly schedule` Nov/28
 **Purpose:**  
 < I optimized the system's core reliability by refactoring deep database relationships using SQL JOINs to ensure precise dashboard statistics for patients and appointments. Simultaneously, I revolutionized the doctor management workflow by developing a robust addDoctor API paired with a modern React wizard, featuring intelligent pre-validation and a "restore" capability for soft-deleted doctors that eliminates redundant data entry and significantly enhances the user experience.>
+
+<work in progress>
