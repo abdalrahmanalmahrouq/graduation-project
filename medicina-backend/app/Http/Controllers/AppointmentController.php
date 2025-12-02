@@ -154,132 +154,8 @@ class AppointmentController extends Controller
     }
 
     // get booked appointment
-    public function getBookedAppointment(Request $request){
-        $validated = $request->validate([
-            'doctor_id' => 'sometimes|exists:doctors,user_id',
-            'clinic_id' => 'sometimes|exists:clinics,user_id',
-            'starting_date' => 'sometimes|date|date_format:Y-m-d',
-            'ending_date' => 'sometimes|date|date_format:Y-m-d',
-            'starting_time' => 'sometimes|date_format:H:i:s',
-            'ending_time' => 'sometimes|date_format:H:i:s',
-        ]);
-        $doctor_id = $validated['doctor_id'] ?? null;
-        $clinic_id = $validated['clinic_id'] ?? null;
-
-        if ($doctor_id && $clinic_id) {
-            $clinic_doctor_ids = ClinicDoctor::where('doctor_id', $doctor_id)
-                ->where('clinic_id', $clinic_id)
-                ->pluck('id')
-                ->toArray();
-        }
-        else if ($doctor_id) {
-            $clinic_doctor_ids = ClinicDoctor::where('doctor_id', $doctor_id)
-                ->pluck('id')
-                ->toArray();
-        }
-        else if ($clinic_id) {
-            $clinic_doctor_ids = ClinicDoctor::where('clinic_id', $clinic_id)
-                ->pluck('id')
-                ->toArray();
-        }
-        else {
-            return response()->json(['message' => 'At least doctor_id or clinic_id must be provided'], 400);
-        }
-        if (empty($clinic_doctor_ids)) {
-            return response()->json(['message' => 'No clinic doctors found for the given criteria'], 200);
-        }
-        $available_appointments_ids = AvailableAppointment::whereIn('clinic_doctor_id', $clinic_doctor_ids)->pluck('id')->toArray();
-
-        $query = Appointment::whereIn('appointment_id', $available_appointments_ids)
-            ->where('status', 'booked');
-
-        // filter by appointment date if provided
-        if (!empty($validated['starting_date']) || !empty($validated['ending_date'])) {
-            $startDate = $validated['starting_date'] ?? null;
-            $endDate = $validated['ending_date'] ?? null;
-
-            if ($startDate && $endDate) {
-                // ensure start is not after end
-                if ($startDate > $endDate) {
-                    [$startDate, $endDate] = [$endDate, $startDate];
-                }
-                $query->whereBetween('appointment_date', [$startDate, $endDate]);
-            } elseif ($startDate) {
-                $query->where('appointment_date', '>=', $startDate);
-            } else { // only endDate
-                $query->where('appointment_date', '<=', $endDate);
-            }
-        }
-
-        // filter by time window on the available appointment if provided
-        if (!empty($validated['starting_time']) || !empty($validated['ending_time'])) {
-            $startTime = $validated['starting_time'] ?? null;
-            $endTime = $validated['ending_time'] ?? null;
-
-            // normalize order if both provided
-            if ($startTime && $endTime && $startTime > $endTime) {
-                [$startTime, $endTime] = [$endTime, $startTime];
-            }
-
-            $query->whereHas('availableAppointment', function ($q) use ($startTime, $endTime) {
-                if ($startTime && $endTime) {
-                    $q->where(function ($qq) use ($startTime, $endTime) {
-                        $qq->whereBetween('starting_time', [$startTime, $endTime])
-                           ->orWhereBetween('ending_time', [$startTime, $endTime])
-                           ->orWhere(function ($q2) use ($startTime, $endTime) {
-                               $q2->where('starting_time', '<=', $startTime)
-                                  ->where('ending_time', '>=', $endTime);
-                           });
-                    });
-                } elseif ($startTime) {
-                    // any slot that ends at or after startTime
-                    $q->where('ending_time', '>=', $startTime);
-                } else { // only endTime
-                    // any slot that starts at or before endTime
-                    $q->where('starting_time', '<=', $endTime);
-                }
-            });
-        }
-
-        // eager load nested relations needed for output
-        $appointments = $query->with([
-                'patient:user_id,full_name',
-                'availableAppointment:id,day,starting_time,ending_time,clinic_doctor_id',
-                'availableAppointment.clinicDoctor:id,doctor_id,clinic_id',
-                'availableAppointment.clinicDoctor.doctor:user_id,full_name',
-                'availableAppointment.clinicDoctor.clinic:user_id,clinic_name',
-            ])
-            ->get();
-
-        // Map results to the minimal shape requested by the client
-        $appointments = $appointments->map(function ($appt) {
-            $available = $appt->availableAppointment;
-            $clinicDoctor = $available?->clinicDoctor;
-            $doctor = $clinicDoctor?->doctor;
-            $clinic = $clinicDoctor?->clinic;
-
-            return [
-                'id' => $appt->id,
-                'appointment_date' => $appt->appointment_date,
-                'status' => $appt->status,
-                'patient' => [
-                    'full_name' => $appt->patient->full_name ?? null,
-                ],
-                'available_appointment' => $available ? [
-                    'day' => $available->day,
-                    'starting_time' => $available->starting_time,
-                    'ending_time' => $available->ending_time,
-                ] : null,
-                'doctor' => $doctor ? [
-                    'full_name' => $doctor->full_name ?? null,
-                ] : null,
-                'clinic' => $clinic ? [
-                    'clinic_name' => $clinic->clinic_name ?? null,
-                ] : null,
-            ];
-        })->values();
-
-        return response()->json(['appointments' => $appointments], 200);
+    public function getBookedAppointment(Request $request) {
+        return $this->getAppointmentsByStatus($request, 'booked');
     }
     
     // delete booked appointment
@@ -290,18 +166,22 @@ class AppointmentController extends Controller
     }
 
     // get completed doctor appointment interval in specific(one) clinic appointments
-    public function getCompletedAppointment($doctor_id, $clinic_id)
+    public function getCompletedAppointment(Request $request)
     {
-        $appointments = $this->fetchAppointmentsByStatus($doctor_id, $clinic_id, 'completed');
-        return response()->json(['appointments' => $appointments], 200);
+        return $this->getAppointmentsByStatus($request, 'completed');
     }
 
     // get cancelled doctor appointment interval in specific(one) clinic appointments
-    public function getCancelledAppointment($doctor_id, $clinic_id)
+    public function getCancelledAppointment(Request $request)
     {
-        $appointments = $this->fetchAppointmentsByStatus($doctor_id, $clinic_id, 'cancelled');
-        return response()->json(['appointments' => $appointments], 200);
+       return $this->getAppointmentsByStatus($request, 'cancelled');
     }
+
+    public function getNoShowAppointment(Request $request)
+    {
+       return $this->getAppointmentsByStatus($request, 'no_show');
+    }
+
 
     // get available appointments (templates/slots) for a doctor in a specific clinic
     public function getAvailableAppointment(Request $request)
@@ -358,7 +238,10 @@ class AppointmentController extends Controller
             }
 
             // load templates once
-            $templates = AvailableAppointment::whereIn('id', $validAppointments)->get()->keyBy('id');
+            $templates = AvailableAppointment::whereIn('id', $validAppointments)
+            ->orderBy('starting_time', 'asc') // <--- Add this sorting
+            ->get()
+            ->keyBy('id'); // now the results are ordered by starting_time
 
             $results = [];
             foreach ($period as $date) {
@@ -414,6 +297,106 @@ class AppointmentController extends Controller
         }
 
         return $query->get();
+    }
+
+    public function getAppointmentsByStatus(Request $request, $status = null)
+    {
+        // 1. Validate inputs (Same as your Booked logic)
+        $validated = $request->validate([
+            'doctor_id' => 'sometimes|exists:doctors,user_id',
+            'clinic_id' => 'sometimes|exists:clinics,user_id',
+            'starting_date' => 'sometimes|date|date_format:Y-m-d',
+            'ending_date' => 'sometimes|date|date_format:Y-m-d',
+            'status' => 'sometimes|string',
+        ]);
+
+        $targetStatus = $status ?? $request->status ?? 'all';
+
+        $doctor_id = $validated['doctor_id'] ?? null;
+        $clinic_id = $validated['clinic_id'] ?? null;
+
+        // 2. Resolve ClinicDoctor Pivot IDs (Reuse your complex logic)
+        $clinic_doctor_ids = [];
+
+        if ($doctor_id && $clinic_id) {
+            $clinic_doctor_ids = ClinicDoctor::where('doctor_id', $doctor_id)
+                ->where('clinic_id', $clinic_id)
+                ->pluck('id')->toArray();
+        } else if ($doctor_id) {
+            $clinic_doctor_ids = ClinicDoctor::where('doctor_id', $doctor_id)
+                ->pluck('id')->toArray();
+        } else if ($clinic_id) {
+            $clinic_doctor_ids = ClinicDoctor::where('clinic_id', $clinic_id)
+                ->pluck('id')->toArray();
+        } else {
+            return response()->json(['message' => 'At least doctor_id or clinic_id must be provided'], 400);
+        }
+
+        if (empty($clinic_doctor_ids)) {
+            return response()->json(['appointments' => []], 200);
+        }
+
+        // 3. Get AvailableAppointment IDs
+        $available_appointments_ids = AvailableAppointment::whereIn('clinic_doctor_id', $clinic_doctor_ids)
+            ->pluck('id')
+            ->toArray();
+
+        // 4. Build Query using the Status passed to the function
+        $query = Appointment::whereIn('appointment_id', $available_appointments_ids);
+         
+        if ($targetStatus !== 'all') {
+        $query->where('status', $targetStatus);
+        }
+
+        // 5. Apply Date Filters (Reuse your logic)
+        if (!empty($validated['starting_date']) || !empty($validated['ending_date'])) {
+            $startDate = $validated['starting_date'] ?? null;
+            $endDate = $validated['ending_date'] ?? null;
+
+            if ($startDate && $endDate) {
+                if ($startDate > $endDate) [$startDate, $endDate] = [$endDate, $startDate];
+                $query->whereBetween('appointment_date', [$startDate, $endDate]);
+            } elseif ($startDate) {
+                $query->where('appointment_date', '>=', $startDate);
+            } else {
+                $query->where('appointment_date', '<=', $endDate);
+            }
+        }
+
+        // 6. Eager Load & Get
+        $appointments = $query->with([
+            'patient:user_id,full_name',
+            'availableAppointment.clinicDoctor.doctor:user_id,full_name',
+            'availableAppointment.clinicDoctor.clinic:user_id,clinic_name',
+        ])->get();
+
+        // 7. Format Response (Reuse your clean mapping)
+        $formatted = $appointments->map(function ($appt) {
+            $available = $appt->availableAppointment;
+            $clinicDoctor = $available?->clinicDoctor;
+            
+            return [
+                'id' => $appt->id,
+                'appointment_date' => $appt->appointment_date,
+                'status' => $appt->status,
+                'starting_time' => $available?->starting_time, // Shortcut
+                'ending_time' => $available?->ending_time,     // Shortcut
+                'patient' => [
+                    'full_name' => $appt->patient->full_name ?? null,
+                    'user_id' => $appt->patient->user_id ?? null,
+                ],
+                'doctor' => [
+                    'full_name' => $clinicDoctor?->doctor?->full_name ?? null,
+                    'user_id' => $clinicDoctor?->doctor?->user_id ?? null,
+                ],
+                'clinic' => [
+                    'clinic_name' => $clinicDoctor?->clinic?->clinic_name ?? null,
+                    'user_id' => $clinicDoctor?->clinic?->user_id ?? null,
+                ]
+            ];
+        });
+
+        return response()->json(['appointments' => $formatted], 200);
     }
 
     // get all clinic appointments for all doctors in specific(one) clinic with optional status filter

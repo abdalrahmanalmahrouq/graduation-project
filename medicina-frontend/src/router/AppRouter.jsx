@@ -229,7 +229,7 @@ const AppRouter = () => {
 					}
 				/>
 				<Route
-					path="/manage/doctor/:doctorId/:clinicId"
+					path="/manage/doctor/:doctorId"
 					element={
 						<ProtectedRoute allowedRoles={["clinic"]}>
 							<DoctorManagementPage />

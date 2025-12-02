@@ -31,10 +31,10 @@ const DoctorCard = ({ doctor, onManage, onDelete }) => {
     try {
       const profileResponse = await axios.get('/profile');
       const clinicId = profileResponse.data.id;
-      navigate(`/manage/doctor/${doctor.doctorId}/${clinicId}`);
+      navigate(`/manage/doctor/${doctor.id}`);
     } catch (error) {
       console.error('Error getting clinic ID:', error);
-      navigate(`/manage/doctor/${doctor.doctorId}`);
+      navigate(`/manage/doctor/${doctor.id}`);
     }
   };
 

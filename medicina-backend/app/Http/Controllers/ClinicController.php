@@ -34,6 +34,22 @@ class ClinicController extends Controller
         return ClinicDoctorResource::collection($clinicDoctors);
     }
 
+    public function getDoctorSchedule(Request $request, $doctorId) {
+
+        $doctor = Doctor::where('user_id', $doctorId)
+        ->orWhere('id', $doctorId)
+        ->firstOrFail();
+        $clinicId = auth()->user()->clinic->user_id;
+
+        $pivot = ClinicDoctor::where('clinic_id', $clinicId)
+        ->where('doctor_id', $doctor->user_id)
+        ->firstOrFail();
+
+        return response()->json([
+        'success' => true,
+        'schedule' => $pivot->weekly_schedule
+    ], 200);
+    }
     // Add a doctor to a clinic
     public function addDoctor(Request $request)
     {

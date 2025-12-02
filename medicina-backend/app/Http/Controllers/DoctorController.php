@@ -134,6 +134,7 @@ class DoctorController extends Controller
             'id' => $doctor->user_id,
             'name' => $doctor->full_name,
             'specialization' => $doctor->specialization,
+            'phone_number' => $doctor->phone_number,
             'bio' => $doctor->bio,
             'profile_image_url' => $doctor->user->profile_image_url ?? null,
             'clinics' => $clinics->map(function ($clinic) {

@@ -59,7 +59,7 @@ class DoctorSeeder extends Seeder
                         'user_id' => $user->id,
                         'full_name' => 'Dr. Example',
                         'phone_number' => '0790002222',
-                        'specialization' => 'General Medicine',
+                        'specialization' => 'Pediatrics',
                         'bio' => 'Dr. Example is a general practitioner with a broad range of experience in primary care. With over 8 years in the medical field, Dr. Example is skilled in diagnosing and treating a variety of common health conditions, promoting wellness, and managing chronic diseases. Dr. Example completed medical training at Example University and is dedicated to providing patient-centered care that emphasizes prevention and health education. Dr. Example is passionate about helping patients achieve their best health through personalized treatment plans and compassionate care.',
                         'consultation_duration' => 25,
                     ];

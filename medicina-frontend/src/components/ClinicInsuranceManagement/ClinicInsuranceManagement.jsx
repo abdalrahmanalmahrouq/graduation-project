@@ -12,11 +12,21 @@ const ClinicInsuranceManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [insuranceToDelete, setInsuranceToDelete] = useState(null);
+  const [clinicLogo, setClinicLogo] = useState('');
 
   useEffect(() => {
     fetchClinicInsurances();
+    fetchClinicProfile();
   }, []);
 
+  const fetchClinicProfile = async () => {
+    try {
+      const response = await axios.get('/profile');
+      return setClinicLogo(response.data.profile_image_url || '');
+    } catch (error) {
+      console.error('Error fetching clinic profile:', error);
+    }
+  }
   const fetchClinicInsurances = async () => {
     try {
       setIsLoading(true);
@@ -127,7 +137,7 @@ const ClinicInsuranceManagement = () => {
         <div className="insurance-header-content">
           <div className="insurance-title-section">
             <div className="insurance-icon-wrapper">
-              <i className="fa-solid fa-building insurance-main-icon"></i>
+              <img src={clinicLogo} alt="" className='profile-pic' style={{width:"70px" , height:"70px"}} />
             </div>
             <div className="insurance-title-text">
               <h1 className="insurance-main-title">تأمينات العيادة</h1>

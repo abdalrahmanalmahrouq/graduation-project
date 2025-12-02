@@ -70,7 +70,7 @@ class AvailableAppointment extends Model
         }
 
         // Use Carbon to add minutes and return H:i:s (or a Carbon instance as needed)
-        return \Carbon\Carbon::createFromFormat('H:i:s', $this->starting_time)
+        return Carbon::createFromFormat('H:i:s', $this->starting_time)
                     ->addMinutes((int) $duration)
                     ->format('H:i:s');
     }
@@ -95,19 +95,25 @@ class AvailableAppointment extends Model
         // if (!empty($clinicDoctorIds)) {
             $query->whereIn('clinic_doctor_id', $clinicDoctorIds);
         // }
-        if ($startingTime || $endingTime){
-            $timeQuery = self::query();
-            if ($startingTime) {
-                $startLowerBound = Carbon::createFromFormat('H:i:s', $startingTime)->subMinutes($tolerance)->format('H:i:s');
-                $startUpperBound = Carbon::createFromFormat('H:i:s', $startingTime)->addMinutes($tolerance)->format('H:i:s');
-                $timeQuery->whereBetween('starting_time', [$startLowerBound, $startUpperBound]);
-            }
-            if ($endingTime) {
-                $endLowerBound = Carbon::createFromFormat('H:i:s', $endingTime)->subMinutes($tolerance)->format('H:i:s');
-                $endUpperBound = Carbon::createFromFormat('H:i:s', $endingTime)->addMinutes($tolerance)->format('H:i:s');
-                $timeQuery->orWhereBetween('ending_time', [$endLowerBound, $endUpperBound]);
-            }
-            $query->whereIn('id', $timeQuery->pluck('id')->toArray());
+       if ($startingTime && $endingTime) {
+            // CASE A: Range Search (Both provided)
+            // Logic: "Show me everything that starts AFTER 9:00 AND ends BEFORE 12:00"
+            $query->where('starting_time', '>=', $startingTime)
+                  ->where('ending_time', '<=', $endingTime);
+                  
+        } elseif ($startingTime) {
+            // CASE B: Target Start Search (Only start provided)
+            // Logic: "Show me slots starting AROUND 9:00 (+/- 15 mins)"
+            $lower = Carbon::createFromFormat('H:i:s', $startingTime)->subMinutes($tolerance)->format('H:i:s');
+            $upper = Carbon::createFromFormat('H:i:s', $startingTime)->addMinutes($tolerance)->format('H:i:s');
+            $query->whereBetween('starting_time', [$lower, $upper]);
+            
+        } elseif ($endingTime) {
+            // CASE C: Target End Search (Only end provided)
+            // Logic: "Show me slots ending AROUND 12:00 (+/- 15 mins)"
+            $lower = Carbon::createFromFormat('H:i:s', $endingTime)->subMinutes($tolerance)->format('H:i:s');
+            $upper = Carbon::createFromFormat('H:i:s', $endingTime)->addMinutes($tolerance)->format('H:i:s');
+            $query->whereBetween('ending_time', [$lower, $upper]);
         }
 
 

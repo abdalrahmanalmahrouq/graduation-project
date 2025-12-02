@@ -8,6 +8,7 @@ const DoctorHeaderCard = ({
     showStats = true, 
     showSpecialty = true,
     showClinics = true,
+    showInfo = false,
     selectedClinic = null, // Specific clinic to show instead of all clinics
     className = "",
     imageSize = "large" // "small", "medium", "large"
@@ -101,6 +102,23 @@ const DoctorHeaderCard = ({
                                 <i className="fas fa-star me-1"></i>
                                 متاح للحجز
                             </Badge>
+                        </div>
+                    )}
+                     {showInfo && (
+                        <div className="doctor-stats">
+                          
+                                <Badge bg="primary" className="me-2">
+                                   
+                                  ID : {doctor.id}
+                                   <i className="fas fa-id-badge me-1"></i>
+                                </Badge>
+                               
+                                <Badge bg="primary" className="me-2">
+                    
+                                    {doctor.phone_number} :
+                                   <i className="fas fa-phone me-1"></i>
+                                </Badge>
+                          
                         </div>
                     )}
                 </div>
