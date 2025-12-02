@@ -260,3 +260,17 @@ in different way but you must follow the instructions to know how >
 
 <work in progress Nov/30>
 <work in progress Dec/01> 
+
+
+### Commit
+
+` enhance the dashboard page` Dec/02
+**Purpose:**  
+< imporve the dashboard page for the clinic user .>
+
+
+### Commit
+
+` enhance the overall clinic user to successfully manage thier doctors` Dec/02
+**Purpose:**  
+< now the clinic can manage thier doctors like they can see their doctors schedule and access the doctors appointments for each doctor and for all doctors in clinic appointments page .>
