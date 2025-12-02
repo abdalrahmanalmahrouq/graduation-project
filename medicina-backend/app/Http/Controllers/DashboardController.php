@@ -11,7 +11,7 @@ class DashboardController extends Controller
    {
     try{
     $clinic = auth()->user()->clinic;
-
+    $clinicImage = auth()->user()->profile_image;
     $doctorsCount = $clinic->doctors()->whereHas('clinics')->whereHas('user', fn($q) => $q->whereNull('deleted_at'))->count();
     $patientsCount = $clinic->patients()->whereHas('user', fn($q) => $q->whereNull('deleted_at'))
     ->distinct('patients.user_id')->count('patients.user_id');
@@ -21,6 +21,7 @@ class DashboardController extends Controller
     return response()->json([
         'success' => true,
         'data' => [
+            'clinicImage' => $clinicImage,
             'doctorsCount' => $doctorsCount,
             'patientsCount' => $patientsCount,
             'insurancesCount' => $insurancesCount,

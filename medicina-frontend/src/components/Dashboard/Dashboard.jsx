@@ -9,6 +9,7 @@ import Loading from '../Loading';
 import { motion } from 'framer-motion';
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
+  const [clinicLogo, setClinicLogo] = useState('');
   const [patientsCount, setPatientsCount] = useState(0);
   const [doctorsCount, setDoctorsCount] = useState(0);
   const [insurancesCount, setInsurancesCount] = useState(0);
@@ -32,6 +33,7 @@ export default function Dashboard() {
     try {
       const response = await axios.get('/clinic/dashboard');
       const data = response.data.data;
+      setClinicLogo(data.clinicImage);
       setPatientsCount(data.patientsCount);
       setDoctorsCount(data.doctorsCount);
       setInsurancesCount(data.insurancesCount);
@@ -94,7 +96,10 @@ export default function Dashboard() {
     <div className="dashboard">
       {/* Header */}
       <header className="dashboard-header">
+        <div className='flex items-center gap-3 mb-4'>
         <h1 className="dashboard-title"> لوحة تحكم العيادة</h1>
+        <img src={clinicLogo ? `/storage/${clinicLogo}` : "/default-profile.png"} alt="Clinic Logo"  className='profile-pic mb-2' style={{width:"60px", height:"60px"}}/>
+        </div>
         <p className="dashboard-subtitle">
         <span className="wave">👋</span> أهلاً وسهلاً بك في لوحة التحكم الخاصة بـ <strong>{clinicName}</strong>،  
         نتمنى لك يوماً مثمراً مليئاً بالنجاح .
