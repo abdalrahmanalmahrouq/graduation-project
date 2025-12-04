@@ -263,4 +263,5 @@ TODO:
  - test the whole system and make sure every thing is work as expected 
  - deploy the project 
  - Add rule-based access control (apply middleware)
+ - Update observer so it removes past valid appointments and generates new ones
  
