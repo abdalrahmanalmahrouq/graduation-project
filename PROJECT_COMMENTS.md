@@ -274,3 +274,6 @@ in different way but you must follow the instructions to know how >
 ` enhance the overall clinic user to successfully manage thier doctors` Dec/02
 **Purpose:**  
 < now the clinic can manage thier doctors like they can see their doctors schedule and access the doctors appointments for each doctor and for all doctors in clinic appointments page .>
+
+
+<work in progress Dec/04> 
