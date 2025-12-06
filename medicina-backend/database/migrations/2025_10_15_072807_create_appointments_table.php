@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('appointment_id')->required();
             $table->foreign('appointment_id')->references('id')->on('available_appointments')->onDelete('cascade');
             $table->date('appointment_date');
-            $table->enum('status', ['booked', 'completed', 'cancelled', 'no_show'])->default('booked');
+            $table->enum('status', ['booked', 'completed', 'cancelled', 'no-show'])->default('booked');
             $table->timestamps();
         });
     }

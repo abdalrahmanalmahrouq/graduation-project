@@ -459,7 +459,7 @@ const DoctorList = () => {
         id: doctor.doctor_id,
         name: doctor.full_name,
         clinic: doctor.specialization,
-        img: doctor.profile_image_url || '/default-doctor.jpg',
+        img: doctor.profile_image_url || defaultImage,
         profile_image_url: doctor.profile_image_url,
         specialty: doctor.specialization,
         doctorId: doctor.user_id,

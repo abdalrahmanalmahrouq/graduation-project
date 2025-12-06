@@ -65,6 +65,9 @@ const DoctorHeaderCard = ({
                         src={doctor.profile_image_url || getDefaultImage()}
                         alt={doctor.name}
                         className={getImageSizeClass()}
+                        onError={(e) => {
+                                e.target.src = getDefaultImage();
+                        }}
                     />
                 </div>
                 <div className="profile-title">

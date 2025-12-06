@@ -20,22 +20,43 @@ class AppointmentSeeder extends Seeder
         // 2. Define simplistic scenarios
         // Notice: NO Doctor, NO Clinic, NO Times, NO Day Names. Just Date + Patient.
         $bookings = [
-            [
-                'patient_email' => 'khalid@example.com',
-                'date' => Carbon::now()->addDays(7)->next('Wednesday')->format('Y-m-d'), 
-                'status' => 'booked'
-            ],
-            [
-                'patient_email' => 'mohsen@example.com',
-                'date' => Carbon::now()->addDays(7)->next('Thursday')->format('Y-m-d'),
-                'status' => 'booked'
-            ],
-            [
-                'patient_email' => 'ahmed@example.com',
-                'date' => Carbon::now()->subDays(7)->next('Wednesday')->format('Y-m-d'),
-                'status' => 'completed'
-            ]
+            ['patient_email' => 'khalid@example.com',     'date' => Carbon::now()->addDays(3)->format('Y-m-d'),  'status' => 'booked'],
+            ['patient_email' => 'mohsen@example.com',     'date' => Carbon::now()->addDays(5)->format('Y-m-d'),  'status' => 'completed'],
+            ['patient_email' => 'ahmed@example.com',      'date' => Carbon::now()->addDays(7)->format('Y-m-d'),  'status' => 'cancelled'],
+            // ['patient_email' => 'sara81@example.com',    'date' => Carbon::now()->addDays(2)->format('Y-m-d'),  'status' => 'booked'],
+            // ['patient_email' => 'yousef44@example.com',  'date' => Carbon::now()->addDays(6)->format('Y-m-d'),  'status' => 'completed'],
+
+            // ['patient_email' => 'nada33@example.com',    'date' => Carbon::now()->addDays(1)->format('Y-m-d'),  'status' => 'completed'],
+            // ['patient_email' => 'majdi27@example.com',   'date' => Carbon::now()->addDays(4)->format('Y-m-d'),  'status' => 'no-show'],
+            // ['patient_email' => 'farida66@example.com',  'date' => Carbon::now()->addDays(8)->format('Y-m-d'),  'status' => 'booked'],
+            // ['patient_email' => 'ammar95@example.com',   'date' => Carbon::now()->addDays(9)->format('Y-m-d'),  'status' => 'completed'],
+            // ['patient_email' => 'reem58@example.com',    'date' => Carbon::now()->addDays(11)->format('Y-m-d'), 'status' => 'cancelled'],
+
+            // ['patient_email' => 'tareq71@example.com',   'date' => Carbon::now()->addDays(12)->format('Y-m-d'), 'status' => 'booked'],
+            // ['patient_email' => 'hala54@example.com',    'date' => Carbon::now()->addDays(10)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'mohammed42@example.com','date' => Carbon::now()->addDays(14)->format('Y-m-d'), 'status' => 'booked'],
+            // ['patient_email' => 'jasmine22@example.com', 'date' => Carbon::now()->addDays(15)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'bilal69@example.com',   'date' => Carbon::now()->addDays(13)->format('Y-m-d'), 'status' => 'no-show'],
+
+            // ['patient_email' => 'khalid@example.com',     'date' => Carbon::now()->addDays(16)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'mohsen@example.com',     'date' => Carbon::now()->addDays(17)->format('Y-m-d'), 'status' => 'booked'],
+            // ['patient_email' => 'ahmed@example.com',      'date' => Carbon::now()->addDays(18)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'sara81@example.com',    'date' => Carbon::now()->addDays(19)->format('Y-m-d'), 'status' => 'cancelled'],
+            // ['patient_email' => 'yousef44@example.com',  'date' => Carbon::now()->addDays(20)->format('Y-m-d'), 'status' => 'booked'],
+
+            // ['patient_email' => 'nada33@example.com',    'date' => Carbon::now()->addDays(21)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'majdi27@example.com',   'date' => Carbon::now()->addDays(22)->format('Y-m-d'), 'status' => 'no-show'],
+            // ['patient_email' => 'farida66@example.com',  'date' => Carbon::now()->addDays(23)->format('Y-m-d'), 'status' => 'booked'],
+            // ['patient_email' => 'ammar95@example.com',   'date' => Carbon::now()->addDays(24)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'reem58@example.com',    'date' => Carbon::now()->addDays(25)->format('Y-m-d'), 'status' => 'cancelled'],
+
+            // ['patient_email' => 'tareq71@example.com',   'date' => Carbon::now()->addDays(26)->format('Y-m-d'), 'status' => 'booked'],
+            // ['patient_email' => 'hala54@example.com',    'date' => Carbon::now()->addDays(27)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'mohammed42@example.com','date' => Carbon::now()->addDays(28)->format('Y-m-d'), 'status' => 'booked'],
+            // ['patient_email' => 'jasmine22@example.com', 'date' => Carbon::now()->addDays(29)->format('Y-m-d'), 'status' => 'completed'],
+            // ['patient_email' => 'bilal69@example.com',   'date' => Carbon::now()->addDays(30)->format('Y-m-d'), 'status' => 'no-show'],
         ];
+
 
         foreach ($bookings as $booking) {
             // A. Get the Patient
