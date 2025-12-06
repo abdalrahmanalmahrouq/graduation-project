@@ -278,3 +278,9 @@ in different way but you must follow the instructions to know how >
 
 <work in progress Dec/04> 
 <work in progress Dec/05> 
+
+### Commit
+
+` expand the seeder for all users` Dec/06
+**Purpose:**  
+< expand the seeder so now you can see more doctors, clinics, patients, etc...>
