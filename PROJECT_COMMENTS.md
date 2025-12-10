@@ -286,3 +286,5 @@ in different way but you must follow the instructions to know how >
 < expand the seeder so now you can see more doctors, clinics, patients, etc...>
 
 <work in progress Dec/07> 
+
+<work in progress Dec/10> 
