@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddInsuranceModal from './AddInsuranceModal';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 
 const ClinicInsuranceManagement = () => {
   const [insurances, setInsurances] = useState([]);

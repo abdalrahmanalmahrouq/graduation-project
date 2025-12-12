@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import TopNav from '../components/TopNavigation/TopNav'
-import AllClinics from '../components/Clinics/AllClinics'
+import SpecialtyDoctorsList from '../components/Doctors/SpecialtyDoctorsList'
 
-const AllClinicsPage = () => {
+const SpecialtyDoctorsListPage = () => {
   useEffect(() => {
     window.scrollTo(0,0);
   }, []);
@@ -10,9 +10,9 @@ const AllClinicsPage = () => {
   return (
     <div>
       <TopNav/>
-      <AllClinics/>
+      <SpecialtyDoctorsList/>
     </div>
   );
 };
 
-export default AllClinicsPage
+export default SpecialtyDoctorsListPage

@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
-import { Link,useNavigate,Navigate } from 'react-router-dom'
-import AuthLayout from '../AuthLayout';
+import { Link,useNavigate,Navigate, useLocation } from 'react-router-dom'
+import AuthLayout from '../Authentication/AuthLayout';
 import axios from 'axios';
 
 export default function PatientLogin() {
@@ -11,6 +11,7 @@ export default function PatientLogin() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const [errors, setErrors] = useState({});
 
   // Check if already logged in
@@ -39,7 +40,9 @@ export default function PatientLogin() {
           // ✅ Store data (backend already validated role)
           localStorage.setItem('token', response.data.access_token);
           localStorage.setItem('user', JSON.stringify(profileResponse.data));
-          navigate('/clinics');
+          const params = new URLSearchParams(location.search);
+          const redirectTo = params.get('redirect') || '/clinics';
+          navigate(redirectTo, { replace: true });
         })
         .catch((profileError) => {
           console.error('Failed to fetch profile:', profileError);
@@ -91,9 +94,15 @@ export default function PatientLogin() {
              <div className="mt-2">
                نسيت كلمة المرور؟ <Link to="/forgot-password" className="links-buttons-underline">نسيت</Link>
              </div>
-             <div className="pb-3 mt-1">
-               مستخدم جديد؟ <Link to="/register/patient" className="links-buttons-underline">إنشاء حساب</Link>
-             </div>
+            <div className="pb-3 mt-1">
+              مستخدم جديد؟{' '}
+              <Link
+                to={`/register/patient${location.search ? location.search : ''}`}
+                className="links-buttons-underline"
+              >
+                إنشاء حساب
+              </Link>
+            </div>
            </form>
     </AuthLayout>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBar from '../components/SideBar';
 import ToolBar from '../components/ToolBar';
-import DoctorManagement from '../components/DoctorManagement/DoctorManagement';
+import DoctorManagement from '../components/Doctors/DoctorManagement/DoctorManagement';
 
 const DoctorManagementPage = () => {
   const closeMobileSidebar = () => {

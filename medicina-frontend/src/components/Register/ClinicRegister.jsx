@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { Link,useNavigate } from 'react-router-dom'
-import AuthLayout from '../AuthLayout';
+import AuthLayout from '../Authentication/AuthLayout';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 export default function ClinicRegister() {

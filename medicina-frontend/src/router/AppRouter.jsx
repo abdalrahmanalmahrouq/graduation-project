@@ -6,10 +6,10 @@ import "aos/dist/aos.css";
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
-import ClinicsPage from "../pages/ClinicsPage";
+import ClinicSpecialtiesGridPage from "../pages/ClinicSpecialtiesGridPage";
 import PatientRegisterPage from "../pages/RegisterPages/PatientRegisterPage";
 import PatientLoginPage from "../pages/LoginPages/PatientLoginPage";
-import AllClinicsPage from "../pages/AllClinicsPage";
+import SpecialtyDoctorsListPage from "../pages/SpecialtyDoctorsListPage";
 import DoctorProfilePage from "../pages/DoctorProfilePage";
 import AppointmentsSchedulePage from "../pages/AppointmentsSchedulePage";
 import ClinicRegisterPage from "../pages/RegisterPages/ClinicRegisterPage";
@@ -29,14 +29,14 @@ import ManageDoctorsPage from "../pages/ManageDoctorsPage";
 import DoctorManagementPage from "../pages/DoctorManagementPage";
 import UpComingAppointmentPage from "../pages/UpComingAppointmentPage";
 import PastAppointmentPage from "../pages/PastAppointmentPage";
-import ClinicAppointmentsPage from "../pages/ClinicAppointmentsPage";
+import ClinicAllDoctorsAppointmentsPage from "../pages/ClinicAllDoctorsAppointmentsPage";
 import ClinicInsurancePage from "../pages/ClinicInsurancePage";
 import PatientDataPage from "../pages/PatientDataPage";
-import DoctorClinicsPage from "../pages/DoctorClinicsPage";
+import DoctorWorkingClinicsPage from "../pages/DoctorWorkingClinicsPage";
 import DoctorClinicAppointmentsPage from "../pages/DoctorClinicAppointmentsPage";
-import EmailVerificationSuccess from "../components/EmailVerificationSuccess";
-import ForgotPassword from "../components/ForgotPassword";
-import ResetPassword from "../components/ResetPassword";
+import EmailVerificationSuccess from "../components/Authentication/EmailVerificationSuccess";
+import ForgotPassword from "../components/Authentication/ForgotPassword";
+import ResetPassword from "../components/Authentication/ResetPassword";
 import LabResultRequestPage from "../pages/LabResultRequestPage";
 import NotificationsPage from "../pages/NotificationsPage";
 import PatientLabResultsPage from "../pages/PatientLabResultsPage";
@@ -65,7 +65,7 @@ const AppRouter = () => {
 					path="/clinics"
 					element={
 						<ProtectedRoute allowedRoles={["patient", "guest"]}>
-							<ClinicsPage />
+							<ClinicSpecialtiesGridPage />
 						</ProtectedRoute>
 					}
 				/>
@@ -104,7 +104,7 @@ const AppRouter = () => {
 					path="/clinics/:directory"
 					element={
 						<ProtectedRoute allowedRoles={["patient", "guest"]}>
-							<AllClinicsPage />
+							<SpecialtyDoctorsListPage />
 						</ProtectedRoute>
 					}
 				/>
@@ -187,7 +187,7 @@ const AppRouter = () => {
 					path="/doctor/clinics"
 					element={
 						<ProtectedRoute allowedRoles={["doctor"]}>
-							<DoctorClinicsPage />
+							<DoctorWorkingClinicsPage />
 						</ProtectedRoute>
 					}
 				/>
@@ -240,7 +240,7 @@ const AppRouter = () => {
 					path="/clinic/appointments"
 					element={
 						<ProtectedRoute allowedRoles={["clinic"]}>
-							<ClinicAppointmentsPage />
+							<ClinicAllDoctorsAppointmentsPage />
 						</ProtectedRoute>
 					}
 				/>

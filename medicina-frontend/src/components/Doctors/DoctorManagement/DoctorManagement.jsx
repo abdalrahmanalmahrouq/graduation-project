@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import { Row, Col, Nav } from 'react-bootstrap'; // Ensure react-bootstrap is installed
 
 // Sub-Components
-import DoctorHeaderCard from '../DoctorHeaderCard/DoctorHeaderCard'; 
+import DoctorHeaderCard from '../DoctorHeaderCard'; 
 import WeeklyScheduleEditor from './WeeklyScheduleEditor';
 import DoctorAppointmentsList from './DoctorAppointmentsList';
 

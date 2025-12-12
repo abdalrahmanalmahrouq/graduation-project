@@ -1,5 +1,5 @@
 import { Link,useNavigate } from 'react-router-dom'
-import AuthLayout from '../AuthLayout';
+import AuthLayout from '../Authentication/AuthLayout';
 import { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';

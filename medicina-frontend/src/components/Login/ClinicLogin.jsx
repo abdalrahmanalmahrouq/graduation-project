@@ -1,7 +1,7 @@
 import React ,{useState} from 'react';
 import { Link,useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
-import AuthLayout from "../AuthLayout";
+import AuthLayout from "../Authentication/AuthLayout";
 
 
 export default function ClinicLogin() {

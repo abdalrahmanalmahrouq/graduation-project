@@ -1,7 +1,7 @@
 import React from 'react'
 import SideBar from '../components/SideBar'
 import ToolBar from '../components/ToolBar'
-import PastAppointment from '../components/PastAppointment';
+import PastAppointment from '../components/Patients/PastAppointment';
 
 const PastAppointmentPage = () => {
   const closeMobileSidebar = () => {

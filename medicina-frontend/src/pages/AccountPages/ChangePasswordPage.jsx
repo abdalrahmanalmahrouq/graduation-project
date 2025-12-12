@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBar from '../../components/SideBar';
 import ToolBar from '../../components/ToolBar';
-import ChangePassword from '../../components/ChangePassword/ChangePassword';
+import ChangePassword from '../../components/Authentication/ChangePassword';
 
 const ChangePasswordPage = () => {
   const closeMobileSidebar = () => {

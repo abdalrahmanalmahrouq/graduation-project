@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react';
-import { Link,useNavigate } from 'react-router-dom'
-import AuthLayout from '../AuthLayout';
+import { Link,useNavigate, useLocation } from 'react-router-dom'
+import AuthLayout from '../Authentication/AuthLayout';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 export default function PatientRegister() {
@@ -18,6 +18,7 @@ export default function PatientRegister() {
         const [password_confirmation,setConfirmPassword]=useState('');
         const [message, setMessage] = useState('');
         const navigate = useNavigate();
+        const location = useLocation();
         const [errors, setErrors] = useState({});
         const [loading,setLoading]=useState(false);
         const [insuranceOptions, setInsuranceOptions] = useState([]);
@@ -92,7 +93,10 @@ export default function PatientRegister() {
                   console.log(response);
                   setLoading(false);
                   if(response.status === 200){
-                    navigate('/login/patient');
+                    const params = new URLSearchParams(location.search);
+                    const redirect = params.get('redirect');
+                    const target = redirect ? `/login/patient?redirect=${encodeURIComponent(redirect)}` : '/login/patient';
+                    navigate(target);
                   }
         
                 })
@@ -181,7 +185,15 @@ export default function PatientRegister() {
                                 {loading ? 'جاري التسجيل...' : 'تسجيل'}
                         </button>
                         <br />
-                        <div className='pb-3 mt-2'>   لديك حساب؟ <Link to='/login/patient' className='links-buttons-underline '>تسجيل الدخول</Link></div>
+            <div className='pb-3 mt-2'>
+              لديك حساب؟{' '}
+              <Link
+                to={`/login/patient${location.search ? location.search : ''}`}
+                className='links-buttons-underline '
+              >
+                تسجيل الدخول
+              </Link>
+            </div>
         </form>
         </AuthLayout>
         );

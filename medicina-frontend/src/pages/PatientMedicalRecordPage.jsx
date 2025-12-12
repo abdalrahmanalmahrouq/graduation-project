@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBar from '../components/SideBar';
 import ToolBar from '../components/ToolBar';
-import PatientMedicalRecord from '../components/PatientMedicalRecord/PatientMedicalRecord';
+import PatientMedicalRecord from '../components/Patients/PatientMedicalRecord';
 
 const PatientMedicalRecordPage = () => {
   const closeMobileSidebar = () => {

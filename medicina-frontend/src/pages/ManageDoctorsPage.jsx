@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from '../components/SideBar'
 import ToolBar from '../components/ToolBar'
-import DoctorList from '../components/DoctorCard'
+import ClinicDoctorList from '../components/Clinics/ClinicDoctorList'
 
 export default function ManageDoctorsPage() {
  
@@ -10,7 +10,7 @@ export default function ManageDoctorsPage() {
       <Sidebar className='sidebar'/>
       <ToolBar className='toolbar' />
       <main  className='content-area'>
-        <DoctorList/>
+        <ClinicDoctorList/>
       </main>
     </div>
   )

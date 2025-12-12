@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../Loading';
 
-const ClinicAppointments = () => {
+const ClinicAllDoctorsAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -310,4 +310,4 @@ const ClinicAppointments = () => {
   );
 };
 
-export default ClinicAppointments;
+export default ClinicAllDoctorsAppointments;

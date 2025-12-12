@@ -14,8 +14,8 @@ import chest_img from '../../assets/img/clinics/chest.jpg'
 import digestive_img from '../../assets/img/clinics/digestive.jpg'
 import { Link } from 'react-router-dom'
 
-const ClinicsDetails = () => {
-  const clinics = [
+const ClinicSpecialtiesGrid = () => {
+  const specialtyCards = [
     {
       title: "عيادات الأسنان",
       description: "نقدم خدمات شاملة للعناية بالأسنان باستخدام أحدث التقنيات.",
@@ -98,7 +98,7 @@ const ClinicsDetails = () => {
           <p>نحن منصة تربط بين المرضى والعيادات لتسهيل حجز المواعيد والتواصل بينهم بكل سهولة وفعالية.</p>
         </div>
         <Row className="justify-content-center g-4 row-card" >
-          {clinics.map((clinic, index) => (
+          {specialtyCards.map((clinic, index) => (
             <Col key={index} lg={4} md={6} sm={12} className="d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
               <Card style={{ width: '18rem' }} className='clinics-card'>
                 <Card.Img variant="top" src={clinic.image} className='card-img-clinics' />
@@ -116,4 +116,4 @@ const ClinicsDetails = () => {
   );
 };
 
-export default ClinicsDetails
+export default ClinicSpecialtiesGrid

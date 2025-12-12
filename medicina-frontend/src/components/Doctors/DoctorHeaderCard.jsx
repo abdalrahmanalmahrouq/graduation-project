@@ -131,27 +131,27 @@ const DoctorHeaderCard = ({
 };
 
 // PropTypes for better type checking and documentation
-DoctorHeaderCard.propTypes = {
-    doctor: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        specialization: PropTypes.string,
-        profile_image_url: PropTypes.string,
-        clinics: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-            name: PropTypes.string,
-            address: PropTypes.string,
-        })),
-    }).isRequired,
-    showStats: PropTypes.bool,
-    showSpecialty: PropTypes.bool,
-    showClinics: PropTypes.bool,
-    selectedClinic: PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        name: PropTypes.string,
-        address: PropTypes.string,
-    }),
-    className: PropTypes.string,
-    imageSize: PropTypes.oneOf(['small', 'medium', 'large']),
-};
+// DoctorHeaderCard.propTypes = {
+//     doctor: PropTypes.shape({
+//         name: PropTypes.string.isRequired,
+//         specialization: PropTypes.string,
+//         profile_image_url: PropTypes.string,
+//         clinics: PropTypes.arrayOf(PropTypes.shape({
+//             id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//             name: PropTypes.string,
+//             address: PropTypes.string,
+//         })),
+//     }).isRequired,
+//     showStats: PropTypes.bool,
+//     showSpecialty: PropTypes.bool,
+//     showClinics: PropTypes.bool,
+//     selectedClinic: PropTypes.shape({
+//         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//         name: PropTypes.string,
+//         address: PropTypes.string,
+//     }),
+//     className: PropTypes.string,
+//     imageSize: PropTypes.oneOf(['small', 'medium', 'large']),
+// };
 
 export default DoctorHeaderCard;

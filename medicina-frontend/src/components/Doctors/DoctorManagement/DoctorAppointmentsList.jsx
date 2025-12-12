@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import { Link } from 'react-router-dom';
-import { color } from 'framer-motion';
+
 
 const DoctorAppointmentsList = ({ doctorId }) => {
   const [activeStatus, setActiveStatus] = useState('booked'); // booked, completed, cancelled, no_show
@@ -145,6 +145,7 @@ const DoctorAppointmentsList = ({ doctorId }) => {
                 <table className="modern-table">
                     <thead>
                         <tr>
+                            <th>صورة المريض</th>
                             <th>المريض</th>
                             <th>التاريخ</th>
                             <th>اليوم</th>
@@ -156,6 +157,18 @@ const DoctorAppointmentsList = ({ doctorId }) => {
                     <tbody>
                         {appointments.map((appt) => (
                             <tr key={appt.id}>
+                              <td>
+                                    <div className="patient-cell">
+                                        
+                                        <div className="avatar-circle mr-4">
+                                            <span>{appt.patient?.profile_image_url ?
+                                            <img src={appt.patient.profile_image_url}  className="avatar-image" alt="Patient" /> :
+                                             <i className="bi bi-person"></i>}</span>
+
+                                        </div>
+                                       
+                                    </div>
+                                </td>
                                 <td>
                                     <div className="patient-cell">
                                         <Link to={`/patients/by-user-id/${appt.patient?.user_id}`} style={{textDecoration:'underline'}}>

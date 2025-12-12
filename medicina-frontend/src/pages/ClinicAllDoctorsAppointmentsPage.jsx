@@ -1,9 +1,9 @@
 import React from 'react';
 import SideBar from '../components/SideBar';
 import ToolBar from '../components/ToolBar';
-import ClinicAppointments from '../components/ClinicAppointments/ClinicAppointments';
+import ClinicAllDoctorsAppointments from '../components/Clinics/ClinicAllDoctorsAppointments';
 
-const ClinicAppointmentsPage = () => {
+const ClinicAllDoctorsAppointmentsPage = () => {
   const closeMobileSidebar = () => {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.mobile-sidebar-overlay');
@@ -19,7 +19,7 @@ const ClinicAppointmentsPage = () => {
       <SideBar className='sidebar' />
       <ToolBar className='toolbar'/>
       <main className="content-area">
-        <ClinicAppointments />
+        <ClinicAllDoctorsAppointments />
       </main>
       {/* Mobile sidebar overlay */}
       <div className="mobile-sidebar-overlay" onClick={closeMobileSidebar}></div>
@@ -27,4 +27,4 @@ const ClinicAppointmentsPage = () => {
   );
 };
 
-export default ClinicAppointmentsPage;
+export default ClinicAllDoctorsAppointmentsPage;

@@ -1,6 +1,6 @@
 import React ,{useState} from 'react';
 import { Link,useNavigate, Navigate } from 'react-router-dom';
-import AuthLayout from '../AuthLayout';
+import AuthLayout from '../Authentication/AuthLayout';
 import axios from 'axios';
 export default function DoctorLogin() {
 

@@ -187,7 +187,7 @@ const MedicalRecord = () => {
       <div className="summary-item">
         <span className="label"><i className="bi bi-clock"></i> الوقت</span>
         <span className="value pr-2">
-          {appointment?.starting_time} - {appointment?.ending_time}
+          {appointment?.available_appointment.starting_time} - {appointment?.available_appointment.ending_time}
         </span>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import defaultImage from '../assets/img/profpic.png';
+import defaultImage from '../../assets/img/profpic.png';
 import axios from 'axios';
-import Loading from './Loading';
+import Loading from '../Loading';
 
 
 // Helper constants
@@ -443,7 +443,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 };
 
 // --- Main Doctor List Page (Unchanged logic) ---
-const DoctorList = () => {
+const ClinicDoctorList = () => {
   const [doctors, setDoctors] = useState([]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -533,4 +533,4 @@ const DoctorList = () => {
   );
 };
 
-export default DoctorList;
+export default ClinicDoctorList;

@@ -16,7 +16,7 @@ const DoctorClinicAppointments = () => {
   const [doctorId, setDoctorId] = useState("");
   const [clinicName, setClinicName] = useState("");
   const [appointments, setAppointments] = useState([]);
-  const [status, setStatus] = useState("booked");
+  const [activeStatus, setActiveStatus] = useState("booked");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [message,setMessage]=useState({ type: '', text:''});
@@ -51,10 +51,22 @@ const DoctorClinicAppointments = () => {
     if (!doctorId || !clinicId) return;
 
     const fetchAppointments = async () => {
+        const endpointMap = {
+          'booked': '/appointments/booked',
+          'completed': '/appointments/completed',
+          'cancelled': '/appointments/cancelled',
+          'no_show': '/appointments/no_show'
+        };
+        const endpoint = endpointMap[activeStatus];
       setLoading(true);
       setError("");
       try {
-        const { data } = await axios.get(`/appointments/${status}/${doctorId}/${clinicId}`);
+        const { data } = await axios.get(endpoint,{
+          params: {
+            doctor_id: doctorId,
+            clinic_id: clinicId
+          }
+        });
         setAppointments(data?.appointments || []);
       } catch (err) {
         console.error("Failed to load appointments:", err);
@@ -65,7 +77,7 @@ const DoctorClinicAppointments = () => {
     };
 
     fetchAppointments();
-  }, [doctorId, clinicId, status]);
+  }, [doctorId, clinicId, activeStatus]);
 
   const handleOpenPatientProfile = (appointment) => {
     if (appointment?.patient?.user_id) {
@@ -97,8 +109,8 @@ const DoctorClinicAppointments = () => {
         {tabs.map((t) => (
           <button
             key={t.key}
-            className={`tabs__item ${status === t.key ? "is-active" : ""}`}
-            onClick={() => setStatus(t.key)}
+            className={`tabs__item ${activeStatus === t.key ? "is-active" : ""}`}
+            onClick={() => setActiveStatus(t.key)}
           >
             <i className={t.icon}></i> <span>{t.label}</span>
           </button>
@@ -128,7 +140,7 @@ const DoctorClinicAppointments = () => {
               <div className="appointment-card__header">
                 <div className="appointment-card__identity">
                   <div className="avatar-circle">
-                    <span>{a.patient?.user?.profile_image ? <img src={`/storage/${a.patient?.user?.profile_image}`}  className="avatar-image" alt="Patient" /> : <i className="bi bi-person"></i>}</span>
+                    <span>{a.patient?.profile_image_url ? <img src={a.patient.profile_image_url}  className="avatar-image" alt="Patient" /> : <i className="bi bi-person"></i>}</span>
                   </div>
                   <div className="identity-text">
                     <div
@@ -141,9 +153,9 @@ const DoctorClinicAppointments = () => {
                   </div>
                 </div>
                 <span className={`status-pill status-pill--${a.status}`}>
-                  {status === "booked"
+                  {activeStatus === "booked"
                     ? "محجوز"
-                    : status === "completed"
+                    : activeStatus === "completed"
                     ? "مكتمل"
                     : "ملغي"}
                 </span>
@@ -169,7 +181,7 @@ const DoctorClinicAppointments = () => {
               </div>
 
               <div className="appointment-card__footer">
-                {status === "booked" && (
+                {activeStatus === "booked" && (
                   <>
                     <button
                       className="btn-action btn-action--secondary"
@@ -185,7 +197,7 @@ const DoctorClinicAppointments = () => {
                     </button>
                   </>
                 )}
-                {status === "completed" && (
+                {activeStatus === "completed" && (
                   <button
                     className="btn-action btn-action--primary"
                     onClick={() => navigate(`/doctor/appointments/${a.id}/medical-record`)}

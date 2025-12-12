@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import TopNav from '../components/TopNavigation/TopNav'
-import DoctorProfile from '../components/Clinics/DoctorProfile'
+import DoctorProfile from '../components/Doctors/DoctorProfile'
 import Footer from '../components/Footer/Footer'
 import Sidebar from '../components/SideBar';
 import ToolBar from '../components/ToolBar';

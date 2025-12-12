@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import TopNav from '../components/TopNavigation/TopNav'
-import ClinicsDetails from '../components/Clinics/ClinicsDetails'
+import ClinicSpecialtiesGrid from '../components/Clinics/ClinicSpecialtiesGrid'
 import Footer from '../components/Footer/Footer'
 import TopPageDetails from '../components/TopPageDetails/TopPageDetails'
 
-const ClinicsPage = () => {
+const ClinicSpecialtiesGridPage = () => {
   useEffect(() => {
     window.scrollTo(0,0);
   }, []);
@@ -13,10 +13,10 @@ const ClinicsPage = () => {
     <div>
       <TopNav />
       <TopPageDetails pageTitle="العيادات"/>
-      <ClinicsDetails/>
+      <ClinicSpecialtiesGrid/>
       <Footer/>
     </div>
   );
 };
 
-export default ClinicsPage
+export default ClinicSpecialtiesGridPage

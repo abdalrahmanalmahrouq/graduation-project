@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Button, Card, Container, Nav, Row, Spinner, Alert, Form, Badge, Col } from 'react-bootstrap';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import DoctorHeaderCard from '../DoctorHeaderCard';
+import DoctorHeaderCard from '../Doctors/DoctorHeaderCard';
 import Loading from '../Loading';
 import NotFound from '../../pages/NotFound';
 

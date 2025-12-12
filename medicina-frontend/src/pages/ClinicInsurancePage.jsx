@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBar from '../components/SideBar';
 import ToolBar from '../components/ToolBar';
-import ClinicInsuranceManagement from '../components/ClinicInsuranceManagement/ClinicInsuranceManagement';
+import ClinicInsuranceManagement from '../components/Clinics/ClinicInsuranceManagement/ClinicInsuranceManagement';
 
 const ClinicInsurancePage = () => {
   const closeMobileSidebar = () => {

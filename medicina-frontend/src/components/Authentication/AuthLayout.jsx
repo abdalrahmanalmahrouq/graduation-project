@@ -1,5 +1,5 @@
 // components/AuthLogin.jsx
-import authimg from '../assets/img/authimage.png'
+import authimg from '../../assets/img/authimage.png'
 export default function AuthLogin({ children, title }) {
   return (
     <div data-aos="fade-up" data-aos-delay="200" className="min-h-screen flex justify-center items-center auth-background">

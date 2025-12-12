@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Card, Col, Container, Row, Spinner, Alert } from 'react-bootstrap';
+import { Button, Card, Col, Container, Row, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import defaultImage from '../../assets/img/profpic.png';
-
 import TopPageDetails from '../TopPageDetails/TopPageDetails';
 import { titles } from '../../data/clinicsData';
 import Loading from '../Loading';
 
-function AllClinics() {
+function SpecialtyDoctorsList() {
     const { directory } = useParams();
-    const [doctors, setDoctors] = useState([]);
+    const [specialtyDoctors, setSpecialtyDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchDoctors();
+        fetchDoctorsBySpecialization();
     }, [directory]);
 
-    const fetchDoctors = async () => {
+    const fetchDoctorsBySpecialization = async () => {
         try {
             setLoading(true);
             setError(null);
@@ -26,12 +25,12 @@ function AllClinics() {
             const response = await axios.get(`/doctors/by-specialization/${directory}`);
             
             if (response.data.success) {
-                setDoctors(response.data.doctors);
+                setSpecialtyDoctors(response.data.doctors);
             } else {
                 setError('فشل في تحميل بيانات الأطباء');
             }
         } catch (err) {
-            console.error('Error fetching doctors:', err);
+            console.error('Error fetching doctors by specialization:', err);
             setError('فشل في تحميل بيانات الأطباء');
         } finally {
             setLoading(false);
@@ -60,7 +59,7 @@ function AllClinics() {
                     <Alert variant="danger">
                         {error}
                     </Alert>
-                    <Button variant="primary" onClick={fetchDoctors}>
+                    <Button variant="primary" onClick={fetchDoctorsBySpecialization}>
                         إعادة المحاولة
                     </Button>
                 </Container>
@@ -72,13 +71,13 @@ function AllClinics() {
         <>    
             <TopPageDetails pageTitle={titles[directory] || 'العيادات'} />
             <Container className="pt-5 text-center">
-                {doctors.length === 0 ? (
+                {specialtyDoctors.length === 0 ? (
                     <Alert variant="info">
                         لا يوجد أطباء متاحين في هذا التخصص حالياً
                     </Alert>
                 ) : (
                     <Row className="justify-content-center g-4 row-card">
-                        {doctors.map((doctor, index) => (
+                        {specialtyDoctors.map((doctor, index) => (
                             <Col key={doctor.id} lg={4} md={6} sm={12} className="d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
                                 <Card style={{ width: '18rem' }} className="clinics-card">
                                     <Card.Img 
@@ -116,4 +115,4 @@ function AllClinics() {
     );
 }
 
-export default AllClinics;
+export default SpecialtyDoctorsList;

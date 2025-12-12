@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
 
-const DoctorClinics = () => {
+const DoctorWorkingClinics = () => {
   const [clinics, setClinics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -130,5 +130,5 @@ const DoctorClinics = () => {
   );
 };
 
-export default DoctorClinics;
+export default DoctorWorkingClinics;
 

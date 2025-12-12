@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBar from '../../components/SideBar';
 import ToolBar from '../../components/ToolBar';
-import DoctorBio from '../../components/DoctorBio/DoctorBio';
+import DoctorBio from '../../components/Doctors/DoctorBio';
 
 const DoctorBioPage = () => {
   const closeMobileSidebar = () => {
