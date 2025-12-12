@@ -290,3 +290,11 @@ in different way but you must follow the instructions to know how >
 <work in progress Dec/10> 
 
 <work in progress Dec/11> 
+
+
+### Commit
+
+` cleaning ` Dec/12
+**Purpose:**  
+< refactoring the project by enhancing some components names and move some components to new folders, handling the directories 
+for any modified components for sure.>
