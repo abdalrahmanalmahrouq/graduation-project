@@ -366,6 +366,7 @@ class AppointmentController extends Controller
         // 6. Eager Load & Get
         $appointments = $query->with([
             'patient:user_id,full_name',
+            'patient.user:id,profile_image',
             'availableAppointment.clinicDoctor.doctor:user_id,full_name',
             'availableAppointment.clinicDoctor.clinic:user_id,clinic_name',
         ])->get();
@@ -378,12 +379,14 @@ class AppointmentController extends Controller
             return [
                 'id' => $appt->id,
                 'appointment_date' => $appt->appointment_date,
+                'day' => $available?->day,
                 'status' => $appt->status,
                 'starting_time' => $available?->starting_time, // Shortcut
                 'ending_time' => $available?->ending_time,     // Shortcut
                 'patient' => [
                     'full_name' => $appt->patient->full_name ?? null,
                     'user_id' => $appt->patient->user_id ?? null,
+                    'profile_image_url' => $appt->patient->user->profile_image_url ?? null,
                 ],
                 'doctor' => [
                     'full_name' => $clinicDoctor?->doctor?->full_name ?? null,
@@ -429,5 +432,101 @@ class AppointmentController extends Controller
             ->get();
             
         return response()->json(['appointments' => $appointments], 200);
+    }
+
+    // get patient appointments with optional status filter
+    public function getPatientAppointments(Request $request)
+    {
+        $validated = $request->validate([
+            'patient_id' => 'sometimes|exists:patients,user_id',
+            'status' => 'sometimes|string|in:booked,completed,cancelled,no_show,all',
+            'starting_date' => 'sometimes|date|date_format:Y-m-d',
+            'ending_date' => 'sometimes|date|date_format:Y-m-d',
+        ]);
+
+        // Get patient_id from request or authenticated user
+        $patientId = $validated['patient_id'] ?? auth()->id();
+        
+        if (!$patientId) {
+            return response()->json(['message' => 'Patient ID is required'], 400);
+        }
+
+        // Build query
+        $query = Appointment::where('patient_id', $patientId);
+
+        // Filter by status
+        $status = $validated['status'] ?? 'all';
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Filter by date range
+        if (!empty($validated['starting_date']) || !empty($validated['ending_date'])) {
+            $startDate = $validated['starting_date'] ?? null;
+            $endDate = $validated['ending_date'] ?? null;
+
+            if ($startDate && $endDate) {
+                if ($startDate > $endDate) [$startDate, $endDate] = [$endDate, $startDate];
+                $query->whereBetween('appointment_date', [$startDate, $endDate]);
+            } elseif ($startDate) {
+                $query->where('appointment_date', '>=', $startDate);
+            } else {
+                $query->where('appointment_date', '<=', $endDate);
+            }
+        }
+
+        // Eager load relationships
+        $appointments = $query->with([
+            'availableAppointment:id,clinic_doctor_id,starting_time,ending_time',
+            'availableAppointment.clinicDoctor.doctor:id,user_id,full_name',
+            'availableAppointment.clinicDoctor.doctor.user:id,profile_image',
+            'availableAppointment.clinicDoctor.clinic:user_id,clinic_name,address',
+        ])
+        ->orderBy('appointment_date', 'desc')
+        ->get();
+
+        // Format response
+        $formatted = $appointments->map(function ($appt) {
+            $available = $appt->availableAppointment;
+            $clinicDoctor = $available?->clinicDoctor;
+            
+            return [
+                'id' => $appt->id,
+                'appointment_date' => $appt->appointment_date,
+                'status' => $appt->status,
+                'appointment_id' => $appt->appointment_id, // Available appointment slot ID
+                'starting_time' => $available?->starting_time,
+                'ending_time' => $available?->ending_time,
+                'doctor' => [
+                    'id' => $clinicDoctor?->doctor?->id ?? null,
+                    'full_name' => $clinicDoctor?->doctor?->full_name ?? null,
+                    'user_id' => $clinicDoctor?->doctor?->user_id ?? null,
+                    'profile_image_url' => $clinicDoctor?->doctor?->user?->profile_image_url ?? null,
+                ],
+                'clinic' => [
+                    'clinic_name' => $clinicDoctor?->clinic?->clinic_name ?? null,
+                    'user_id' => $clinicDoctor?->clinic?->user_id ?? null,
+                    'address' => $clinicDoctor?->clinic?->address ?? null,
+                ]
+            ];
+        });
+
+        return response()->json(['appointments' => $formatted], 200);
+    }
+
+     // mark a booked appointment as completed 
+     // ok there is another function that is called "passedAppointment" that is used to mark a booked appointment as completed or no_show 
+     // but this function will help up to test the api and the frontend for not now appointment because the passedAppointment depends on the starting time and the appointment date
+     // so we will use this function to mark a booked appointment as completed for now
+    public function finishBookedAppointment($appointment_id){
+        $appointment = Appointment::findOrFail($appointment_id);
+        if ($appointment->status !== 'booked') {
+            return response()->json([
+                'message' => 'Only booked appointments can be completed'
+            ], 422);
+        }
+        $appointment->status = 'completed';
+        $appointment->save();
+        return response()->json(['message' => 'Appointment marked as completed', 'appointment' => $appointment], 200);
     }
 }

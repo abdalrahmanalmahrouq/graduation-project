@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import TopNav from '../components/TopNavigation/TopNav'
-import AppointmentsSchedule from '../components/Clinics/AppointmentsSchedule'
+import AppointmentsSchedule from '../components/Appointments/AppointmentsSchedule'
 import Footer from '../components/Footer/Footer'
 import Sidebar from '../components/SideBar';
 import ToolBar from '../components/ToolBar';

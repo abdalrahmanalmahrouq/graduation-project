@@ -112,6 +112,7 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
     Route::get('doctors/get-all-patients-appointments-with-medical-record', [DoctorController::class, 'getAllPatientsAppointmentsWithMedicalRecord']);
     Route::get('appointment/{appointment_id}/medical-record/create', [MedicalRecordController::class, 'create']);
     Route::post('appointment/{appointment_id}/medical-record', [MedicalRecordController::class, 'store']);
+    Route::put('appointments/finish/{appointment_id}',[AppointmentController::class, 'finishBookedAppointment']);
     Route::get('medical-records', [MedicalRecordController::class, 'index']);
     Route::get('medical-records/{record_id}', [MedicalRecordController::class, 'show']);
 });
@@ -119,6 +120,7 @@ Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
 Route::middleware(['auth:sanctum'])->get('patients/by-user-id/{user_id}', [PatientController::class, 'getPatientByUserId']);
 Route::middleware(['auth:sanctum', 'role:patient'])->get('patients/lab-results', [PatientController::class, 'getPatientLabResults']);
 Route::middleware(['auth:sanctum', 'role:patient'])->get('patients/medical-records', [PatientController::class, 'getPatientMedicalRecords']);
+Route::middleware(['auth:sanctum', 'role:patient'])->get('patients/appointments', [AppointmentController::class, 'getPatientAppointments']);
 
 Route::post('appointments/create', [AppointmentController::class, 'createAppointment']);
 Route::patch('appointments/cancel', [AppointmentController::class, 'cancelAppointment']);
@@ -128,6 +130,8 @@ Route::get('appointments/available', [AppointmentController::class, 'getAvailabl
 Route::get('appointments/booked', [AppointmentController::class, 'getBookedAppointment']);
 Route::get('appointments/completed', [AppointmentController::class, 'getCompletedAppointment']);
 Route::get('appointments/cancelled', [AppointmentController::class, 'getCancelledAppointment']);
+Route::get('appointments/no_show', [AppointmentController::class, 'getNoShowAppointment']);
+Route::get('appointments/search', [AppointmentController::class, 'getAppointmentsByStatus']);
 Route::put('appointments/{appointment_id}', [AppointmentController::class, 'updateAvailableDoctorClinicAppointment']);
 
 Route::delete('appointments/{appointment_id}', [AppointmentController::class, 'deleteAvailableDoctorClinicAppointment']);
@@ -147,6 +151,7 @@ Route::middleware(['auth:sanctum', 'role:clinic'])->group(function () {
     Route::post('clinics/add-doctor', [ClinicController::class, 'addDoctor']);
     Route::post('clinics/check-doctor', [ClinicController::class, 'checkDoctor']);
     Route::get('clinics/get-doctors', [ClinicController::class, 'getDoctors']);
+    Route::get('clinics/doctors/{id}/schedule', [ClinicController::class, 'getDoctorSchedule']);
     Route::delete('clinics/delete-doctor-from-clinic', [ClinicController::class, 'deleteDoctor']);
     Route::get('clinic/get-insurances', [InsuranceController::class, 'getInsurancesForClinic']);//  this route will get all insurances company for specific clinic id
     Route::post('clinic/add-insurances', [InsuranceController::class, 'addInsurancesForClinic']); // this route will add insurance company for each clinic
@@ -171,6 +176,5 @@ Route::middleware(['auth:sanctum', 'role:lab'])->group(function () {
     Route::post('/lab-results/request', [LabResultController::class, 'createRequest']);// LAB → create pending request
     Route::post('/lab-results/{id}/upload', [LabResultController::class, 'uploadDetails']);// LAB → upload details+file once approved
 });
-
 
 

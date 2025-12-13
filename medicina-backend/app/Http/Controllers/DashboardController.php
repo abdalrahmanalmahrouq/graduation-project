@@ -16,7 +16,7 @@ class DashboardController extends Controller
     $patientsCount = $clinic->patients()->whereHas('user', fn($q) => $q->whereNull('deleted_at'))
     ->distinct('patients.user_id')->count('patients.user_id');
     $appointmentsCount = $clinic->appointments()->count();
-    $insurancesCount = $clinic->insurances()->where('insurances.deleted_at', null)->count();
+    $insurancesCount = $clinic->insurances()->wherePivot('deleted_at', null)->count();
 
     return response()->json([
         'success' => true,
@@ -40,7 +40,11 @@ class DashboardController extends Controller
    public function getFiveInsurancesCompanies()
    {
     try {
-        $insurances = Insurance::orderBy('name')->take(5)->get();
+        $clinic = auth()->user()->clinic;
+        $insurances = $clinic->insurances()
+        ->wherePivot('deleted_at',null)
+        ->orderBy('name')->take(5)->get();
+        
         return response()->json([
             'success' => true,
             'data' => $insurances

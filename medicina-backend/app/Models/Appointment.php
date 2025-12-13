@@ -17,9 +17,17 @@ class Appointment extends Model
         return $this->belongsTo(Patient::class, 'patient_id', 'user_id');
     }
 
-    // Each appointment has one doctor
-    public function doctor(){
-        return $this->belongsTo(Doctor::class, 'doctor_id','user_id');
+    public function doctor()
+    {
+        return $this->hasOneThrough(
+            Doctor::class,
+            ClinicDoctor::class,
+            'id', // Foreign key on clinic_doctor table
+            'user_id', // Foreign key on doctors table
+            'appointment_id', // Local key on appointments table
+            'doctor_id' // Local key on clinic_doctor table
+        );
+      
     }
 
     // Each appointment has one clinic
