@@ -298,3 +298,15 @@ in different way but you must follow the instructions to know how >
 **Purpose:**  
 < refactoring the project by enhancing some components names and move some components to new folders, handling the directories 
 for any modified components for sure.>
+
+### Commit
+
+` fix all medical records issue after broken from new appointments tables` Dec/13
+**Purpose:**  
+< fix some issues caused by new appointments tables like available appointments table >
+
+### Commit
+
+` Add: now the patient can book an appointment and access pre,post appointments, modify, cancel` Dec/13
+**Purpose:**  
+< now you can make appointment as patient, modify and delete it >
