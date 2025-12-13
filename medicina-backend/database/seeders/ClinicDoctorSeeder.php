@@ -35,9 +35,9 @@ class ClinicDoctorSeeder extends Seeder
                     'ali@example.com', 'omar@example.com', 'fatima@example.com'
                 ]],
 
-                ['clinic_email' => 'healthline44@example.com', 'doctor_emails' => [
-                    'ahmad58@example.com', 'tasneem41@example.com', 'khaled05@example.com'
-                ]],
+                // ['clinic_email' => 'healthline44@example.com', 'doctor_emails' => [
+                //     'ahmad58@example.com', 'tasneem41@example.com', 'khaled05@example.com'
+                // ]],
 
                 // ['clinic_email' => 'amanamed22@example.com', 'doctor_emails' => [
                 //     'hala16@example.com', 'mustafa74@example.com'

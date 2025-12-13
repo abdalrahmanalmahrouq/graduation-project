@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Clinic;
 use Illuminate\Http\Request;
@@ -32,26 +34,64 @@ class DoctorController extends Controller
                 'اخصائي قلب' => ['cardiology', 'قلب', 'اخصائي قلب'],
 
                 // Neurology
-                'neurology' => ['neurology', 'اعصاب', 'طبيب اعصاب'],
-                'اعصاب' => ['neurology', 'اعصاب', 'طبيب اعصاب'],
+                'neurology' => ['neurology', 'اعصاب', 'طبيب اعصاب', 'اخصائي اعصاب'],
+                'اعصاب' => ['neurology', 'اعصاب', 'طبيب اعصاب', 'اخصائي اعصاب'],
+                'طبيب اعصاب' => ['neurology', 'اعصاب', 'طبيب اعصاب', 'اخصائي اعصاب'],
+                'اخصائي اعصاب' => ['neurology', 'اعصاب', 'طبيب اعصاب', 'اخصائي اعصاب'],
 
                 // Dermatology
-                'dermatology' => ['dermatology', 'جلدية', 'طبيب جلدية'],
-                'جلدية' => ['dermatology', 'جلدية', 'طبيب جلدية'],
+                'dermatology' => ['dermatology', 'جلدية', 'طبيب جلدية', 'اخصائي جلدية'],
+                'جلدية' => ['dermatology', 'جلدية', 'طبيب جلدية', 'اخصائي جلدية'],
+                'طبيب جلدية' => ['dermatology', 'جلدية', 'طبيب جلدية', 'اخصائي جلدية'],
+                'اخصائي جلدية' => ['dermatology', 'جلدية', 'طبيب جلدية', 'اخصائي جلدية'],
 
                 // Dentistry
-                'dentistry' => ['dentistry', 'اسنان', 'طبيب اسنان'],
-                'اسنان' => ['dentistry', 'اسنان', 'طبيب اسنان'],
+                'dentistry' => ['dentistry', 'اسنان', 'طبيب اسنان', 'اخصائي اسنان'],
+                'اسنان' => ['dentistry', 'اسنان', 'طبيب اسنان', 'اخصائي اسنان'],
+                'طبيب اسنان' => ['dentistry', 'اسنان', 'طبيب اسنان', 'اخصائي اسنان'],
+                'اخصائي اسنان' => ['dentistry', 'اسنان', 'طبيب اسنان', 'اخصائي اسنان'],
+
+                // Ophthalmology
+                'ophthalmology' => ['ophthalmology', 'عيون', 'طبيب عيون', 'اخصائي عيون'],
+                'عيون' => ['ophthalmology', 'عيون', 'طبيب عيون', 'اخصائي عيون'],
+                'طبيب عيون' => ['ophthalmology', 'عيون', 'طبيب عيون', 'اخصائي عيون'],
+                'اخصائي عيون' => ['ophthalmology', 'عيون', 'طبيب عيون', 'اخصائي عيون'],
+
+                // Gynecology
+                'gynecology' => ['gynecology', 'نساء', 'طبيب نساء', 'اخصائي نساء', 'طب نسائية', 'اخصائي طب نسائية'],
+                'نساء' => ['gynecology', 'نساء', 'طبيب نساء', 'اخصائي نساء', 'طب نسائية', 'اخصائي طب نسائية'],
+                'طبيب نساء' => ['gynecology', 'نساء', 'طبيب نساء', 'اخصائي نساء', 'طب نسائية', 'اخصائي طب نسائية'],
+                'اخصائي نساء' => ['gynecology', 'نساء', 'طبيب نساء', 'اخصائي نساء', 'طب نسائية', 'اخصائي طب نسائية'],
+                'طب نسائية' => ['gynecology', 'نساء', 'طبيب نساء', 'اخصائي نساء', 'طب نسائية', 'اخصائي طب نسائية'],
+                'اخصائي طب نسائية' => ['gynecology', 'نساء', 'طبيب نساء', 'اخصائي نساء', 'طب نسائية', 'اخصائي طب نسائية'],
+
+                // Orthopedics
+                'orthopedics' => ['orthopedics', 'orthopedic', 'عظام', 'طبيب عظام', 'اخصائي عظام'],
+                'orthopedic' => ['orthopedics', 'orthopedic', 'عظام', 'طبيب عظام', 'اخصائي عظام'],
+                'عظام' => ['orthopedics', 'orthopedic', 'عظام', 'طبيب عظام', 'اخصائي عظام'],
+                'طبيب عظام' => ['orthopedics', 'orthopedic', 'عظام', 'طبيب عظام', 'اخصائي عظام'],
+                'اخصائي عظام' => ['orthopedics', 'orthopedic', 'عظام', 'طبيب عظام', 'اخصائي عظام'],
+
+                // Pulmonology
+                'pulmonology' => ['pulmonology', 'جهاز تنفسي', 'طبيب صدر', 'اخصائي جهاز تنفسي'],
+                'جهاز تنفسي' => ['pulmonology', 'جهاز تنفسي', 'طبيب صدر', 'اخصائي جهاز تنفسي'],
+                'طبيب صدر' => ['pulmonology', 'جهاز تنفسي', 'طبيب صدر', 'اخصائي جهاز تنفسي'],
+                'اخصائي جهاز تنفسي' => ['pulmonology', 'جهاز تنفسي', 'طبيب صدر', 'اخصائي جهاز تنفسي'],
 
                 // ENT
-                'ent' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة'],
-                'انف' => ['ent', 'انف', 'اذن', 'حنجرة'],
-                'اذن' => ['ent', 'انف', 'اذن', 'حنجرة'],
+                'ent' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة', 'انف اذن و حنجرة', 'اخصائي انف اذن و حنجرة'],
+                'انف' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة', 'انف اذن و حنجرة', 'اخصائي انف اذن و حنجرة'],
+                'اذن' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة', 'انف اذن و حنجرة', 'اخصائي انف اذن و حنجرة'],
+                'انف اذن حنجرة' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة', 'انف اذن و حنجرة', 'اخصائي انف اذن و حنجرة'],
+                'انف اذن و حنجرة' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة', 'انف اذن و حنجرة', 'اخصائي انف اذن و حنجرة'],
+                'اخصائي انف اذن و حنجرة' => ['ent', 'انف', 'اذن', 'حنجرة', 'انف اذن حنجرة', 'انف اذن و حنجرة', 'اخصائي انف اذن و حنجرة'],
 
                 // Gastroenterology (digestive)
-                'gastroenterology' => ['gastroenterology', 'جهاز هضمي', 'هضمي'],
-                'digestive' => ['gastroenterology', 'جهاز هضمي', 'هضمي'],
-                'هضمي' => ['gastroenterology', 'جهاز هضمي', 'هضمي'],
+                'gastroenterology' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
+                'digestive' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
+                'هضمي' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
+                'باطنية' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
+                'اخصائي باطنية' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
             ];
 
             // 3. Resolve synonyms (fallback: only input)
@@ -212,35 +252,78 @@ class DoctorController extends Controller
 
     public function getAllPatientsAppointmentsWithMedicalRecord(Request $request)
     {
-        try{
-            $doctor=auth()->user()->doctor;
-            
-            $appointment = $doctor->appointments()
-            ->where(function ($q) {
-                $q->whereHas('clinic.user', fn($u) => $u->whereNull('deleted_at'))
-                  ->whereHas('patient.user', fn($u) => $u->whereNull('deleted_at'));
-            })
-            ->whereNotIn('status',['available','no_show'])
-            ->with([
-                'patient:user_id,full_name',
-                'patient.user:id,profile_image',
-                'clinic:user_id,clinic_name',
-                'medicalRecord',
-                'medicalRecord.labResult',
-            ])
-            ->orderBy('appointment_date','desc')
-            ->get();
+        try {
+            $doctorId = auth()->id();
+
+            // 1. Start from Appointment Model (easier than defining complex joins on Doctor)
+            $appointments = Appointment::query()
+                
+                // FILTER: Only appointments belonging to THIS Doctor
+                // Chain: Appointment -> Slot -> Contract -> Doctor
+                ->whereHas('availableAppointment.clinicDoctor', function ($q) use ($doctorId) {
+                    $q->where('doctor_id', $doctorId);
+                })
+
+                // FILTER: Active Patients only (Soft Delete Check)
+                ->whereHas('patient.user', fn($u) => $u->whereNull('deleted_at'))
+
+                // FILTER: Active Clinics only (Deep Soft Delete Check)
+                // Chain: Slot -> Contract -> Clinic -> User
+                ->whereHas('availableAppointment.clinicDoctor.clinic.user', fn($u) => $u->whereNull('deleted_at'))
+
+                // EAGER LOAD: Get all the data
+                ->with([
+                    'patient:user_id,full_name',
+                    'patient.user:id,profile_image',
+                    'medicalRecord',
+                    'medicalRecord.labResult',
+                    
+                    // Deep Load the Clinic Info so we can show "Clinic Name"
+                    'availableAppointment:id,clinic_doctor_id,day,starting_time,ending_time',
+                    'availableAppointment.clinicDoctor.clinic:user_id,clinic_name'
+                ])
+                ->orderBy('appointment_date', 'desc')
+                ->get();
+
+            // 2. Transform Data for Frontend
+            // We need to move the deep 'clinic' data back to the top level
+            // so your Frontend can still access `appointment.clinic.clinic_name`
+            $appointments->transform(function ($appt) {
+                // Shortcut to the deep data
+                $slot = $appt->availableAppointment;
+                $clinic = $slot?->clinicDoctor?->clinic;
+
+                // A. Inject Time & Day directly into the Appointment object
+                // This makes it compatible with your old Frontend code
+                if ($slot) {
+                    $appt->day = $slot->day;
+                    $appt->starting_time = $slot->starting_time;
+                    $appt->ending_time = $slot->ending_time;
+                }
+
+                // B. Inject Clinic directly
+                if ($clinic) {
+                    $appt->setRelation('clinic', $clinic);
+                }
+                
+                // C. Cleanup: Remove the helper object to keep JSON clean
+                unset($appt->availableAppointment);
+                
+                return $appt;
+            });
+
             return response()->json([
                 'success' => true,
-                'appointments' => $appointment
+                'appointments' => $appointments
             ], 200);
-        }catch(\Exception $e){
+
+        } catch (\Exception $e) {
             Log::error('Error fetching all patients appointments with medical record: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error fetching all patients appointments with medical record',
-                'error' => $e->getMessage()], 500);
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
-

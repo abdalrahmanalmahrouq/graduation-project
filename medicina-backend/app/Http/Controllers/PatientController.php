@@ -82,28 +82,80 @@ class PatientController extends Controller
         }
     }
 
-    public function getPatientMedicalRecords()
+   public function getPatientMedicalRecords()
     {
-        try{
+        try {
+            $userId = auth()->id();
 
-            $userId=auth()->id();
-            $medicalRecords=MedicalRecord::where('patient_id',$userId)
-            ->select('id','appointment_id','lab_result_id','doctor_id','consultation','prescription')
-            ->with([
-                'appointment:id,clinic_id,appointment_date,starting_time,ending_time,status',
-                'appointment.clinic:user_id,clinic_name',
-                'appointment.clinic.user:id,profile_image',
-                'doctor:user_id,full_name',
-                'doctor.user:id,profile_image',
-                'labResult:id,appointment_id,examination_title,notes,file_path,status'
-            ])
-            ->orderBy('created_at','desc')
-            ->paginate(10);
+            // 1. Fetch Records with DEEP Relationships
+            // We traverse: Record -> Appointment -> Slot (Time) -> Contract -> Clinic
+            $medicalRecords = MedicalRecord::where('patient_id', $userId)
+                ->with([
+                    // A. Appointment Basic Info
+                    'appointment:id,appointment_id,appointment_date,status',
+
+                    // B. The Time Slot (Template) - Gets starting_time/ending_time
+                    'appointment.availableAppointment:id,clinic_doctor_id,starting_time,ending_time',
+
+                    // C. The Clinic (via the deep chain)
+                    'appointment.availableAppointment.clinicDoctor.clinic:user_id,clinic_name',
+                    
+                    // D. Clinic Profile Image (via User table)
+                    'appointment.availableAppointment.clinicDoctor.clinic.user:id,profile_image',
+
+                    // E. The Doctor (Directly linked in MedicalRecord)
+                    'doctor:user_id,full_name',
+                    'doctor.user:id,profile_image',
+
+                    // F. Lab Results
+                    'labResult:id,appointment_id,examination_title,notes,file_path,status'
+                ])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+
+            // 2. Transform the Data (Crucial Step)
+            // The database structure is deep/nested, but your Frontend expects flat data.
+            // We map the data to look like the OLD structure so your Frontend doesn't break.
+            $medicalRecords->getCollection()->transform(function ($record) {
+                
+                // Shortcuts to deep objects
+                $appointment = $record->appointment;
+                $slot = $appointment->availableAppointment ?? null;
+                $clinic = $slot?->clinicDoctor?->clinic ?? null;
+                $clinicUser = $clinic?->user ?? null;
+
+                // 3. Inject the missing data back into the 'appointment' object
+                if ($appointment) {
+                    // Restore Time
+                    $appointment->starting_time = $slot?->starting_time;
+                    $appointment->ending_time = $slot?->ending_time;
+                    
+                    // Restore Clinic
+                    if ($clinic) {
+                        // Manually construct the clinic object the frontend expects
+                        $appointment->clinic = [
+                            'user_id' => $clinic->user_id,
+                            'clinic_name' => $clinic->clinic_name,
+                            'user' => [
+                                'id' => $clinicUser?->id,
+                                'profile_image' => $clinicUser?->profile_image
+                            ]
+                        ];
+                    }
+                    
+                    // Clean up the helper objects from the response (Optional, keeps JSON clean)
+                    unset($appointment->availableAppointment);
+                }
+
+                return $record;
+            });
+
             return response()->json([
                 'success' => true,
                 'medicalRecords' => $medicalRecords
             ], 200);
-        }catch(\Exception $e){
+
+        } catch (\Exception $e) {
             Log::error('Error fetching patient medical records: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
@@ -177,4 +229,3 @@ class PatientController extends Controller
 
     }
 }
-

@@ -21,6 +21,7 @@ class MedicalRecordController extends Controller
 
     return response()->json([
         'appointment' => $appointment,
+        'appointment.availableAppointment:starting_time,ending_time' => $appointment->availableAppointment,
         'lab_results' => $labResults,
     ], 200);
    }
@@ -36,9 +37,12 @@ class MedicalRecordController extends Controller
 
     $user = $request->user();
 
-    $appointment = Appointment::findOrFail($appointment_id);
+    $appointment = Appointment::with('availableAppointment.clinicDoctor')
+        ->findOrFail($appointment_id);
 
-    if ($appointment->doctor_id !== $user->id) {
+    $realDoctorId = $appointment->availableAppointment?->clinicDoctor?->doctor_id;
+
+    if ($realDoctorId !== $user->id) {
         return response()->json([
             'success' => false,
             'message' => 'You are not authorized to create a medical record for this appointment.',
@@ -58,12 +62,12 @@ class MedicalRecordController extends Controller
     ->where('patient_id' ,$appointment->patient_id)
     ->first();
 
-    if(!$labResult){
-        return response()->json([
-            'success' => false,
-            'message' => 'You are not authorized to use this lab result.'
-        ],403);
-    }
+    // if(!$labResult){
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'You are not authorized to use this lab result.'
+    //     ],403);
+    // }
 
     $record = MedicalRecord::create([
         'appointment_id' => $appointment_id,
