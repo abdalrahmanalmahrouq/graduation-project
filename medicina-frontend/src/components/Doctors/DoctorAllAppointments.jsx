@@ -84,6 +84,7 @@ const DoctorAllAppointments = () => {
             <option value="booked">محجوزة</option>
             <option value="completed">مكتملة</option>
             <option value="cancelled">ملغاة</option>
+            <option value="no-show">لم يحضر</option>
           </select>
         </div>
 
@@ -139,7 +140,11 @@ const DoctorAllAppointments = () => {
                     ? "محجوز"
                     : a.status === "completed"
                     ? "مكتمل"
-                    : "ملغي"}
+                    : a.status === "cancelled"
+                    ? "ملغي"
+                    : a.status === "no-show"
+                    ? "لم يحضر"
+                    : "غير محدد"}
                 </span>
               </div>
 

@@ -108,7 +108,8 @@ const ClinicAllDoctorsAppointments = () => {
       available: 'bg-success',
       booked: 'bg-primary',
       completed: 'bg-info',
-      cancelled: 'bg-danger'
+      cancelled: 'bg-danger',
+      'no-show': 'bg-warning'
     };
     return map[status] || 'bg-secondary';
   };
@@ -118,7 +119,8 @@ const ClinicAllDoctorsAppointments = () => {
       available: 'متاح',
       booked: 'محجوز',
       completed: 'مكتمل',
-      cancelled: 'ملغي'
+      cancelled: 'ملغي',
+      'no-show': 'لم يحضر'
     };
     return map[status] || status;
   };
@@ -167,6 +169,7 @@ const ClinicAllDoctorsAppointments = () => {
                     <option value="booked">محجوز (Booked)</option>
                     <option value="completed">مكتمل (Completed)</option>
                     <option value="cancelled">ملغي (Cancelled)</option>
+                    <option value="no-show">لم يحضر (No-Show)</option>
                   </select>
                 </div>
                 

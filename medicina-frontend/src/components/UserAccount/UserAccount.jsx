@@ -448,6 +448,7 @@ const UserAccount = ({ token }) => {
       case 'date_of_birth': return 'fa-calendar';
       case 'address': return 'fa-location-dot';
       case 'specialization': return 'fa-stethoscope';
+      case 'consultation_duration': return 'fa-clock';
       default: return 'fa-user';
     }
   };
@@ -565,6 +566,16 @@ const UserAccount = ({ token }) => {
         <div className="field-content">
           <label className="field-label">Email</label>
           <span className="field-value non-editable">{email}</span>
+        </div>
+      </div>
+
+      <div className="info-field modern-field">
+        <div className="field-icon">
+          <i className={`fa-solid fa-clock medicina-theme-icon`}></i>
+        </div>
+        <div className="field-content">
+          <label className="field-label">Consultation Duration</label>
+          <span className="field-value non-editable" >{user.profile.consultation_duration} </span>
         </div>
       </div>
 

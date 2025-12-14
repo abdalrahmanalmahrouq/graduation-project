@@ -81,7 +81,7 @@ class InsuranceController extends Controller
                     ]);
                     return response()->json([
                         'success' => true,
-                        'message' => 'Insurance restored successfully'
+                        'message' => 'تم استرجاع شركة التأمين بنجاح'
                     ], 200);
                 } else {
                     return response()->json([
@@ -94,7 +94,7 @@ class InsuranceController extends Controller
         $clinic->insurances()->attach($request->insurance_id,['created_at'=>now(),'updated_at'=>now()]);
         return response()->json([
             'success' => true,
-            'message' => 'Insurance added successfully'
+            'message' => 'تم إضافة شركة التأمين بنجاح'
         ], 200);
         }
 
@@ -126,7 +126,7 @@ class InsuranceController extends Controller
                 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Insurance removed successfully'
+                    'message' => 'تم حذف شركة التأمين بنجاح'
                 ], 200);
             } catch (\Exception $e) {
                 return response()->json([

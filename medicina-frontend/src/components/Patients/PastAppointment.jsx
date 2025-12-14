@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
-
+import defaultImage from '../../assets/img/profpic.png';
 const PastAppointment = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,7 +93,7 @@ const PastAppointment = () => {
           appointmentStartingTime: apt.starting_time || '',
           appointmentEndingTime: apt.ending_time || '',
           period: getTimePeriod(apt.starting_time),
-          doctorImage: apt.doctor?.profile_image_url || '/logo2.png',
+          doctorImage: apt.doctor?.profile_image_url || defaultImage,
           status: apt.status,
           appointment_id: apt.id,
           doctor_id: apt.doctor?.user_id,
@@ -216,7 +216,7 @@ const PastAppointment = () => {
                   src={appointment.doctorImage} 
                   alt={appointment.doctorName}
                   onError={(e) => {
-                    e.target.src = '/logo2.png'; // Fallback image
+                    e.target.src = defaultImage; // Fallback image
                   }}
                 />
               </div>

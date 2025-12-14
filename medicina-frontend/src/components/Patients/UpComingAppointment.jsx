@@ -4,7 +4,7 @@ import axios from 'axios';
 import Loading from '../Loading';
 import AppointmentCalendar from '../Appointments/AppointmentCalendar';
 import TimeSlotSelector from '../Appointments/TimeSlotSelector';
-
+import defaultImage from '../../assets/img/profpic.png';
 const UpComingAppointment = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,7 @@ const UpComingAppointment = () => {
             appointmentStartingTime: apt.starting_time || '',
             appointmentEndingTime: apt.ending_time || '',
             period: getTimePeriod(apt.starting_time),
-            doctorImage: apt.doctor?.profile_image_url || '/logo2.png',
+            doctorImage: apt.doctor?.profile_image_url || defaultImage,
             status: 'upcoming',
             appointment_id: apt.id, // Appointment record ID
             available_appointment_id: apt.appointment_id, // Available appointment slot ID (for rescheduling)
@@ -306,7 +306,7 @@ const UpComingAppointment = () => {
                   src={appointment.doctorImage} 
                   alt={appointment.doctorName}
                   onError={(e) => {
-                    e.target.src = '/logo2.png'; // Fallback image
+                    e.target.src = defaultImage; // Fallback image
                   }}
                 />
               </div>
