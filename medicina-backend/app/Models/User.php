@@ -105,6 +105,13 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * Accessors to append to array / JSON form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = ['profile_image_url'];
+
+    /**
      * Get the profile image URL or default image.
      *
      * @return string|null

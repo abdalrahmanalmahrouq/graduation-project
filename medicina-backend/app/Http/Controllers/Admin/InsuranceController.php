@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Insurance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InsuranceController extends Controller
 {
@@ -39,6 +40,7 @@ class InsuranceController extends Controller
    {
         $request->validate([
             'name' => 'required|string|max:255',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
         
         // Check if insurance with this name exists but is soft-deleted
@@ -58,8 +60,14 @@ class InsuranceController extends Controller
             }
         }
         
+        $data = ['name' => $request->name];
+
+        if ($request->hasFile('logo')) {
+            $data['logo_path'] = $request->file('logo')->store('insurance-logos', 'public');
+        }
+
         // Create new insurance
-        Insurance::create(['name' => $request->name]);
+        Insurance::create($data);
         
         return redirect()->route('admin.insurances.index')
             ->with('success', 'Insurance created successfully');
@@ -85,6 +93,7 @@ class InsuranceController extends Controller
 
     $request->validate([
         'name' => 'required|string|max:255',
+        'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
     
     // Check if another insurance with this name exists (excluding current and soft-deleted)
@@ -98,7 +107,17 @@ class InsuranceController extends Controller
             ->withInput();
     }
    
-    $insurance->update(['name' => $request->name]);
+    $data = ['name' => $request->name];
+
+    if ($request->hasFile('logo')) {
+        // Remove old logo if exists
+        if ($insurance->logo_path) {
+            Storage::disk('public')->delete($insurance->logo_path);
+        }
+        $data['logo_path'] = $request->file('logo')->store('insurance-logos', 'public');
+    }
+
+    $insurance->update($data);
     return redirect()->route('admin.insurances.index')
         ->with('success', 'Insurance updated successfully');
    }
@@ -106,6 +125,9 @@ class InsuranceController extends Controller
    public function destroy($id)
    {
     $insurance = Insurance::findOrFail($id);
+    if ($insurance->logo_path) {
+        Storage::disk('public')->delete($insurance->logo_path);
+    }
     // Soft delete - sets deleted_at timestamp
     $insurance->delete();
     return redirect()->route('admin.insurances.index')

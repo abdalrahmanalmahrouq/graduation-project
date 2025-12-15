@@ -66,11 +66,26 @@ class PatientController extends Controller
         $labResults=LabResult::where('patient_id',$userId)
         ->where('status','approved')
         ->with('lab:user_id,lab_name')
+        ->with('lab.user:id,profile_image')
         ->orderBy('created_at','desc')
         ->get();
             return response()->json([
                 'success' => true,
-                'labResults' => $labResults
+                'labResults' => $labResults->map(function ($result) {
+                    return [
+                        'id' => $result->id,
+                        'lab_name' => $result->lab->lab_name,
+                        'title' => $result->examination_title,
+                        'notes' => $result->notes,
+                        'file_path' => $result->file_path->file_url,
+                        'created_at' => $result->created_at,
+                        'updated_at' => $result->updated_at,
+                        'status' => $result->status,
+                        'appointment_id' => $result->appointment_id,
+                        'lab_id' => $result->lab_id,
+                        'profile_image_url' => $result->lab->user->profile_image_url ?? null,
+                    ];
+                })
             ], 200);
         }catch(\Exception $e){
             Log::error('Error fetching patient lab results: ' . $e->getMessage());

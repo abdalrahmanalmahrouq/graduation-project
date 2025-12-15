@@ -10,6 +10,7 @@ class Insurance extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = [];
+    protected $appends = ['logo_url'];
 
     /**
      * The primary key associated with the table.
@@ -79,5 +80,17 @@ class Insurance extends Model
     public function clinics()
     {
         return $this->belongsToMany(Clinic::class ,'insurances_clinics','insurance_id','clinic_id');
+    }
+
+    /**
+     * Get the public URL for the stored logo.
+     */
+    public function getLogoUrlAttribute()
+    {
+        if (!$this->logo_path) {
+            return null;
+        }
+
+        return asset('storage/' . $this->logo_path);
     }
 }

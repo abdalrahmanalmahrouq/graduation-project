@@ -201,8 +201,18 @@ const ClinicInsuranceManagement = () => {
             {insurances.map((insurance) => (
               <div key={insurance.insurance_id} className="insurance-card">
                 <div className="insurance-card-header">
-                  <div className="insurance-card-icon">
-                    <i className="fa-solid fa-building"></i>
+                  <div className="profile-pic" style={{width:"80px" , height:"80px"}}>
+                    {insurance.logo_url ? (
+                      <img
+                        src={insurance.logo_url}
+                        alt={insurance.name}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <i className="fa-solid fa-building"></i>
+                    )}
                   </div>
                   <div className="insurance-card-actions">
                     <button

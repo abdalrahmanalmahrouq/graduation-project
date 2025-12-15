@@ -16,9 +16,10 @@ class InsuranceController extends Controller
     public function index()
     {
         try {
-            $insurances = Insurance::select('insurance_id', 'name')
+            $insurances = Insurance::select('insurance_id', 'name', 'logo_path')
                 ->orderBy('name')
-                ->get();
+                ->get()
+                ->makeHidden(['logo_path']);
             
             return response()->json([
                 'success' => true,
@@ -42,7 +43,8 @@ class InsuranceController extends Controller
             // Get only non-soft-deleted insurances
             $insurances = $clinic->insurances()
                 ->wherePivotNull('deleted_at')
-                ->get(['insurances.insurance_id','insurances.name']);
+                ->get(['insurances.insurance_id','insurances.name','insurances.logo_path'])
+                ->makeHidden(['logo_path']);
                 
             return response()->json([
                 'success' => true,

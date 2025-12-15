@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [appointmentsCount, setAppointmentsCount] = useState(0);
   const [nameInsurancesCompanies, setNameInsurancesCompanies] = useState([]);
   const [idInsurancesCompanies, setIdInsurancesCompanies] = useState([]);
+  const [logoInsurancesCompanies, setLogoInsurancesCompanies] = useState([]);
   const [namePatients, setNamePatients] = useState([]);
   const [idPatients, setIdPatients] = useState([]);
   const [phonePatients, setPhonePatients] = useState([]);
@@ -52,6 +53,7 @@ export default function Dashboard() {
       const data = response.data.data;
       setNameInsurancesCompanies(data.map(insurance => insurance.name));
       setIdInsurancesCompanies(data.map(insurance => insurance.insurance_id));
+      setLogoInsurancesCompanies(data.map(insurance => insurance.logo_url));
     }catch(error){
       console.error('Error fetching five insurances companies:', error);
     }
@@ -67,7 +69,7 @@ export default function Dashboard() {
       setNamePatients(data.map(patient => patient.full_name));
       setIdPatients(data.map(patient => patient.user_id));
       setPhonePatients(data.map(patient => patient.phone_number));
-      setProfileImagePatients(data.map(patient => patient.user.profile_image));
+      setProfileImagePatients(data.map(patient => patient.user.profile_image_url));
     }catch(error){
       console.error('Error fetching five patients:', error);
     }
@@ -79,7 +81,8 @@ export default function Dashboard() {
   const deviceData = [
     { name: 'المرضى', value: patientsCount, color: 'var(--default-color)' },
     { name: 'الاطباء', value: doctorsCount, color: '#10B981' },
-    { name: 'شركات التأمين', value: insurancesCount, color: 'var(--accent-color)' }
+    { name: 'شركات التأمين', value: insurancesCount, color: 'var(--accent-color)' },
+    { name: 'المواعيد', value: appointmentsCount, color: '#8B5CF6' }
   ];
 
   const conversionData = [
@@ -174,13 +177,10 @@ export default function Dashboard() {
                               <tr key={index}>
                                 <td>
                                   <img
-                                    src={
-                                      profileImagePatients[index]
-                                        ? `/storage/${profileImagePatients[index]}`
-                                        : "/default-profile.png"
-                                    }
+                                    src={profileImagePatients[index]}
                                     alt="Profile"
-                                    className="doctor-all-appointments-card__avatar"
+                                    className="profile-pic"
+                                    style={{width:"50px", height:"50px"}}
                                   />
                                 </td>
                                 <td>{idPatients[index]}</td>
@@ -272,7 +272,7 @@ export default function Dashboard() {
               <table className="dashboard-table">
                 <thead>
                   <tr>
-                   
+                    <th>صورة شركة التأمين</th>
                     <th>رقم شركة التأمين</th>
                     <th>اسم شركة التأمين</th>
                   </tr>
@@ -285,7 +285,16 @@ export default function Dashboard() {
                   ) : (
                     nameInsurancesCompanies.map((name, index) => (
                       <tr key={index}>
+                        <td>
+                          <img
+                            src={logoInsurancesCompanies[index]}
+                            alt="Insurance Logo"
+                            className="profile-pic mr-6"
+                            style={{width:"50px", height:"50px"}}
+                          />
+                        </td>
                         <td>{idInsurancesCompanies[index]}</td>
+                        
                         <td>{name}</td>
                       </tr>
                     ))

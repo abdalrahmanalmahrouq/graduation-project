@@ -72,6 +72,9 @@
                                         ID
                                     </th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Logo
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Company Name
                                     </th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -84,6 +87,15 @@
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $insurance->insurance_id }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if($insurance->logo_url)
+                                                <img src="{{ $insurance->logo_url }}" alt="{{ $insurance->name }} logo" class="h-10 w-10 object-cover rounded border">
+                                            @else
+                                                <div class="h-10 w-10 rounded border flex items-center justify-center text-xs text-gray-500 bg-gray-50">
+                                                    N/A
+                                                </div>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $insurance->name }}
