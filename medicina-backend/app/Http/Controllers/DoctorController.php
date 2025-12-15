@@ -92,6 +92,12 @@ class DoctorController extends Controller
                 'هضمي' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
                 'باطنية' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
                 'اخصائي باطنية' => ['gastroenterology', 'جهاز هضمي', 'هضمي', 'باطنية', 'اخصائي باطنية'],
+
+                // Internal Medicine
+                'internalmedicine' => ['internal medicine', 'طب عام', 'طبيب عام', 'اخصائي طب عام'],
+                'طب عام' => ['internal medicine', 'طب عام', 'طبيب عام', 'اخصائي طب عام'],
+                'طبيب عام' => ['internal medicine', 'طب عام', 'طبيب عام', 'اخصائي طب عام'],
+                'اخصائي طب عام' => ['internal medicine', 'طب عام', 'طبيب عام', 'اخصائي طب عام'],
             ];
 
             // 3. Resolve synonyms (fallback: only input)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Loading from '../Loading';
-
+import defaultImage from '../../assets/img/profpic.png';
 const PatientLabResults = () => {
   const [labResults, setLabResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,8 +122,8 @@ const PatientLabResults = () => {
             <div className="patient-lab-results-list">
               {labResults.map((result) => (
                 <div key={result.id} className="patient-lab-result-card">
-                  <div className="patient-lab-result-icon">
-                    <i className="fa-solid fa-file-medical"></i>
+                  <div className="record-avatar">
+                    <img src={result.profile_image_url || defaultImage} alt="Lab Profile" className="patient-lab-result-profile-image" />
                   </div>
                   {result.appointment && (
                     <div className="patient-lab-result-appointment">

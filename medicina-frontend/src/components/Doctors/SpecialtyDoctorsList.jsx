@@ -4,7 +4,7 @@ import { Button, Card, Col, Container, Row, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import defaultImage from '../../assets/img/profpic.png';
 import TopPageDetails from '../TopPageDetails/TopPageDetails';
-import { titles } from '../../data/clinicsData';
+import { specialtyCards } from '../../data/clinicSpecialties';
 import Loading from '../Loading';
 
 function SpecialtyDoctorsList() {
@@ -12,6 +12,8 @@ function SpecialtyDoctorsList() {
     const [specialtyDoctors, setSpecialtyDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const currentSpecialty = specialtyCards.find(card => card.directory === directory);
+    const pageTitle = currentSpecialty?.title || 'العيادات';
 
     useEffect(() => {
         fetchDoctorsBySpecialization();
@@ -45,7 +47,7 @@ function SpecialtyDoctorsList() {
     if (loading) {
         return (
             <>
-                <TopPageDetails pageTitle={titles[directory] || 'العيادات'} />
+                <TopPageDetails pageTitle={pageTitle} />
                 <Loading />
             </>
         );
@@ -54,7 +56,7 @@ function SpecialtyDoctorsList() {
     if (error) {
         return (
             <>
-                <TopPageDetails pageTitle={titles[directory] || 'العيادات'} />
+                <TopPageDetails pageTitle={pageTitle} />
                 <Container className="pt-5 text-center">
                     <Alert variant="danger">
                         {error}
@@ -69,7 +71,7 @@ function SpecialtyDoctorsList() {
 
     return (
         <>    
-            <TopPageDetails pageTitle={titles[directory] || 'العيادات'} />
+            <TopPageDetails pageTitle={pageTitle} />
             <Container className="pt-5 text-center">
                 {specialtyDoctors.length === 0 ? (
                     <Alert variant="info">
