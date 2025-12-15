@@ -77,7 +77,7 @@ class PatientController extends Controller
                         'lab_name' => $result->lab->lab_name,
                         'title' => $result->examination_title,
                         'notes' => $result->notes,
-                        'file_path' => $result->file_path->file_url,
+                        'file_path' => $result->file_url,
                         'created_at' => $result->created_at,
                         'updated_at' => $result->updated_at,
                         'status' => $result->status,

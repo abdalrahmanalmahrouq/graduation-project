@@ -289,7 +289,7 @@ const UserAccount = ({ token }) => {
           });
       }, 500);
       
-      setMessage({ type: 'success', text: 'Profile updated successfully!' });
+      setMessage({ type: 'success', text: 'تم تحديث البيانات بنجاح' });
       setSelectedImage(null);
       setImagePreview(null);
     } catch (error) {
@@ -396,8 +396,8 @@ const UserAccount = ({ token }) => {
       <div className="user-account-error">
         <div className="error-container">
           <div className="error-icon">⚠️</div>
-          <h3>Unable to load profile</h3>
-          <p>Please try refreshing the page or contact support if the problem persists.</p>
+          <h3>لا يمكن تحميل البيانات</h3>
+          <p>يرجى المحاولة مرة أخرى أو الاتصال بالدعم إذا كان المشكلة مستمرة.</p>
         </div>
       </div>
     );

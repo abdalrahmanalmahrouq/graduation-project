@@ -7,6 +7,7 @@ import CountUp from 'react-countup';
 import axios from 'axios';
 import Loading from '../Loading';
 import { motion } from 'framer-motion';
+import defaultImage from '../../assets/img/profpic.png';
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [clinicLogo, setClinicLogo] = useState('');
@@ -69,7 +70,7 @@ export default function Dashboard() {
       setNamePatients(data.map(patient => patient.full_name));
       setIdPatients(data.map(patient => patient.user_id));
       setPhonePatients(data.map(patient => patient.phone_number));
-      setProfileImagePatients(data.map(patient => patient.user.profile_image_url));
+      setProfileImagePatients(data.map(patient => patient.user.profile_image));
     }catch(error){
       console.error('Error fetching five patients:', error);
     }
@@ -177,7 +178,7 @@ export default function Dashboard() {
                               <tr key={index}>
                                 <td>
                                   <img
-                                    src={profileImagePatients[index]}
+                                    src={profileImagePatients[index] ? `/storage/${profileImagePatients[index]}` : defaultImage}
                                     alt="Profile"
                                     className="profile-pic"
                                     style={{width:"50px", height:"50px"}}
