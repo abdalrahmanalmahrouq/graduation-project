@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AvailableAppointment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'available_appointments';
     protected $guarded = [];
     /**

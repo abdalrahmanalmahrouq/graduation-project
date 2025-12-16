@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Resources\ClinicDoctorResource;
+use App\Models\AvailableAppointment;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Models\ClinicDoctor;
@@ -92,6 +93,35 @@ class ClinicController extends Controller
         AvailableAppointmentService::generateFromWeeklySchedule($clinicDoctor);
 
         return response()->json(['message' => 'Doctor added to clinic successfully', 'data' => $clinicDoctor], 201);
+    }
+
+    public function reScheduleDoctorWeeklySchedule(Request $request)
+    {
+        $validated = $request->validate([
+            'doctor_id' => 'required|exists:doctors,user_id',
+            'weekly_schedule' => 'required|array',
+        ]);
+
+        $clinicDoctor = ClinicDoctor::where('doctor_id', $validated['doctor_id'])
+        ->where('clinic_id', auth()->user()->clinic->user_id)
+        ->firstOrFail();
+
+        $availableAppointments = AvailableAppointment::where('clinic_doctor_id', $clinicDoctor->id)
+        ->get();
+
+        foreach ($availableAppointments as $availableAppointment) {
+            $availableAppointment->delete();
+        }
+
+        $clinicDoctor->weekly_schedule = $validated['weekly_schedule'];
+        $clinicDoctor->save();
+
+        AvailableAppointmentService::generateFromWeeklySchedule($clinicDoctor);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Doctor weekly schedule re-scheduled successfully.'
+        ], 200);
     }
 
     public function checkDoctor(Request $request)

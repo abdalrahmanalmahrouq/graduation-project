@@ -122,7 +122,7 @@ Route::middleware(['auth:sanctum', 'role:patient'])->get('patients/lab-results',
 Route::middleware(['auth:sanctum', 'role:patient'])->get('patients/medical-records', [PatientController::class, 'getPatientMedicalRecords']);
 Route::middleware(['auth:sanctum', 'role:patient'])->get('patients/appointments', [AppointmentController::class, 'getPatientAppointments']);
 
-Route::post('appointments/create', [AppointmentController::class, 'createAppointment']);
+Route::middleware(['auth:sanctum'])->post('appointments/create', [AppointmentController::class, 'createAppointment']);
 Route::patch('appointments/cancel', [AppointmentController::class, 'cancelAppointment']);
 Route::patch('appointments/passed', [AppointmentController::class, 'passedAppointment']);
 Route::patch('appointments/reschedule', [AppointmentController::class, 'rescheduleAppointment']);
@@ -149,6 +149,7 @@ Route::get('insurances', [InsuranceController::class, 'index']);
 
 Route::middleware(['auth:sanctum', 'role:clinic'])->group(function () {
     Route::post('clinics/add-doctor', [ClinicController::class, 'addDoctor']);
+    Route::post('clinics/re-schedule-doctor-weekly-schedule', [ClinicController::class, 'reScheduleDoctorWeeklySchedule']);
     Route::post('clinics/check-doctor', [ClinicController::class, 'checkDoctor']);
     Route::get('clinics/get-doctors', [ClinicController::class, 'getDoctors']);
     Route::get('clinics/doctors/{id}/schedule', [ClinicController::class, 'getDoctorSchedule']);

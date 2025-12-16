@@ -8,7 +8,7 @@ const DAY_LABELS = {
   wednesday: 'الأربعاء', thursday: 'الخميس', friday: 'الجمعة' 
 };
 
-const WeeklyScheduleEditor = ({ doctorId }) => {
+const WeeklyScheduleEditor = ({ doctorId, reloadKey }) => {
   // Initialize with all days as null so the UI knows what to render immediately
 const [schedule, setSchedule] = useState(
   DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {})
@@ -58,7 +58,7 @@ const [schedule, setSchedule] = useState(
     if (doctorId) {
       fetchSchedule();
     }
-  }, [doctorId]);
+  }, [doctorId, reloadKey]);
 
  
 

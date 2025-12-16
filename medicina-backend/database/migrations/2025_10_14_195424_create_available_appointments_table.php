@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('starting_time');
             $table->time('ending_time');
             $table->timestamps();
-           
+            $table->softDeletes();
         });
     }
 

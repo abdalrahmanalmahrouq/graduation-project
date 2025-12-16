@@ -8,6 +8,7 @@ import { Row, Col, Nav } from 'react-bootstrap'; // Ensure react-bootstrap is in
 import DoctorHeaderCard from '../DoctorHeaderCard'; 
 import WeeklyScheduleEditor from './WeeklyScheduleEditor';
 import DoctorAppointmentsList from './DoctorAppointmentsList';
+import DoctorRescheduleModal from './DoctorRescheduleModal';
 
 
 
@@ -21,6 +22,8 @@ const DoctorManagement = () => {
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
+  const [scheduleVersion, setScheduleVersion] = useState(0);
 
   useEffect(() => {
     const fetchDoctorProfile = async () => {
@@ -107,16 +110,26 @@ const DoctorManagement = () => {
                     <div className="profile-content">
                         {activeTab === "schedule" && (
                             <div className="schedule-section animate-fadeIn">
-                                <div className="section-header">
-                                    <h3 className="section-title-doctor">
-                                        <i className="fas fa-clock me-2"></i>
-                                        أوقات الدوام
-                                    </h3>
-                                    <p className="section-subtitle">عرض وتعديل جدول عمل الطبيب في العيادة</p>
+                                <div className="section-header flex items-center justify-between">
+                                    <div>
+                                      <h3 className="section-title-doctor">
+                                          <i className="fas fa-clock me-2"></i>
+                                          أوقات الدوام
+                                      </h3>
+                                      <p className="section-subtitle">عرض وتعديل جدول عمل الطبيب في العيادة</p>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      className="btn-primary"
+                                      onClick={() => setIsRescheduleOpen(true)}
+                                    >
+                                      <i className="fas fa-edit me-2"></i>
+                                      تغيير الجدول الأسبوعي
+                                    </button>
                                 </div>
                                 
                                 {/* The Schedule Editor Component */}
-                                <WeeklyScheduleEditor doctorId={doctorId} />
+                                <WeeklyScheduleEditor doctorId={doctorId} reloadKey={scheduleVersion} />
                             </div>
                         )}
 
@@ -140,6 +153,13 @@ const DoctorManagement = () => {
         </Row>
 
       </div>
+      <DoctorRescheduleModal
+        isOpen={isRescheduleOpen}
+        onClose={() => setIsRescheduleOpen(false)}
+        doctorId={doctor.id}
+        doctorName={doctor?.full_name || doctor?.name}
+        onSuccess={() => setScheduleVersion((prev) => prev + 1)}
+      />
     </div>
   );
 };

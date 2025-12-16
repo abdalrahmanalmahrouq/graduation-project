@@ -46,6 +46,7 @@ class Appointment extends Model
 
     // Each appointment is linked to one available appointment slot
     public function availableAppointment(){
-        return $this->belongsTo(AvailableAppointment::class, 'appointment_id', 'id');
+        // include soft-deleted slots so historical appointments still have their times/clinic
+        return $this->belongsTo(AvailableAppointment::class, 'appointment_id', 'id')->withTrashed();
     }
 }
