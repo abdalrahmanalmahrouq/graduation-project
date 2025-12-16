@@ -310,3 +310,16 @@ for any modified components for sure.>
 ` Add: now the patient can book an appointment and access pre,post appointments, modify, cancel` Dec/13
 **Purpose:**  
 < now you can make appointment as patient, modify and delete it >
+
+### Commit
+
+` feat: now the clinic can reschedule doctors weekly schedule ` Dec/16
+**Purpose:**  
+< by add new function that will iterate in each available appointment and soft deleted it to not effect the connected appointment id in appointment table >
+
+### Commit
+
+` feat: implement new functions to handle patient overlapping appointments and if clinic want to book appointments for thier patients` Dec/16
+**Purpose:**  
+< no the patient can book two appointments at the same time and the clinic can book appointments for patients from clinic account>
+
