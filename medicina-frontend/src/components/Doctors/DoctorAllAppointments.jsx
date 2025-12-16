@@ -168,14 +168,26 @@ const DoctorAllAppointments = () => {
               </div>
 
               <div className="doctor-all-appointments-card__footer">
-                <button
-                  className="btn-action btn-action--primary"
-                  onClick={() =>
-                    navigate(`/doctor/appointments/${a.id}/medical-record`)
-                  }
-                >
-                  <i className="bi bi-eye"></i> عرض السجل
-                </button>
+                { a.status === "booked" && (
+                  <button
+                    className="btn-action btn-action--primary"
+                    onClick={() =>
+                      navigate(`/doctor/appointments/${a.id}/medical-record`)
+                    }
+                  >
+                    <i className="bi bi-eye"></i> إنهاء الموعد
+                  </button>
+                )}
+                { a.status === "completed" && (
+                  <button
+                    className="btn-action btn-action--primary"
+                    onClick={() =>
+                      navigate(`/doctor/appointments/${a.id}/medical-record`)
+                    }
+                  >
+                    <i className="bi bi-eye"></i> عرض السجل
+                  </button>
+                )}
               </div>
             </div>
           ))}

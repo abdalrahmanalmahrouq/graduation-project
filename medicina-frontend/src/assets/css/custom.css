@@ -9936,6 +9936,10 @@ animation: float 6s ease-in-out infinite;
   color: #dc3545;
 }
 
+.status-pill--no-show {
+  background: rgba(255, 153, 0, .12);
+  color: #ff9900;
+}
 /* Buttons */
 .btn-action {
   appearance: none;
@@ -10000,6 +10004,19 @@ animation: float 6s ease-in-out infinite;
 
 .btn-action--medicina:hover {
   background: var(--accent-color-hover);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.btn-action--danger {
+  background: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+}
+
+.btn-action--danger:hover {
+  filter: brightness(.95);
+  box-shadow: 0 6px 16px rgba(220, 53, 69, .35);
   transform: translateY(-2px);
   transition: all 0.3s ease;
 }
@@ -10697,6 +10714,8 @@ animation: float 6s ease-in-out infinite;
 .doctor-all-appointments-card__status-no-show {
   background-color: #f59e0b;
 }
+
+
 
 .doctor-all-appointments-card__info-row {
   display: flex;

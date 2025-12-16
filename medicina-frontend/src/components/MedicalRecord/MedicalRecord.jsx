@@ -143,6 +143,23 @@ const MedicalRecord = () => {
     }
   };
 
+  const handleSaveAndFinishNoShow = async () => {
+    setSaving(true);
+    setMessage({ type: "", text: "" });
+    try {
+      await axios.put(`/appointments/finish/${appointmentId}`, {
+        status: "no-show",
+      });
+
+      setMessage({ type: "success", text: "تم إنهاء الموعد لم يظهر" });
+
+      // Go back to previous page after a short delay
+      setTimeout(() => navigate(-1), 800);
+    }
+    finally {
+      setSaving(false);
+    }
+  };
   const Header = () => {
     const isCompleted = appointment?.status === "completed";
     return (
@@ -338,6 +355,26 @@ const MedicalRecord = () => {
                     ) : (
                       <>
                         <i className="bi bi-check2-circle"></i> حفظ السجل وإنهاء الموعد
+                      </>
+                    )}
+                  </button>
+                )}
+                {appointment.status !== "completed" && (
+                  <button
+                    className="btn-action btn-action--danger"
+                    type="button"
+                    onClick={handleSaveAndFinishNoShow}
+                    disabled={saving}
+                  >
+                    
+                    {saving ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        جاري إنهاء الموعد...
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-x-circle"></i> إنهاء الموعد لم يظهر
                       </>
                     )}
                   </button>

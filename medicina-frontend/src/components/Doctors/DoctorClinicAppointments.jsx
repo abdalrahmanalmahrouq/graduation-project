@@ -6,6 +6,7 @@ import Loading from "../Loading";
 const tabs = [
   { key: "booked", label: "محجوزة", icon: "bi bi-calendar-check" },
   { key: "completed", label: "مكتملة", icon: "bi bi-check2-circle" },
+  { key: "no_show", label: "لم يظهر", icon: "bi bi-x-circle" },
   { key: "cancelled", label: "ملغاة", icon: "bi bi-x-circle" },
 ];
 
@@ -54,8 +55,8 @@ const DoctorClinicAppointments = () => {
         const endpointMap = {
           'booked': '/appointments/booked',
           'completed': '/appointments/completed',
+          'no_show': '/appointments/no_show',
           'cancelled': '/appointments/cancelled',
-          'no_show': '/appointments/no_show'
         };
         const endpoint = endpointMap[activeStatus];
       setLoading(true);
@@ -157,6 +158,8 @@ const DoctorClinicAppointments = () => {
                     ? "محجوز"
                     : activeStatus === "completed"
                     ? "مكتمل"
+                    : activeStatus === "no_show"
+                    ? "لم يظهر"
                     : "ملغي"}
                 </span>
               </div>
