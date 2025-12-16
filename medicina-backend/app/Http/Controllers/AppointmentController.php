@@ -23,11 +23,65 @@ class AppointmentController extends Controller
         return $existingAppointment;
     }
 
+    // check if patient has overlapping appointment at the same date and time
+    public function hasPatientOverlappingAppointment($patient_id, $appointment_date, $new_starting_time, $new_ending_time, $exclude_appointment_id = null){
+        // Get all booked appointments for this patient on the same date
+        $query = Appointment::where('patient_id', $patient_id)
+            ->where('appointment_date', $appointment_date)
+            ->where('status', 'booked')
+            ->with('availableAppointment:id,starting_time,ending_time');
+
+        // Exclude current appointment when rescheduling
+        if ($exclude_appointment_id) {
+            $query->where('id', '!=', $exclude_appointment_id);
+        }
+
+        $existingAppointments = $query->get();
+
+        // Check for time overlaps
+        foreach ($existingAppointments as $existingAppt) {
+            $existingAvailable = $existingAppt->availableAppointment;
+            if (!$existingAvailable) {
+                continue;
+            }
+
+            $existingStart = $existingAvailable->starting_time;
+            $existingEnd = $existingAvailable->ending_time;
+
+            // Two appointments overlap if: new_start < existing_end AND new_end > existing_start
+            if ($new_starting_time < $existingEnd && $new_ending_time > $existingStart) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function createAppointment(Request $request){
+        $user = auth()->user();
+        if (! $user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        if ($user->role === 'doctor') {
+            return response()->json(['message' => 'Doctors are not allowed to book appointments'], 403);
+        } elseif ($user->role === 'clinic') {
+            if(!$request->has('appointment_id') || !$request->appointment_id) {
+                return response()->json(['message' => 'Appointment ID is required'], 400);
+            }
+            $available_appointment = AvailableAppointment::find($request->appointment_id);
+            if(!$available_appointment) {
+                return response()->json(['message' => 'Appointment not found'], 404);
+            }
+            $requestedClinic = $available_appointment?->clinicDoctor()->first()?->clinic;
+            if ($requestedClinic && $requestedClinic->user_id !== $user->id) {
+                return response()->json(['message' => 'Clinics can only book appointments for their own available slots'], 403);
+            }
+        }
         $validated = $request->validate([
             'appointment_id' => 'required|exists:available_appointments,id',
             'patient_id' => 'required|exists:patients,user_id',
-            'appointment_date' => 'required|date|date_format:Y-m-d|after_or_equal:today()',
+            'appointment_date' => 'required|date|date_format:Y-m-d|after_or_equal:today',
         ]);
 
         // convert appointment_date to day of the week format
@@ -50,11 +104,28 @@ class AppointmentController extends Controller
             'starting_time' => $available->starting_time,
         ];
 
-        // Check for duplicate appointments
+        // Check for duplicate appointments (doctor conflict)
         if ($this->existingAppointment($validated['appointment_id'], $validated['appointment_date'])) {
             return response()->json([
                 'message' => 'Appointment time conflict detected',
                 'error' => 'Doctor already has an appointment at this time slot',
+                'conflicting_appointment' => $appointmentInfo
+            ], 409);
+        }
+
+        // Check for patient overlapping appointments
+        $newStartingTime = $available->starting_time;
+        $newEndingTime = $available->ending_time;
+        
+        if ($this->hasPatientOverlappingAppointment(
+            $validated['patient_id'],
+            $validated['appointment_date'],
+            $newStartingTime,
+            $newEndingTime
+        )) {
+            return response()->json([
+                'message' => 'لديك تعارض في الموعد المختار',
+                'error' => 'لا يمكن للمريض أن يكون لديه تعارض في الموعد المختار',
                 'conflicting_appointment' => $appointmentInfo
             ], 409);
         }
@@ -129,24 +200,49 @@ class AppointmentController extends Controller
     public function rescheduleAppointment(Request $request){
         $validated = $request->validate([
             'id' => 'required|exists:appointments,id',
-            'appointment_date' => 'sometimes|date|date_format:Y-m-d|after_or_equal:today()',
+            'appointment_date' => 'sometimes|date|date_format:Y-m-d|after_or_equal:today',
             'appointment_id' => 'sometimes|exists:available_appointments,id',
         ]);
         $validated['appointment_id'] = $validated['appointment_id'] ?? Appointment::find($validated['id'])->appointment_id;
         $validated['appointment_date'] = $validated['appointment_date'] ?? Appointment::find($validated['id'])->appointment_date;
-        // Check for duplicate appointments (excluding current appointment)
+        
+        // Load the appointment to get patient_id
+        $appointment = Appointment::findOrFail($validated['id']);
+        if ($appointment->status !== 'booked') {
+            return response()->json(['message' => 'Only booked appointments can be rescheduled'], 400);
+        }
+
+        // Load the available appointment to get time information
+        $available = AvailableAppointment::findOrFail($validated['appointment_id']);
+
+        // Check for duplicate appointments (doctor conflict, excluding current appointment)
         if ($this->existingAppointment($validated['appointment_id'], $validated['appointment_date'])) {
             return response()->json(['message' => 'The selected appointment time is already booked'], 400);
         }
+
+        // Check for patient overlapping appointments (excluding current appointment)
+        $newStartingTime = $available->starting_time;
+        $newEndingTime = $available->ending_time;
+        
+        if ($this->hasPatientOverlappingAppointment(
+            $appointment->patient_id,
+            $validated['appointment_date'],
+            $newStartingTime,
+            $newEndingTime,
+            $validated['id'] // Exclude current appointment
+        )) {
+            return response()->json([
+                'message' => 'لديك تعارض في الموعد المختار',
+                'error' => 'لا يمكن للمريض أن يكون لديه موعدان في نفس الوقت'
+            ], 409);
+        }
+
         // convert appointment_date to day of the week format
         $dayOfWeek = date('l', strtotime($validated['appointment_date']));
         if (AvailableAppointment::where('id', $validated['appointment_id'])->value('day') !== strtolower($dayOfWeek)) {
             return response()->json(['message' => 'The selected appointment is not available on the chosen date'], 400);
         }
-        $appointment = Appointment::findOrFail($validated['id']);
-        if ($appointment->status !== 'booked') {
-            return response()->json(['message' => 'Only booked appointments can be rescheduled'], 400);
-        }
+        
         $appointment->appointment_date = $validated['appointment_date'];
         $appointment->appointment_id = $validated['appointment_id'];
         $appointment->save();
@@ -179,7 +275,7 @@ class AppointmentController extends Controller
 
     public function getNoShowAppointment(Request $request)
     {
-       return $this->getAppointmentsByStatus($request, 'no_show');
+       return $this->getAppointmentsByStatus($request, 'no-show');
     }
 
 
@@ -336,8 +432,9 @@ class AppointmentController extends Controller
             return response()->json(['appointments' => []], 200);
         }
 
-        // 3. Get AvailableAppointment IDs
-        $available_appointments_ids = AvailableAppointment::whereIn('clinic_doctor_id', $clinic_doctor_ids)
+        // 3. Get AvailableAppointment IDs (include soft-deleted slots so historical bookings are not lost)
+        $available_appointments_ids = AvailableAppointment::withTrashed()
+            ->whereIn('clinic_doctor_id', $clinic_doctor_ids)
             ->pluck('id')
             ->toArray();
 
@@ -518,15 +615,21 @@ class AppointmentController extends Controller
      // ok there is another function that is called "passedAppointment" that is used to mark a booked appointment as completed or no_show 
      // but this function will help up to test the api and the frontend for not now appointment because the passedAppointment depends on the starting time and the appointment date
      // so we will use this function to mark a booked appointment as completed for now
-    public function finishBookedAppointment($appointment_id){
+    public function finishBookedAppointment(Request $request, $appointment_id){
         $appointment = Appointment::findOrFail($appointment_id);
         if ($appointment->status !== 'booked') {
             return response()->json([
                 'message' => 'Only booked appointments can be completed'
             ], 422);
         }
-        $appointment->status = 'completed';
+        $status = $request->input('status', 'completed');
+        if(!in_array($status, ['completed', 'no-show'])) {
+            return response()->json([
+                'message' => 'Invalid status'
+            ], 422);
+        }
+        $appointment->status = $status;
         $appointment->save();
-        return response()->json(['message' => 'Appointment marked as completed', 'appointment' => $appointment], 200);
+        return response()->json(['message' => 'Appointment marked as ' . $status . ' successfully', 'appointment' => $appointment], 200);
     }
 }
