@@ -11,7 +11,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 
 **Patient**
 - Auth (CRUD)✅
-- Book, reschedule, cancel appointments (CRUD)⏳
+- Book, reschedule, cancel appointments (CRUD)✅
 - View doctors and clinics✅
 - Read-only access to medical history & past appointments ✅
 - Notifications (appointments, updates, reminders) ✅
@@ -23,8 +23,8 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 - Auth (CRUD)✅
 - Assign doctors to clinic✅
 - Manage doctor schedules (CRUD)✅
-- Manage appointments (CRUD)⏳
-- Read clinic-related patient logs and profiles⏳
+- Manage appointments (CRUD)✅
+- Read clinic-related patient logs and profiles✅
 - Manage collaborated insurance companies (CRUD)✅
 - Dashboard includes: ✅
   - Number of doctors
@@ -34,7 +34,7 @@ Build a comprehensive healthcare platform to connect patients, clinics, doctors,
 
 **Doctor**
 - Auth (CRUD)✅
-- Access clinic appointments⏳
+- Access clinic appointments✅
 - Create/Read patient medical records ✅
 
 **Lab**
@@ -258,10 +258,14 @@ TODO:
  - Validation for doctors that their schedule don't conflict
  - Patient should get banned if exceeded a number of no_show
  - Paitent can ONLY book 1 appointment in a day for a clinic_doctor
- - Paitent can NOT book more than 1 appointment in same time
- - connect the backend with fronend for appointment feature 
- - test the whole system and make sure every thing is work as expected 
+ - Paitent can NOT book more than 1 appointment in same time ✅
+ - connect the backend with fronend for appointment feature ✅
+ - test the whole system and make sure every thing is work as expected ✅
  - deploy the project 
- - Add rule-based access control (apply middleware)
- - Update observer so it removes past valid appointments and generates new ones
+ - Add rule-based access control (apply middleware) ✅
+ - Update observer so it removes past valid appointments not removes it just loop on valid appointment and soft deletes them and generates new ones ✅ 
+ - clinic can book, reschedule, cancle appointments for any their patients but we should consider many things:
+  - if the clinic want to book appointment a request will be sent to patient and displays in notifications page and this appointment row status it will be saved with pendding status if patient click accept it will be changed to booked if reject it will still pending 
+  - if clinic wants to cancel the same login a request will be sent to patient to either accept or reject if accept the status will be changed to cancelled if reject it will get back to be booked status 
+  - the same for the reschedule 
  
