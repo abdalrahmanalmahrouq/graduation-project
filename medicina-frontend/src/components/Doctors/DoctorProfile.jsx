@@ -19,6 +19,7 @@ function DoctorProfile() {
     const [selectedClinic, setSelectedClinic] = useState('');
     const [clinicsWithInsurances, setClinicsWithInsurances] = useState([]);
     const [filteredClinics, setFilteredClinics] = useState([]);
+    const [patientInsurance, setPatientInsurance] = useState(null);
   
     
     useEffect(()=>{
@@ -37,11 +38,35 @@ function DoctorProfile() {
         const userData = localStorage.getItem('user');
         const token = localStorage.getItem('token');
 
-        if(token && userData){
-            const user = JSON.parse(userData);
+        if (token && userData) {
+            try {
+                const user = JSON.parse(userData);
 
-            if(user.role === 'patient' && user.profile.insurance_id){
-                setSelectedInsurance(user.profile.insurance_id);
+                if (user.role === 'patient' && user.profile) {
+                    // Try to infer the patient's insurance id & name from multiple possible shapes
+                    const profile = user.profile;
+                    const insuranceObj = profile.insurance || {};
+
+                    const insuranceId =
+                        profile.insurance_id ||
+                        insuranceObj.id ||
+                        insuranceObj.insurance_id;
+
+                    const insuranceName =
+                        profile.insurance_name ||
+                        insuranceObj.name ||
+                        'تأمينك';
+
+                    if (insuranceId) {
+                        setSelectedInsurance(insuranceId);
+                        setPatientInsurance({
+                            id: insuranceId,
+                            name: insuranceName,
+                        });
+                    }
+                }
+            } catch (e) {
+                console.error('Error parsing user data for insurance:', e);
             }
         }
     },[]);
@@ -227,6 +252,12 @@ function DoctorProfile() {
                                                         className="modern-select insurance-selector"
                                                     >
                                                         <option value="">جميع شركات التأمين</option>
+                                                        {/* Show patient's insurance even if no clinic supports it */}
+                                                        {patientInsurance && !getUniqueInsurances().some(ins => ins.id == patientInsurance.id) && (
+                                                            <option value={patientInsurance.id}>
+                                                                {patientInsurance.name}
+                                                            </option>
+                                                        )}
                                                         {getUniqueInsurances().map((insurance, index) => (
                                                             <option key={index} value={insurance.id}>
                                                                 {insurance.name}
