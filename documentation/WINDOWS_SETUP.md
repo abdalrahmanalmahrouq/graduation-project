@@ -88,6 +88,10 @@ Phase 2: Create the Database
         ```bash
         php artisan migrate
         ```
+        Run seed:
+        ```bash
+        php artisan db:seed
+        ```
 
 🎨 Phase 4: Setup Frontend (React)
 

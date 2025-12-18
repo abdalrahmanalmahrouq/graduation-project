@@ -323,3 +323,9 @@ for any modified components for sure.>
 **Purpose:**  
 < no the patient can book two appointments at the same time and the clinic can book appointments for patients from clinic account>
 
+
+### Commit
+
+` feat: now the clinic can book appointment for any patient by entering patient id then the patient will respond to this request by accept or reject ` Dec/18
+**Purpose:**  
+< now the clinic can book appointment for any patient >
