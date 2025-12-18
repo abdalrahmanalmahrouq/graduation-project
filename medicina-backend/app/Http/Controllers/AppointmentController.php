@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\AvailableAppointment;
 use App\Models\Patient;
 use App\Models\ClinicDoctor;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -14,6 +15,7 @@ use function PHPUnit\Framework\isEmpty;
 class AppointmentController extends Controller
 {
     // check if there's existing appointment at specific date for appointment_id
+    // Excludes 'pending' appointments as they don't block the slot until confirmed
     public function existingAppointment($appointment_id, $appointment_date){
         $existingAppointment = Appointment::where('appointment_id', $appointment_id)
             ->where('appointment_date', $appointment_date)
@@ -24,8 +26,9 @@ class AppointmentController extends Controller
     }
 
     // check if patient has overlapping appointment at the same date and time
+    // Excludes 'pending' appointments as they don't block the slot until confirmed
     public function hasPatientOverlappingAppointment($patient_id, $appointment_date, $new_starting_time, $new_ending_time, $exclude_appointment_id = null){
-        // Get all booked appointments for this patient on the same date
+        // Get all booked appointments for this patient on the same date (excluding pending)
         $query = Appointment::where('patient_id', $patient_id)
             ->where('appointment_date', $appointment_date)
             ->where('status', 'booked')
@@ -77,6 +80,8 @@ class AppointmentController extends Controller
             if ($requestedClinic && $requestedClinic->user_id !== $user->id) {
                 return response()->json(['message' => 'Clinics can only book appointments for their own available slots'], 403);
             }
+
+            
         }
         $validated = $request->validate([
             'appointment_id' => 'required|exists:available_appointments,id',
@@ -134,17 +139,26 @@ class AppointmentController extends Controller
         $patient = Patient::where('user_id', $validated['patient_id'])->first();
         $patient_name = $patient?->full_name ?? null;
 
+        // Determine status: 'pending' if clinic creates it, 'booked' if patient creates it
+        $appointmentStatus = ($user->role === 'clinic') ? 'pending' : 'booked';
+
         // Create appointment record
         $appointment = Appointment::create([
             'appointment_id' => $validated['appointment_id'],
             'patient_id' => $validated['patient_id'],
             'appointment_date' => $validated['appointment_date'],
-            'status' => 'booked',
+            'status' => $appointmentStatus,
         ]);
 
+        // Note: No notification is created here. The appointment will appear in 
+        // appointmentNotifications (pending) and move to appointmentNotificationsDone 
+        // (booked/rejected) when patient responds, similar to lab results.
+
         return response()->json([
-            'message' => 'Appointment created successfully',
-            'appointment' => array_merge($appointmentInfo, ['status' => 'booked', 'patient' => $patient_name]),
+            'message' => $appointmentStatus === 'pending' 
+                ? 'Appointment created successfully and waiting for patient confirmation'
+                : 'Appointment created successfully',
+            'appointment' => array_merge($appointmentInfo, ['status' => $appointmentStatus, 'patient' => $patient_name]),
             'id' => $appointment->id
         ], 201);
     }
@@ -536,7 +550,7 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'patient_id' => 'sometimes|exists:patients,user_id',
-            'status' => 'sometimes|string|in:booked,completed,cancelled,no_show,all',
+            'status' => 'sometimes|string|in:booked,completed,cancelled,no_show,pending,all',
             'starting_date' => 'sometimes|date|date_format:Y-m-d',
             'ending_date' => 'sometimes|date|date_format:Y-m-d',
         ]);
@@ -631,5 +645,83 @@ class AppointmentController extends Controller
         $appointment->status = $status;
         $appointment->save();
         return response()->json(['message' => 'Appointment marked as ' . $status . ' successfully', 'appointment' => $appointment], 200);
+    }
+
+    // Patient accepts or rejects a pending appointment request
+    public function respondToAppointmentRequest(Request $request, $appointment_id){
+        $user = auth()->user();
+        if (!$user || $user->role !== 'patient') {
+            return response()->json(['message' => 'Unauthorized. Only patients can respond to appointment requests'], 403);
+        }
+
+        $validated = $request->validate([
+            'decision' => 'required|in:accept,reject',
+        ]);
+
+        $appointment = Appointment::findOrFail($appointment_id);
+
+        // Verify the appointment belongs to the authenticated patient
+        if ($appointment->patient_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized. This appointment does not belong to you'], 403);
+        }
+
+        // Verify the appointment is in pending status
+        if ($appointment->status !== 'pending') {
+            return response()->json([
+                'message' => 'This appointment is not pending. Only pending appointments can be accepted or rejected'
+            ], 422);
+        }
+
+        if ($validated['decision'] === 'accept') {
+            // Check for conflicts before accepting (doctor conflict)
+            if ($this->existingAppointment($appointment->appointment_id, $appointment->appointment_date)) {
+                // If there's a conflict now, mark as rejected and return error
+                $appointment->status = 'rejected';
+                $appointment->rejected_at = now();
+                $appointment->save();
+                return response()->json([
+                    'message' => 'Appointment slot is no longer available. The appointment has been rejected.',
+                    'error' => 'Another appointment was booked for this time slot'
+                ], 409);
+            }
+
+            // Check for patient overlapping appointments
+            $available = $appointment->availableAppointment;
+            if ($available && $this->hasPatientOverlappingAppointment(
+                $appointment->patient_id,
+                $appointment->appointment_date,
+                $available->starting_time,
+                $available->ending_time,
+                $appointment->id
+            )) {
+                $appointment->status = 'rejected';
+                $appointment->rejected_at = now();
+                $appointment->save();
+                return response()->json([
+                    'message' => 'You have a conflicting appointment. This appointment has been rejected.',
+                    'error' => 'Patient has overlapping appointment'
+                ], 409);
+            }
+
+            // Accept: Change status to 'booked' and set approved_at timestamp
+            $appointment->status = 'booked';
+            $appointment->approved_at = now();
+            $appointment->save();
+
+            return response()->json([
+                'message' => 'Appointment accepted successfully',
+                'appointment' => $appointment
+            ], 200);
+        } else {
+            // Reject: Change status to 'rejected' and set rejected_at timestamp
+            $appointment->status = 'rejected';
+            $appointment->rejected_at = now();
+            $appointment->save();
+
+            return response()->json([
+                'message' => 'Appointment request rejected successfully',
+                'appointment' => $appointment
+            ], 200);
+        }
     }
 }

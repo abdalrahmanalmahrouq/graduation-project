@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Loading from '../Loading';
 import { useFlashMessage } from '../../hooks/useFlashMessage';
@@ -7,6 +7,8 @@ const Notifications = () => {
   // 1. Data States
   const [labNotifications, setLabNotifications] = useState([]);
   const [labNotificationsDone, setLabNotificationsDone] = useState([]);
+  const [appointmentNotifications, setAppointmentNotifications] = useState([]);
+  const [appointmentNotificationsDone, setAppointmentNotificationsDone] = useState([]);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   const [readNotifications, setReadNotifications] = useState([]);
   
@@ -21,25 +23,28 @@ const Notifications = () => {
   const itemsPerPage = 5;
 
   // 4. Fetch Data on Load or Refresh
-  useEffect(() => {
-    fetchNotifications();
-  }, [refreshTrigger]);
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get('/notifications');
       setLabNotifications(response.data.labNotifications || []);
       setLabNotificationsDone(response.data.labNotificationsDone || []);
-      setUnreadNotifications(response.data.unreadNotifications || []);
-      setReadNotifications(response.data.readNotifications || []);
+      setAppointmentNotifications(response.data.appointmentNotifications || []);
+      setAppointmentNotificationsDone(response.data.appointmentNotificationsDone || []);
+      // Filter out appointment_request notifications since we're not using them anymore
+      setUnreadNotifications((response.data.unreadNotifications || []).filter(n => n.type !== 'appointment_request'));
+      setReadNotifications((response.data.readNotifications || []).filter(n => n.type !== 'appointment_request'));
     } catch (error) {
       console.error('Error fetching notifications:', error);
       setMessage({ type: 'error', text: 'حدث خطأ أثناء تحميل الإشعارات' });
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [refreshTrigger, fetchNotifications]);
 
   // 5. Action Handlers
   const handleRespond = async (labResultId, decision) => {
@@ -83,6 +88,31 @@ const Notifications = () => {
     }
   };
 
+  const handleAppointmentRespond = async (appointmentId, decision) => {
+    setProcessingId(appointmentId);
+    setMessage({ type: '', text: '' });
+
+    try {
+      await axios.patch(`/appointments/${appointmentId}/respond`, {
+        decision: decision
+      });
+
+      setMessage({ 
+        type: 'success', 
+        text: decision === 'accept' ? 'تم قبول الموعد بنجاح' : 'تم رفض الموعد' 
+      });
+
+      // Trigger a re-fetch to move the item from "Pending" to "Done"
+      setRefreshTrigger(prev => prev + 1);
+    
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || 'حدث خطأ أثناء معالجة الطلب';
+      setMessage({ type: 'error', text: errorMsg });
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
   // --- CORE LOGIC: MERGE, SORT, & PAGINATE ---
 
   // A. Merge all arrays into one Master List
@@ -90,7 +120,9 @@ const Notifications = () => {
   // We add 'sortDate' to ensure we sort correctly (using approved_at for done items if available)
   const allNotifications = [
     ...labNotifications.map(n => ({ ...n, category: 'pending', sortDate: n.created_at })),
-    ...labNotificationsDone.map(n => ({ ...n, category: 'done', sortDate: n.approved_at || n.updated_at })), 
+    ...labNotificationsDone.map(n => ({ ...n, category: 'done', sortDate: n.approved_at || n.rejected_at || n.updated_at })), 
+    ...appointmentNotifications.map(n => ({ ...n, category: 'appointment_pending', sortDate: n.created_at })),
+    ...appointmentNotificationsDone.map(n => ({ ...n, category: 'appointment_done', sortDate: n.approved_at || n.rejected_at || n.created_at })),
     ...unreadNotifications.map(n => ({ ...n, category: 'unread', sortDate: n.created_at })),
     ...readNotifications.map(n => ({ ...n, category: 'read', sortDate: n.created_at }))
   ];
@@ -198,7 +230,50 @@ const Notifications = () => {
                     );
                   }
 
-                  // --- RENDER CARD TYPE 2: LAB DONE (Approved/Rejected) ---
+                  // --- RENDER CARD TYPE 2: APPOINTMENT REQUEST (Pending) ---
+                  if (notification.category === 'appointment_pending') {
+                    return (
+                      <div key={`appointment-${notification.id}`} className="notification-card">
+                        <div className="notification-icon">
+                          <i className="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div className="notification-content">
+                          <h5 className="notification-title">طلب موعد جديد</h5>
+                          <p className="notification-text">
+                            طلب موعد من {notification.clinic_name} مع د. {notification.doctor_name} في {new Date(notification.appointment_date).toLocaleDateString('ar-SA')} الساعة {notification.starting_time}
+                          </p>
+                          <div className="notification-meta">
+                            <span className="notification-time">
+                              <i className="fa-regular fa-clock ms-1"></i>
+                              {new Date(notification.created_at).toLocaleString('en-UK')}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="notification-actions">
+                          <button
+                            className="btn btn-success btn-sm"
+                            onClick={() => handleAppointmentRespond(notification.id, 'accept')}
+                            disabled={processingId === notification.id}
+                          >
+                            {processingId === notification.id ? (
+                              <span className="spinner-border spinner-border-sm" role="status"></span>
+                            ) : (
+                              <><i className="fa-solid fa-check ms-1"></i> قبول</>
+                            )}
+                          </button>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleAppointmentRespond(notification.id, 'reject')}
+                            disabled={processingId === notification.id}
+                          >
+                            <i className="fa-solid fa-times ms-1"></i> رفض
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // --- RENDER CARD TYPE 3: LAB DONE (Approved/Rejected) ---
                   if (notification.category === 'done') {
                     return (
                       <div key={`done-${notification.id}`} className="notification-card">
@@ -239,7 +314,48 @@ const Notifications = () => {
                     );
                   }
 
-                  // --- RENDER CARD TYPE 3: GENERAL NOTIFICATION (Read/Unread) ---
+                  // --- RENDER CARD TYPE 3B: APPOINTMENT DONE (Booked/Rejected) ---
+                  if (notification.category === 'appointment_done') {
+                    return (
+                      <div key={`appointment-done-${notification.id}`} className="notification-card">
+                        <div className="notification-icon">
+                          <i className="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div className="notification-content">
+                          <h5 className="notification-title">طلب موعد</h5>
+                          <p className="notification-text">
+                            {notification.status === 'booked' ? (
+                              <>تمت الموافقة منك على موعد من {notification.clinic_name} مع د. {notification.doctor_name} في {new Date(notification.appointment_date).toLocaleDateString('ar-SA')} الساعة {notification.starting_time}</>
+                            ) : (
+                              <>تم رفض الطلب منك لموعد من {notification.clinic_name} مع د. {notification.doctor_name} في {new Date(notification.appointment_date).toLocaleDateString('ar-SA')} الساعة {notification.starting_time}</>
+                            )}
+                          </p>
+                          <div className="notification-meta">
+                            <span className="notification-time">
+                              <i className="fa-regular fa-clock ms-1"></i>
+                              {notification.approved_at && (
+                                <>
+                                {new Date(notification.approved_at).toLocaleString('en-UK')}
+                                </>
+                              )}
+                              {notification.rejected_at && (
+                                <>
+                                {new Date(notification.rejected_at).toLocaleString('en-UK')}
+                                </>
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="notification-actions">
+                          <div className="text-success">
+                            <i className="fa-solid fa-check-double ms-1"></i> مقروء
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // --- RENDER CARD TYPE 4: GENERAL NOTIFICATION (Read/Unread) ---
                   const isUnread = notification.category === 'unread';
                   let iconClass = "fa-solid fa-bell";
                   if (notification.type === "lab_result_uploaded") iconClass = "fa-solid fa-flask";

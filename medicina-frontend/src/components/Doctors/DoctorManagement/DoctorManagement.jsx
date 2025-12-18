@@ -9,6 +9,7 @@ import DoctorHeaderCard from '../DoctorHeaderCard';
 import WeeklyScheduleEditor from './WeeklyScheduleEditor';
 import DoctorAppointmentsList from './DoctorAppointmentsList';
 import DoctorRescheduleModal from './DoctorRescheduleModal';
+import ClinicCreateAppointmentModal from './ClinicCreateAppointmentModal';
 
 
 
@@ -23,7 +24,9 @@ const DoctorManagement = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
+  const [isCreateAppointmentOpen, setIsCreateAppointmentOpen] = useState(false);
   const [scheduleVersion, setScheduleVersion] = useState(0);
+  const [clinicId, setClinicId] = useState(null);
 
   useEffect(() => {
     const fetchDoctorProfile = async () => {
@@ -38,6 +41,19 @@ const DoctorManagement = () => {
       }
     };
     if (doctorId) fetchDoctorProfile();
+
+    // Get clinic ID from authenticated user
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        if (user.role === 'clinic' && user.id) {
+          setClinicId(user.id);
+        }
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+      }
+    }
   }, [doctorId]);
 
   if (loading) return <Loading />;
@@ -135,12 +151,24 @@ const DoctorManagement = () => {
 
                         {activeTab === "appointments" && (
                             <div className="appointments-section animate-fadeIn">
-                                <div className="section-header">
-                                    <h3 className="section-title-doctor">
-                                        <i className="fas fa-list-alt me-2"></i>
-                                        سجل المواعيد
-                                    </h3>
-                                    <p className="section-subtitle">عرض المواعيد المحجوزة والسابقة</p>
+                                <div className="section-header flex items-center justify-between">
+                                    <div>
+                                        <h3 className="section-title-doctor">
+                                            <i className="fas fa-list-alt me-2"></i>
+                                            سجل المواعيد
+                                        </h3>
+                                        <p className="section-subtitle">عرض المواعيد المحجوزة والسابقة</p>
+                                    </div>
+                                    {clinicId && (
+                                        <button
+                                            type="button"
+                                            className="btn-primary"
+                                            onClick={() => setIsCreateAppointmentOpen(true)}
+                                        >
+                                            <i className="fas fa-plus me-2"></i>
+                                            إنشاء موعد للمريض
+                                        </button>
+                                    )}
                                 </div>
 
                                 {/* Placeholder for appointments */}
@@ -156,10 +184,25 @@ const DoctorManagement = () => {
       <DoctorRescheduleModal
         isOpen={isRescheduleOpen}
         onClose={() => setIsRescheduleOpen(false)}
-        doctorId={doctor.id}
+        publicDoctorId={doctorId}
+        privateDoctorId={doctor.id}
         doctorName={doctor?.full_name || doctor?.name}
         onSuccess={() => setScheduleVersion((prev) => prev + 1)}
       />
+      {clinicId && (
+        <ClinicCreateAppointmentModal
+          isOpen={isCreateAppointmentOpen}
+          onClose={() => setIsCreateAppointmentOpen(false)}
+          doctorId={doctorId}
+          doctorPrivateId={doctor.id}
+          doctorName={doctor?.full_name || doctor?.name}
+          clinicId={clinicId}
+          onSuccess={() => {
+            // Refresh appointments list if needed
+            setIsCreateAppointmentOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

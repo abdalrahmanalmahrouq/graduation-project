@@ -188,7 +188,7 @@ const DoctorAppointmentsList = ({ doctorId }) => {
                                 </td>
                                 <td>
                                     <span className="time-range-badge">
-                                        {appt.starting_time?.substring(0,5)} - {appt.ending_time?.substring(0,5)}
+                                        {appt.ending_time?.substring(0,5)} - {appt.starting_time?.substring(0,5)} 
                                     </span>
                                 </td>
                                 <td>

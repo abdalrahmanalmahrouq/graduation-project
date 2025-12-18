@@ -169,8 +169,10 @@ Route::middleware(['auth:sanctum', 'role:clinic'])->group(function () {
 // PATIENT → get notifications (pending requests)
 Route::middleware(['auth:sanctum', 'role:patient'])->get('/notifications', [PatientController::class, 'getPatientNotifications']);
 Route::middleware(['auth:sanctum', 'role:patient'])->patch('/notifications/{id}/read', [PatientController::class, 'markAsRead']);
-// PATIENT → accept/reject
+// PATIENT → accept/reject lab results
 Route::middleware(['auth:sanctum', 'role:patient'])->patch('/lab-results/{id}/respond', [LabResultController::class, 'respond']);
+// PATIENT → accept/reject appointment requests
+Route::middleware(['auth:sanctum', 'role:patient'])->patch('/appointments/{id}/respond', [AppointmentController::class, 'respondToAppointmentRequest']);
 
 Route::middleware(['auth:sanctum', 'role:lab'])->group(function () {
     Route::get('/lab-results/requests', [LabResultController::class, 'getLabRequests']);// LAB → get all their requests

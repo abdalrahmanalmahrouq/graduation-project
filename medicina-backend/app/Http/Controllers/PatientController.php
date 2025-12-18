@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\LabResult;
 use App\Models\MedicalRecord;
 use App\Models\Notifications;
@@ -198,6 +199,54 @@ class PatientController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();    
 
+        // Get appointment request notifications (pending appointments)
+        $appointmentNotifications = Appointment::where('patient_id', $user->id)
+            ->where('status', 'pending')
+            ->with([
+                'availableAppointment.clinicDoctor.doctor:user_id,full_name',
+                'availableAppointment.clinicDoctor.clinic:user_id,clinic_name'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($appointment) {
+                $clinicDoctor = $appointment->availableAppointment?->clinicDoctor;
+                return [
+                    'id' => $appointment->id,
+                    'appointment_date' => $appointment->appointment_date,
+                    'starting_time' => $appointment->availableAppointment?->starting_time,
+                    'ending_time' => $appointment->availableAppointment?->ending_time,
+                    'doctor_name' => $clinicDoctor?->doctor?->full_name,
+                    'clinic_name' => $clinicDoctor?->clinic?->clinic_name,
+                    'status' => $appointment->status,
+                    'created_at' => $appointment->created_at,
+                ];
+            });
+
+        // Get appointment notifications done (booked/rejected appointments)
+        $appointmentNotificationsDone = Appointment::where('patient_id', $user->id)
+            ->whereIn('status', ['booked', 'rejected'])
+            ->with([
+                'availableAppointment.clinicDoctor.doctor:user_id,full_name',
+                'availableAppointment.clinicDoctor.clinic:user_id,clinic_name'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($appointment) {
+                $clinicDoctor = $appointment->availableAppointment?->clinicDoctor;
+                return [
+                    'id' => $appointment->id,
+                    'appointment_date' => $appointment->appointment_date,
+                    'starting_time' => $appointment->availableAppointment?->starting_time,
+                    'ending_time' => $appointment->availableAppointment?->ending_time,
+                    'doctor_name' => $clinicDoctor?->doctor?->full_name,
+                    'clinic_name' => $clinicDoctor?->clinic?->clinic_name,
+                    'status' => $appointment->status,
+                    'approved_at' => $appointment->approved_at,
+                    'rejected_at' => $appointment->rejected_at,
+                    'created_at' => $appointment->created_at,
+                ];
+            });
+
         $unread = Notifications::where('user_id',$user->id)
         ->where('is_read',0)
         ->orderBy('created_at','desc')
@@ -214,6 +263,8 @@ class PatientController extends Controller
             'success' => true,
             'labNotifications' => $labNotifications,
             'labNotificationsDone' => $labNotificationsDone,
+            'appointmentNotifications' => $appointmentNotifications,
+            'appointmentNotificationsDone' => $appointmentNotificationsDone,
             'unreadNotifications' => $unread,
             'readNotifications' => $read
         ]);

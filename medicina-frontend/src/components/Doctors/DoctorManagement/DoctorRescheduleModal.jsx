@@ -13,7 +13,7 @@ const DAY_LABELS = {
   friday: 'الجمعة' 
 };
 
-const DoctorRescheduleModal = ({ isOpen, onClose, doctorId, doctorName, onSuccess }) => {
+const DoctorRescheduleModal = ({ isOpen, onClose, publicDoctorId, privateDoctorId, doctorName, onSuccess }) => {
   const [schedule, setSchedule] = useState(
     DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {})
   );
@@ -21,14 +21,26 @@ const DoctorRescheduleModal = ({ isOpen, onClose, doctorId, doctorName, onSucces
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
+  // Helper to normalize a single day's data:
+  // - null / undefined / empty object => null (non‑working day)
+  // - any object with at least one time value => the same object
+  const normalizeDay = (rawDay) => {
+    if (!rawDay || typeof rawDay !== 'object') return null;
+
+    const { start_time, end_time, break_start, break_end } = rawDay;
+    const hasAnyTime = !!(start_time || end_time || break_start || break_end);
+
+    return hasAnyTime ? rawDay : null;
+  };
+
   useEffect(() => {
-    if (!isOpen || !doctorId) return;
+    if (!isOpen || !publicDoctorId) return;
 
     const fetchSchedule = async () => {
       setLoading(true);
       setError('');
       try {
-        const response = await axios.get(`/clinics/doctors/${doctorId}/schedule`);
+        const response = await axios.get(`/clinics/doctors/${publicDoctorId}/schedule`);
         let incomingSchedule = response.data.schedule;
 
         if (typeof incomingSchedule === 'string') {
@@ -44,7 +56,7 @@ const DoctorRescheduleModal = ({ isOpen, onClose, doctorId, doctorName, onSucces
         const initialSchedule = DAYS.reduce(
           (acc, day) => ({
             ...acc,
-            [day]: safeSchedule[day] || safeSchedule[day?.toLowerCase()] || null,
+            [day]: normalizeDay(safeSchedule[day] || safeSchedule[day?.toLowerCase()] || null),
           }),
           {}
         );
@@ -58,7 +70,7 @@ const DoctorRescheduleModal = ({ isOpen, onClose, doctorId, doctorName, onSucces
     };
 
     fetchSchedule();
-  }, [isOpen, doctorId]);
+  }, [isOpen, publicDoctorId]);
 
   const handleDayToggle = (day) => {
     setSchedule((prev) => {
@@ -87,7 +99,7 @@ const DoctorRescheduleModal = ({ isOpen, onClose, doctorId, doctorName, onSucces
     setError('');
     try {
       await axios.post('/clinics/re-schedule-doctor-weekly-schedule', {
-        doctor_id: doctorId,
+        doctor_id: privateDoctorId,
         weekly_schedule: schedule,
       });
       if (onSuccess) onSuccess();

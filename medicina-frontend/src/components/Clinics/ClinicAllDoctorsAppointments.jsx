@@ -62,19 +62,27 @@ const ClinicAllDoctorsAppointments = () => {
     try {
       setIsLoading(true);
       setError('');
-      
+
+      // Build query string for filters (uses /appointments/search endpoint)
       const queryParams = new URLSearchParams();
-      queryParams.append('clinic_id', clinicId); // Must send clinic_id
-      if (filters.status) queryParams.append('status', filters.status)
-      
-      // Only append filters that have values
-      if (filters.status !== 'all') queryParams.append('status', filters.status);
+
+      // Required: clinic_id (backend expects this as query param)
+      queryParams.append('clinic_id', clinicId);
+
+      // Status filter: backend expects "status" and treats "all" as no filter
+      // in getAppointmentsByStatus, so we only send it when it's not "all"
+      if (filters.status && filters.status !== 'all') {
+        queryParams.append('status', filters.status);
+      }
+
+      // Optional filters
       if (filters.doctor_id) queryParams.append('doctor_id', filters.doctor_id);
-      if (filters.date_from) queryParams.append('date_from', filters.date_from);
-      if (filters.date_to) queryParams.append('date_to', filters.date_to);
-      
-     const queryString = queryParams.toString();
-     const url = `/appointments/search?${queryString}`;
+      // Date filters: backend expects "starting_date" and "ending_date"
+      if (filters.date_from) queryParams.append('starting_date', filters.date_from);
+      if (filters.date_to) queryParams.append('ending_date', filters.date_to);
+
+      const queryString = queryParams.toString();
+      const url = `/appointments/search?${queryString}`;
 
       const response = await axios.get(url);
       setAppointments(response.data.appointments || []);
