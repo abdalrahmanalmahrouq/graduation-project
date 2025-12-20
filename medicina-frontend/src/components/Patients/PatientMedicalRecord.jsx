@@ -131,24 +131,37 @@ const PatientMedicalRecords = () => {
                         </div>
                     )}
 
-                    {record.lab_result && (
+                    {(record.lab_results && record.lab_results.length > 0) && (
                         <div className="detail-block">
-                        <h4>عنوان الفحص</h4>
-                        <p>{record.lab_result.examination_title || "لا يوجد"}</p>
+                        <h4>نتائج المختبر</h4>
+                        <hr />
+                        {record.lab_results.map((labResult, index) => (
+                            <div key={labResult.id || index} className="lab-result-item" style={{ marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: index < record.lab_results.length - 1 ? '1px solid #e0e0e0' : 'none' }}>
+                              <h6 style={{ marginTop: '0.75rem', marginBottom: '0.25rem', fontSize: '0.9rem', fontWeight: '600' }}>عنوان الفحص:</h6>
+                            <h5 style={{ marginBottom: '0.5rem', color: 'var(--primary-color, #4a90e2)' }}>
+                                {labResult.examination_title || "فحص مختبر"}
+                            </h5>
+                            
+                            {labResult.notes && (
+                                <>
+                                <h6 style={{ marginTop: '0.75rem', marginBottom: '0.25rem', fontSize: '0.9rem', fontWeight: '600' }}>الملاحظات:</h6>
+                                <p style={{ marginBottom: '0.75rem' }}>{labResult.notes}</p>
+                                </>
+                            )}
 
-                        <h4 className="mt-2">الملاحظات</h4>
-                        <p>{record.lab_result.notes || "لا يوجد"}</p>
-
-                        <h4 className="mt-2">نتيجة الفحص</h4>
-                        <button
-                            className="btn-view"
-                            onClick={(e) => {
-                            e.stopPropagation();
-                            handleDownload(record.lab_result.file_url);
-                            }}
-                        >
-                            <i className="fa-solid fa-file-arrow-down me-1"></i> عرض نتيجة الفحص
-                        </button>
+                            {labResult.file_url && (
+                                <button
+                                    className="btn-view"
+                                    onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDownload(labResult.file_url);
+                                    }}
+                                >
+                                    <i className="fa-solid fa-file-arrow-down me-1"></i> عرض نتيجة الفحص
+                                </button>
+                            )}
+                            </div>
+                        ))}
                         </div>
                     )}
                     </div>

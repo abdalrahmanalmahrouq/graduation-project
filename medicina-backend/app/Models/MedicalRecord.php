@@ -16,8 +16,8 @@ class MedicalRecord extends Model
         return $this->belongsTo(Appointment::class);
     }
     
-    public function labResult() {
-        return $this->belongsTo(LabResult::class, 'lab_result_id');
+    public function labResults() {
+        return $this->belongsToMany(LabResult::class, 'medical_record_lab_result');
     }
     
     public function doctor() {

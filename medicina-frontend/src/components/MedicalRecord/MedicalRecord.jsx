@@ -11,7 +11,7 @@ const MedicalRecord = () => {
   const [message, setMessage] = useState({ type: "", text: "" });
   const [appointment, setAppointment] = useState(null);
   const [labResults, setLabResults] = useState([]);
-  const [selectedLabResultId, setSelectedLabResultId] = useState(null);
+  const [selectedLabResultIds, setSelectedLabResultIds] = useState([]);
   const [consultation, setConsultation] = useState("");
   const [prescription, setPrescription] = useState("");
   const [existingRecord, setExistingRecord] = useState(null);
@@ -27,9 +27,6 @@ const MedicalRecord = () => {
         setAppointment(data?.appointment || null);
         const results = data?.lab_results || [];
         setLabResults(results);
-        if (results.length && !selectedLabResultId) {
-          setSelectedLabResultId(results[0].id);
-        }
 
         // If appointment already completed, try to load the saved record for read-only view
         if ((data?.appointment?.status || "") === "completed") {
@@ -78,7 +75,13 @@ const MedicalRecord = () => {
         setExistingRecord(found);
         if (found.consultation) setConsultation(found.consultation);
         if (found.prescription) setPrescription(found.prescription);
-        if (found.lab_result_id) setSelectedLabResultId(found.lab_result_id);
+        // Handle multiple lab results
+        if (found.lab_results && Array.isArray(found.lab_results)) {
+          setSelectedLabResultIds(found.lab_results.map(lr => lr.id));
+        } else if (found.lab_result_id) {
+          // Backward compatibility for old single lab_result_id
+          setSelectedLabResultIds([found.lab_result_id]);
+        }
       } else {
         setMessage((m) => ({ ...m, type: m.type || "info", text: m.text || "لم يتم العثور على سجل طبي محفوظ لهذا الموعد" }));
       }
@@ -122,7 +125,7 @@ const MedicalRecord = () => {
       await axios.post(`/appointment/${appointmentId}/medical-record`, {
         consultation: consultation.trim(),
         prescription: prescription.trim() || null,
-        lab_result_id: selectedLabResultId || null,
+        lab_result_ids: selectedLabResultIds.length > 0 ? selectedLabResultIds : null,
       });
 
       // Finish appointment
@@ -257,14 +260,21 @@ const MedicalRecord = () => {
                 <div className="lab-result-list pt-10">
                   {labResults.map((result) => {
                     const isCompleted = appointment?.status === "completed";
+                    const isSelected = selectedLabResultIds.includes(result.id);
                     return (
-                    <label key={result.id} className={`lab-result-card ${selectedLabResultId === result.id ? "selected" : ""} ${isCompleted ? "is-readonly" : ""} pt-2`}>
+                    <label key={result.id} className={`lab-result-card ${isSelected ? "selected" : ""} ${isCompleted ? "is-readonly" : ""} pt-2`}>
                       <input
-                        type="radio"
+                        type="checkbox"
                         name="lab_result"
                         value={result.id}
-                        checked={selectedLabResultId === result.id}
-                        onChange={() => setSelectedLabResultId(result.id)}
+                        checked={isSelected}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedLabResultIds([...selectedLabResultIds, result.id]);
+                          } else {
+                            setSelectedLabResultIds(selectedLabResultIds.filter(id => id !== result.id));
+                          }
+                        }}
                         disabled={isCompleted}
                       />
                       <div className="card-content">

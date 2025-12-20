@@ -32,7 +32,8 @@ class MedicalRecordController extends Controller
     $request->validate([
         'consultation' => 'required|string',
         'prescription' => 'nullable|string',
-        'lab_result_id' => 'nullable|exists:lab_results,id',
+        'lab_result_ids' => 'nullable|array',
+        'lab_result_ids.*' => 'exists:lab_results,id',
     ]);
 
     $user = $request->user();
@@ -58,25 +59,25 @@ class MedicalRecordController extends Controller
         ], 400);
     }   
 
-    $labResult = LabResult::where('id', $request->lab_result_id) 
-    ->where('patient_id' ,$appointment->patient_id)
-    ->first();
-
-    // if(!$labResult){
-    //     return response()->json([
-    //         'success' => false,
-    //         'message' => 'You are not authorized to use this lab result.'
-    //     ],403);
-    // }
-
     $record = MedicalRecord::create([
         'appointment_id' => $appointment_id,
         'doctor_id' => $request->user()->id,
         'patient_id' => $appointment->patient_id,
-        'lab_result_id' => $request->lab_result_id,
         'consultation' => $request->consultation,
         'prescription' => $request->prescription,
     ]);
+
+    if($request->has('lab_result_ids') && is_array($request->lab_result_ids)){
+        $validLabResults = LabResult::whereIn('id', $request->lab_result_ids)
+        ->where('patient_id', $appointment->patient_id)
+        ->where('status', 'approved')
+        ->pluck('id')
+        ->toArray();
+    
+        $record->labResults()->attach($validLabResults);
+
+    }
+        
 
     $notification = Notifications::create([
         'user_id' => $appointment->patient_id,
@@ -89,6 +90,9 @@ class MedicalRecordController extends Controller
         ],
         'is_read' => false,
     ]);
+
+    // Reload the record with relationships
+    $record->load('labResults');
 
     return response()->json([
         'success' => true,
@@ -103,7 +107,7 @@ class MedicalRecordController extends Controller
    {
        $doctor = $request->user();
 
-       $records = MedicalRecord::with(['appointment', 'labResult'])
+       $records = MedicalRecord::with(['appointment', 'labResults'])
            ->where('doctor_id', $doctor->id)
            ->latest()
            ->paginate(10);
@@ -113,7 +117,7 @@ class MedicalRecordController extends Controller
 
    public function show($record_id)
    {
-    $record = MedicalRecord::with(['appointment', 'labResult'])
+    $record = MedicalRecord::with(['appointment', 'labResults'])
     ->findOrFail($record_id);
 
     return response()->json(['data' => $record], 200);

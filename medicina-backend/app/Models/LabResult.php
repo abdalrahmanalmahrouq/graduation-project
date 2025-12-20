@@ -45,6 +45,10 @@ class LabResult extends Model
         return $this->belongsto(Appointment::class, 'appointment_id', 'id');
     }
 
+    public function medicalRecords(){
+        return $this->belongsToMany(MedicalRecord::class, 'medical_record_lab_result');
+    }
+
     /**
      * Get the file URL for accessing the lab result file.
      *

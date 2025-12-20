@@ -282,7 +282,7 @@ class DoctorController extends Controller
                     'patient:user_id,full_name',
                     'patient.user:id,profile_image',
                     'medicalRecord',
-                    'medicalRecord.labResult',
+                    'medicalRecord.labResults',
                     
                     // Deep Load the Clinic Info so we can show "Clinic Name"
                     'availableAppointment:id,clinic_doctor_id,day,starting_time,ending_time',

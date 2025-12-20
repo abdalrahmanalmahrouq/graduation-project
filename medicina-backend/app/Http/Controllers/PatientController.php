@@ -123,8 +123,8 @@ class PatientController extends Controller
                     'doctor:user_id,full_name',
                     'doctor.user:id,profile_image',
 
-                    // F. Lab Results
-                    'labResult:id,appointment_id,examination_title,notes,file_path,status'
+                    // F. Lab Results (many-to-many relationship)
+                    'labResults:id,appointment_id,examination_title,notes,file_path,status,approved_at'
                 ])
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
