@@ -35,53 +35,53 @@ class ClinicDoctorSeeder extends Seeder
                     'ali@example.com', 'omar@example.com', 'fatima@example.com'
                 ]],
 
-                // ['clinic_email' => 'healthline44@example.com', 'doctor_emails' => [
-                //     'ahmad58@example.com', 'tasneem41@example.com', 'khaled05@example.com'
-                // ]],
+                ['clinic_email' => 'healthline44@example.com', 'doctor_emails' => [
+                    'ahmad58@example.com', 'tasneem41@example.com', 'khaled05@example.com'
+                ]],
 
-                // ['clinic_email' => 'amanamed22@example.com', 'doctor_emails' => [
-                //     'hala16@example.com', 'mustafa74@example.com'
-                // ]],
+                ['clinic_email' => 'amanamed22@example.com', 'doctor_emails' => [
+                    'hala16@example.com', 'mustafa74@example.com'
+                ]],
 
-                // ['clinic_email' => 'nourcare37@example.com', 'doctor_emails' => [
-                //     'maria66@example.com', 'dina53@example.com', 'yousef29@example.com'
-                // ]],
+                ['clinic_email' => 'nourcare37@example.com', 'doctor_emails' => [
+                    'maria66@example.com', 'dina53@example.com', 'yousef29@example.com'
+                ]],
 
-                // ['clinic_email' => 'eliteclinic86@example.com', 'doctor_emails' => [
-                //     'salma81@example.com', 'ibrahim15@example.com'
-                // ]],
+                ['clinic_email' => 'eliteclinic86@example.com', 'doctor_emails' => [
+                    'salma81@example.com', 'ibrahim15@example.com'
+                ]],
 
-                // ['clinic_email' => 'familymed09@example.com', 'doctor_emails' => [
-                //     'hassan60@example.com', 'ward99@example.com', 'reem42@example.com'
-                // ]],
+                ['clinic_email' => 'familymed09@example.com', 'doctor_emails' => [
+                    'hassan60@example.com', 'ward99@example.com', 'reem42@example.com'
+                ]],
 
-                // ['clinic_email' => 'harmony55@example.com', 'doctor_emails' => [
-                //     'saif33@example.com', 'hanan25@example.com'
-                // ]],
+                ['clinic_email' => 'harmony55@example.com', 'doctor_emails' => [
+                    'saif33@example.com', 'hanan25@example.com'
+                ]],
 
-                // ['clinic_email' => 'cityhealth13@example.com', 'doctor_emails' => [
-                //     'adel49@example.com', 'maya93@example.com', 'rabia12@example.com'
-                // ]],
+                ['clinic_email' => 'cityhealth13@example.com', 'doctor_emails' => [
+                    'adel49@example.com', 'maya93@example.com', 'rabia12@example.com'
+                ]],
 
-                // ['clinic_email' => 'royalmed88@example.com', 'doctor_emails' => [
-                //     'tareq67@example.com', 'issam21@example.com'
-                // ]],
+                ['clinic_email' => 'royalmed88@example.com', 'doctor_emails' => [
+                    'tareq67@example.com', 'issam21@example.com'
+                ]],
 
-                // ['clinic_email' => 'primecare62@example.com', 'doctor_emails' => [
-                //     'kareem19@example.com', 'farah01@example.com', 'majid39@example.com'
-                // ]],
+                ['clinic_email' => 'primecare62@example.com', 'doctor_emails' => [
+                    'kareem19@example.com', 'farah01@example.com', 'majid39@example.com'
+                ]],
 
-                // ['clinic_email' => 'safaclinic70@example.com', 'doctor_emails' => [
-                //     'tamara84@example.com', 'ayman52@example.com'
-                // ]],
+                ['clinic_email' => 'safaclinic70@example.com', 'doctor_emails' => [
+                    'tamara84@example.com', 'ayman52@example.com'
+                ]],
 
-                // ['clinic_email' => 'trustmed29@example.com', 'doctor_emails' => [
-                //     'ali91@example.com', 'ziad46@example.com'
-                // ]],
+                ['clinic_email' => 'trustmed29@example.com', 'doctor_emails' => [
+                    'ali91@example.com', 'ziad46@example.com'
+                ]],
 
-                // ['clinic_email' => 'trustmed29@example.com', 'doctor_emails' => [
-                //     'najwa70@example.com'
-                // ]], 
+                ['clinic_email' => 'trustmed29@example.com', 'doctor_emails' => [
+                    'najwa70@example.com'
+                ]], 
 
         ];
 
