@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import { Link,useNavigate } from 'react-router-dom'
 import AuthLayout from '../Authentication/AuthLayout';
+import PasswordInput from '../Authentication/PasswordInput';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 export default function ClinicRegister() {
@@ -85,18 +86,26 @@ export default function ClinicRegister() {
                         onChange={(e)=>setAddress(e.target.value)}/>
                         {errors.address && <small className="text-danger">{errors.address[0]}</small>}
                 </div>
-                <div className="form-group mt-4">
-                        <label htmlFor="password">كلمة المرور</label>
-                        <input type="password" className="form-control" name='password' placeholder="أدخل كلمة المرور" required
-                        onChange={(e)=>setPassword(e.target.value)} />
-                        {errors.password && <small className="text-danger">{errors.password[0]}</small>}
-                </div>
-                <div className="form-group mt-4">
-                        <label htmlFor="passwordConfirmation">تأكيد كلمة المرور</label>
-                        <input type="password" className="form-control" name='password_confirmation' placeholder="أعد إدخال كلمة المرور" required 
-                        onChange={(e)=>setConfirmPassword(e.target.value)}/>
-                        {errors.password_confirmation && <small className="text-danger">{errors.password_confirmation[0]}</small>}
-                </div>
+                <PasswordInput
+                        label="كلمة المرور"
+                        name="password"
+                        value={password}
+                        onChange={(e)=>setPassword(e.target.value)}
+                        placeholder="أدخل كلمة المرور"
+                        error={errors.password}
+                        required
+                        className="mt-4"
+                />
+                <PasswordInput
+                        label="تأكيد كلمة المرور"
+                        name="password_confirmation"
+                        value={password_confirmation}
+                        onChange={(e)=>setConfirmPassword(e.target.value)}
+                        placeholder="أعد إدخال كلمة المرور"
+                        error={errors.password_confirmation}
+                        required
+                        className="mt-4"
+                />
                 
                 <button type="submit" className="btn btn-primary" disabled={loading}>
                {loading ? 'جاري التسجيل...' : 'تسجيل'}

@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import { Link,useNavigate, useLocation } from 'react-router-dom'
 import AuthLayout from '../Authentication/AuthLayout';
+import PasswordInput from '../Authentication/PasswordInput';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 export default function PatientRegister() {
@@ -149,37 +150,45 @@ export default function PatientRegister() {
                         </div>
                          <div className="form-group mt-4">
                                 <label htmlFor="insurance">التأمين</label>
-                                <input 
-                                type="text" 
+                                <select 
                                 className="form-control" 
                                 id="insurance"
                                 name="insurance"
-                                placeholder="اختر شركة التأمين"
-                                list="insuranceOptions"
                                 value={insurance}
                                 onChange={(e)=>setInsurance(e.target.value)}
-                                autoComplete="off"
-                                />
-                                <datalist id="insuranceOptions">
-                                {insuranceOptions.map((option) => (
-                                        <option key={option.insurance_id ?? option.name} value={option.name} />
-                                ))}
-                                </datalist>
+                                disabled={isLoadingInsurances}
+                                >
+                                        <option value="">اختر شركة التأمين</option>
+                                        {insuranceOptions.map((option) => (
+                                                <option key={option.insurance_id ?? option.name} value={option.name}>
+                                                        {option.name}
+                                                </option>
+                                        ))}
+                                </select>
                                 {isLoadingInsurances && <small className="text-muted">جارٍ تحميل شركات التأمين...</small>}
                                 {insuranceFetchError && <small className="text-danger d-block mt-1">{insuranceFetchError}</small>}
                                 {errors.insurance && <small className="text-danger d-block mt-1">{errors.insurance[0]}</small>}
                         </div>
-                        <div className="form-group mt-4">
-                                <label htmlFor="password">كلمة المرور</label>
-                                <input type="password" className="form-control" name='password' placeholder="أدخل كلمة المرور" required 
-                                onChange={(e)=>setPassword(e.target.value)}/>
-                                {errors.password_confirmation && <small className="text-danger">{errors.password_confirmation[0]}</small>}
-                        </div>
-                        <div className="form-group mt-4">
-                                <label htmlFor="passwordConfirmation">تأكيد كلمة المرور</label>
-                                <input type="password" className="form-control" name='password_confirmation' placeholder="أعد إدخال كلمة المرور" required 
-                                onChange={(e)=>setConfirmPassword(e.target.value)}/>
-                        </div>
+                        <PasswordInput
+                                label="كلمة المرور"
+                                name="password"
+                                value={password}
+                                onChange={(e)=>setPassword(e.target.value)}
+                                placeholder="أدخل كلمة المرور"
+                                error={errors.password}
+                                required
+                                className="mt-4"
+                        />
+                        <PasswordInput
+                                label="تأكيد كلمة المرور"
+                                name="password_confirmation"
+                                value={password_confirmation}
+                                onChange={(e)=>setConfirmPassword(e.target.value)}
+                                placeholder="أعد إدخال كلمة المرور"
+                                error={errors.password_confirmation}
+                                required
+                                className="mt-4"
+                        />
                         
                         <button type="submit" className="btn btn-primary" disabled={loading}>
                                 {loading ? 'جاري التسجيل...' : 'تسجيل'}

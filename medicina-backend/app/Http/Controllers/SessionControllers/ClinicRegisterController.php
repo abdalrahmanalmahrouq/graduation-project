@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Clinic;
 use Illuminate\Support\Facades\Hash;
-
+use App\Helpers\ValidationRules;
 
 class ClinicRegisterController extends Controller
 {
@@ -18,16 +18,28 @@ class ClinicRegisterController extends Controller
             ->where('role', 'clinic')
             ->first();
 
+        $messages = array_merge(
+            ValidationRules::passwordMessages(),
+            [
+                'email.unique' => 'البريد الإلكتروني مستخدم بالفعل',
+                'phone_number.required' => 'رقم الهاتف مطلوب',
+                'phone_number.unique' => 'رقم الهاتف مستخدم بالفعل',
+                'phone_number.regex' => 'رقم الهاتف غير صحيح يجب أن يكون 10 أرقام تبدأ بـ 07',
+            ]);
+
         if ($trashedUser) {
             $existingClinic = Clinic::where('user_id', $trashedUser->id)->first();
 
             $validated = $request->validate([
                 'email' => 'required|email',
-                'password' => 'required|min:6|confirmed',
+                'password' => ValidationRules::password(),
                 'clinic_name' => 'required|string',
-                'phone_number' => 'required|string' . ($existingClinic ? ('|unique:clinics,phone_number,' . $existingClinic->id) : '|unique:clinics,phone_number'),
+                'phone_number' => array_merge(
+                    ValidationRules::phoneNumber(),
+                    ['unique:clinics,phone_number,' . ($existingClinic ? $existingClinic->id : 'NULL')]
+                ),
                 'address' => 'nullable|string',
-            ]);
+            ],$messages);
 
             $trashedUser->restore();
             $trashedUser->password = Hash::make($validated['password']);
@@ -53,11 +65,14 @@ class ClinicRegisterController extends Controller
             $validated=$request->validate([
                 // ignore soft-deleted users for unique check
                 'email' => 'required|email|unique:users,email,NULL,id,role,clinic,deleted_at,NULL',
-                'password' => 'required|min:6|confirmed',
+                'password' => ValidationRules::password(),
                 'clinic_name' => 'required|string',
-                'phone_number' => 'required|string|unique:clinics,phone_number',
+                'phone_number' => array_merge(
+                    ValidationRules::phoneNumber(),
+                    ['unique:clinics,phone_number']
+                ),
                 'address' => 'nullable|string',
-            ]);
+            ],$messages);
 
             $user = User::create([
                 'email'=>$validated['email'],

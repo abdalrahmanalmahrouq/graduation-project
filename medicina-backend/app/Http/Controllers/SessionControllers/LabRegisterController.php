@@ -7,7 +7,7 @@ use App\Models\Lab;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use App\Helpers\ValidationRules;
 class LabRegisterController extends Controller
 {
    public function register(Request $request){
@@ -17,16 +17,28 @@ class LabRegisterController extends Controller
         ->where('role', 'lab')
         ->first();
 
+    $messages = array_merge(
+        ValidationRules::passwordMessages(),
+        [
+            'email.unique' => 'البريد الإلكتروني مستخدم بالفعل',
+            'phone_number.required' => 'رقم الهاتف مطلوب',
+            'phone_number.unique' => 'رقم الهاتف مستخدم بالفعل',
+            'phone_number.regex' => 'رقم الهاتف غير صحيح يجب أن يكون 10 أرقام تبدأ بـ 07',
+        ]);
+
     if ($trashedUser) {
         $existingLab = Lab::where('user_id', $trashedUser->id)->first();
 
         $validate=$request->validate([
             'email'=>'required|email',
-            'password'=>'required|min:6|confirmed',
+            'password'=>ValidationRules::password(),
             'lab_name'=>'required|string',
-            'phone_number'=>'required|string' . ($existingLab ? ('|unique:labs,phone_number,' . $existingLab->id) : '|unique:labs,phone_number'),
+            'phone_number'=>array_merge(
+                ValidationRules::phoneNumber(),
+                ['unique:labs,phone_number,' . ($existingLab ? $existingLab->id : 'NULL')]
+            ),
             'address'=>'nullable|string',
-        ]);
+        ],$messages);
 
         $trashedUser->restore();
         $trashedUser->password = Hash::make($validate['password']);
@@ -51,11 +63,14 @@ class LabRegisterController extends Controller
     } else {
         $validate=$request->validate([
             'email'=>'required|email|unique:users,email,NULL,id,role,lab,deleted_at,NULL',
-            'password'=>'required|min:6|confirmed',
+            'password'=>ValidationRules::password(),
             'lab_name'=>'required|string',
-            'phone_number'=>'required|string|unique:labs,phone_number',
+            'phone_number'=>array_merge(
+                ValidationRules::phoneNumber(),
+                ['unique:labs,phone_number']
+            ),
             'address'=>'nullable|string',
-        ]);
+        ],$messages);
 
         $user=User::create([
             'email'=>$validate['email'],
