@@ -77,4 +77,36 @@ class DashboardController extends Controller
         ], 500);
     }
    }
+
+   public function getCountStatusAppointments(){
+
+    try{
+        $clinic = auth()->user()->clinic;
+        $statusCounts = $clinic->appointments()
+            ->select('appointments.status')
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('appointments.status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        // Initialize all statuses with 0 to ensure all statuses are present in response
+        $allStatuses = ['booked', 'completed', 'cancelled', 'no-show', 'pending', 'rejected'];
+        $result = [];
+        foreach ($allStatuses as $status) {
+            $result[$status] = $statusCounts[$status] ?? 0;
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $result
+        ], 200);
+        
+    }catch(\Exception $e){
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to load data',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+   }
 }

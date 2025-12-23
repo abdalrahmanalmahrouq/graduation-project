@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../Loading';
-
+import defaultImage from '../../assets/img/profpic.png';
 const ClinicAllDoctorsAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -148,7 +148,7 @@ const ClinicAllDoctorsAppointments = () => {
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div className="d-flex align-items-center">
             <h2 className="mb-0 fw-bold text-dark" >سجل مواعيد العيادة</h2>
-            <img src={clinicLogo} alt="Clinic Appointments" className='profile-pic  ms-3' style={{width: '60px', height: '60px'}} />
+            <img src={clinicLogo || defaultImage} alt="Clinic Appointments" className='profile-pic  ms-3' style={{width: '60px', height: '60px'}} />
             </div>
             <button 
               className="btn btn-primary px-4"

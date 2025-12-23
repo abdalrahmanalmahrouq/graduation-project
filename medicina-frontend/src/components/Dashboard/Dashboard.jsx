@@ -18,19 +18,34 @@ export default function Dashboard() {
   const [nameInsurancesCompanies, setNameInsurancesCompanies] = useState([]);
   const [idInsurancesCompanies, setIdInsurancesCompanies] = useState([]);
   const [logoInsurancesCompanies, setLogoInsurancesCompanies] = useState([]);
+  const [statusCounts, setStatusCounts] = useState([]);
   const [namePatients, setNamePatients] = useState([]);
   const [idPatients, setIdPatients] = useState([]);
   const [phonePatients, setPhonePatients] = useState([]);
   const [profileImagePatients, setProfileImagePatients] = useState([]);
   const clinicName = JSON.parse(localStorage.getItem('user')).profile.clinic_name;
 
+  
+
   useEffect(() => {
     fetchUsersCount()
     fetchFiveInsurancesCompanies()
     fetchFivePatients()
-    
+    fetchStatusCounts()
   }, []);
 
+  const fetchStatusCounts = async () => {
+
+    try {
+      const response = await axios.get('/clinic/get-count-status-appointments');
+      const data = response.data.data;
+      setStatusCounts(data);
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+  
   const fetchUsersCount = async () => {
     try {
       const response = await axios.get('/clinic/dashboard');
@@ -80,20 +95,16 @@ export default function Dashboard() {
   };
 
   const deviceData = [
-    { name: 'المرضى', value: patientsCount, color: 'var(--default-color)' },
-    { name: 'الاطباء', value: doctorsCount, color: '#10B981' },
-    { name: 'شركات التأمين', value: insurancesCount, color: 'var(--accent-color)' },
-    { name: 'المواعيد', value: appointmentsCount, color: '#8B5CF6' }
+    { name: 'محجوز', value: statusCounts.booked, color: 'var(--default-color)' },
+    { name: 'مكتمل', value: statusCounts.completed, color: '#10B981' },
+    { name: 'لم يحضر', value: statusCounts['no-show'], color: 'var(--accent-color)' },
+    { name: 'ملغي', value: statusCounts.cancelled, color: '#8B5CF6' }
   ];
 
-  const conversionData = [
-    { month: 'Jan', rate: 2.3 },
-    { month: 'Feb', rate: 2.8 },
-    { month: 'Mar', rate: 3.1 },
-    { month: 'Apr', rate: 3.5 },
-    { month: 'May', rate: 3.2 },
-    { month: 'Jun', rate: 3.8 }
-  ];
+  const hasAppointments =
+  deviceData.length > 0 &&
+  deviceData.some(item => Number(item.value) > 0);
+
 
   
   return (
@@ -102,7 +113,7 @@ export default function Dashboard() {
       <header className="dashboard-header">
         <div className='flex items-center gap-3 mb-4'>
         <h1 className="dashboard-title"> لوحة تحكم العيادة</h1>
-        <img src={clinicLogo ? `/storage/${clinicLogo}` : "/default-profile.png"} alt="Clinic Logo"  className='profile-pic mb-2' style={{width:"60px", height:"60px"}}/>
+        <img src={clinicLogo ? `/storage/${clinicLogo}` : defaultImage} alt="Clinic Logo"  className='profile-pic mb-2' style={{width:"60px", height:"60px"}}/>
         </div>
         <p className="dashboard-subtitle">
         <span className="wave">👋</span> أهلاً وسهلاً بك في لوحة التحكم الخاصة بـ <strong>{clinicName}</strong>،  
@@ -205,7 +216,9 @@ export default function Dashboard() {
                 ease:'easeInOut',
              }}
             >
-              <h3 className="dashboard-chart-title">توزيع المرضى و الاطباء و شركات التأمين</h3>
+              <h3 className="dashboard-chart-title">توزيع المواعيد</h3>
+
+              {  hasAppointments ? (
               <div className="dashboard-chart">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -227,6 +240,11 @@ export default function Dashboard() {
                   </PieChart>
                 </ResponsiveContainer>
               </div>
+              ) : (
+                <div className="dashboard-chart text-center pt-10">
+                  <p>لا يوجد مواعيد محجوزة في العيادة</p>
+                </div>
+              )}
             </motion.div>
             </div>
     

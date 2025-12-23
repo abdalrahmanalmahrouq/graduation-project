@@ -17,7 +17,7 @@ Route::middleware('web')->prefix('admin')->name('admin.')->group(function(){
     Route::middleware('auth:admin')->group(function(){
         Route::post('/logout',[AuthenticatedSessionController::class,'destroy'])->name('logout');
         Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
-        
+        Route::get('/count-entities',[DashboardController::class,'countEntities'])->name('count-entities');
         // Insurance CRUD Routes
         Route::get('insurances',[InsuranceController::class,'index'])->name('insurances.index');
         Route::get('insurances/create',[InsuranceController::class,'create'])->name('insurances.create');
