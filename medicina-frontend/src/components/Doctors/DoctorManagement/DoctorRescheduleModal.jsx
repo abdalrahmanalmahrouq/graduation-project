@@ -20,6 +20,7 @@ const DoctorRescheduleModal = ({ isOpen, onClose, publicDoctorId, privateDoctorI
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   // Helper to normalize a single day's data:
   // - null / undefined / empty object => null (non‑working day)
@@ -97,6 +98,7 @@ const DoctorRescheduleModal = ({ isOpen, onClose, publicDoctorId, privateDoctorI
   const handleSubmit = async () => {
     setSaving(true);
     setError('');
+    setFieldErrors({});
     try {
       await axios.post('/clinics/re-schedule-doctor-weekly-schedule', {
         doctor_id: privateDoctorId,
@@ -106,7 +108,19 @@ const DoctorRescheduleModal = ({ isOpen, onClose, publicDoctorId, privateDoctorI
       onClose();
     } catch (err) {
       console.error('Error rescheduling weekly schedule:', err);
-      setError('فشل في تحديث جدول الطبيب. يرجى المحاولة مرة أخرى.');
+      const errorData = err.response?.data;
+      
+      // Process field-specific errors
+      if (errorData?.invalid_days && Array.isArray(errorData.invalid_days)) {
+        const errors = {};
+        errorData.invalid_days.forEach(item => {
+          const key = `${item.day}_${item.field}`;
+          errors[key] = item.reason;
+        });
+        setFieldErrors(errors);
+      }
+      
+      setError(errorData?.message || 'فشل في تحديث جدول الطبيب. يرجى المحاولة مرة أخرى.');
     } finally {
       setSaving(false);
     }
@@ -148,6 +162,9 @@ const DoctorRescheduleModal = ({ isOpen, onClose, publicDoctorId, privateDoctorI
               {DAYS.map((day) => {
                 const isWorking = schedule[day] !== null;
                 const dayData = schedule[day] || {};
+                
+                // Find error for this day (any field)
+                const dayError = Object.keys(fieldErrors).find(key => key.startsWith(`${day}_`));
 
                 return (
                   <div key={day} className={`day-row ${isWorking ? 'active' : ''}`}>
@@ -170,44 +187,53 @@ const DoctorRescheduleModal = ({ isOpen, onClose, publicDoctorId, privateDoctorI
                     </div>
 
                     {isWorking && (
-                      <div className="time-inputs-grid">
-                        <div className="time-field">
-                          <label className="time-label">بداية الدوام</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={dayData.start_time || ''}
-                            onChange={(e) => handleTimeChange(day, 'start_time', e.target.value)}
-                          />
+                      <>
+                        <div className="time-inputs-grid">
+                          <div className="time-field">
+                            <label className="time-label">بداية الدوام</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_start_time`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={dayData.start_time || ''}
+                              onChange={(e) => handleTimeChange(day, 'start_time', e.target.value)}
+                            />
+                          </div>
+                          <div className="time-field">
+                            <label className="time-label">نهاية الدوام</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_end_time`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={dayData.end_time || ''}
+                              onChange={(e) => handleTimeChange(day, 'end_time', e.target.value)}
+                            />
+                          </div>
+                          <div className="time-field">
+                            <label className="time-label">بداية الاستراحة</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_break_start`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={dayData.break_start || ''}
+                              onChange={(e) => handleTimeChange(day, 'break_start', e.target.value)}
+                            />
+                          </div>
+                          <div className="time-field">
+                            <label className="time-label">نهاية الاستراحة</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_break_end`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={dayData.break_end || ''}
+                              onChange={(e) => handleTimeChange(day, 'break_end', e.target.value)}
+                            />
+                          </div>
                         </div>
-                        <div className="time-field">
-                          <label className="time-label">نهاية الدوام</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={dayData.end_time || ''}
-                            onChange={(e) => handleTimeChange(day, 'end_time', e.target.value)}
-                          />
-                        </div>
-                        <div className="time-field">
-                          <label className="time-label">بداية الاستراحة</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={dayData.break_start || ''}
-                            onChange={(e) => handleTimeChange(day, 'break_start', e.target.value)}
-                          />
-                        </div>
-                        <div className="time-field">
-                          <label className="time-label">نهاية الاستراحة</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={dayData.break_end || ''}
-                            onChange={(e) => handleTimeChange(day, 'break_end', e.target.value)}
-                          />
-                        </div>
-                      </div>
+                        {dayError && (
+                          <div className="bg-red-50 border-r-4 border-red-500 p-3 mt-2 rounded">
+                            <p className="text-sm text-red-700 font-medium">
+                              ⚠️ {fieldErrors[dayError]}
+                            </p>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 );

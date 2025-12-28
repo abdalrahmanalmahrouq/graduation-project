@@ -133,6 +133,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
   const [error, setError] = useState('');
   const [foundDoctorName, setFoundDoctorName] = useState('');
   const [showRestorePrompt, setShowRestorePrompt] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
   // Initialize schedule: all days null
   const [schedule, setSchedule] = useState(
     DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {})
@@ -144,6 +145,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
       setStep(1);
       setDoctorId('');
       setError('');
+      setFieldErrors({});
       setSchedule(DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {}));
     }
   }, [isOpen]);
@@ -255,6 +257,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
   // --- ACTION: ADD NEW DOCTOR (WITH SCHEDULE) ---
   const handleSubmit = async () => {
     setIsLoading(true);
+    setFieldErrors({});
     try {
       const response = await axios.post('/clinics/add-doctor', {
         doctor_id: doctorId,
@@ -276,7 +279,19 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
       onClose();
     } catch (error) {
       console.error(error);
-      setError('فشل في إضافة الطبيب');
+      const errorData = error.response?.data;
+      
+      // Process field-specific errors
+      if (errorData?.invalid_days && Array.isArray(errorData.invalid_days)) {
+        const errors = {};
+        errorData.invalid_days.forEach(item => {
+          const key = `${item.day}_${item.field}`;
+          errors[key] = item.reason;
+        });
+        setFieldErrors(errors);
+      }
+      
+	  setError(errorData?.message || 'فشل في إضافة الطبيب');
     } finally {
       setIsLoading(false);
     }
@@ -350,6 +365,11 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 
               {DAYS.map(day => {
                 const isWorking = schedule[day] !== null;
+                
+                // Find error for this day (any field)
+                const dayError = Object.keys(fieldErrors).find(key => key.startsWith(`${day}_`));
+                const errorField = dayError ? dayError.split('_')[1] : null;
+                
                 return (
                   <div key={day} className={`day-row ${isWorking ? 'active' : ''}`}>
                     {/* Day Header & Toggle */}
@@ -373,44 +393,53 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 
                     {/* Time Inputs (Only if working) */}
                     {isWorking && (
-                      <div className="time-inputs-grid">
-                        <div className="time-field">
-                          <label className="time-label">بداية الدوام</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={schedule[day].start_time}
-                            onChange={(e) => handleTimeChange(day, 'start_time', e.target.value)}
-                          />
+                      <>
+                        <div className="time-inputs-grid">
+                          <div className="time-field">
+                            <label className="time-label">بداية الدوام</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_start_time`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={schedule[day].start_time}
+                              onChange={(e) => handleTimeChange(day, 'start_time', e.target.value)}
+                            />
+                          </div>
+                          <div className="time-field">
+                            <label className="time-label">نهاية الدوام</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_end_time`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={schedule[day].end_time}
+                              onChange={(e) => handleTimeChange(day, 'start_time', e.target.value)}
+                            />
+                          </div>
+                          <div className="time-field">
+                            <label className="time-label">بداية الاستراحة</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_break_start`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={schedule[day].break_start}
+                              onChange={(e) => handleTimeChange(day, 'break_start', e.target.value)}
+                            />
+                          </div>
+                          <div className="time-field">
+                            <label className="time-label">نهاية الاستراحة</label>
+                            <input
+                              type="time"
+                              className={`time-input ${fieldErrors[`${day}_break_end`] ? 'border-2 border-red-500 bg-red-50' : ''}`}
+                              value={schedule[day].break_end}
+                              onChange={(e) => handleTimeChange(day, 'break_end', e.target.value)}
+                            />
+                          </div>
                         </div>
-                        <div className="time-field">
-                          <label className="time-label">نهاية الدوام</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={schedule[day].end_time}
-                            onChange={(e) => handleTimeChange(day, 'end_time', e.target.value)}
-                          />
-                        </div>
-                        <div className="time-field">
-                          <label className="time-label">بداية الاستراحة</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={schedule[day].break_start}
-                            onChange={(e) => handleTimeChange(day, 'break_start', e.target.value)}
-                          />
-                        </div>
-                        <div className="time-field">
-                          <label className="time-label">نهاية الاستراحة</label>
-                          <input
-                            type="time"
-                            className="time-input"
-                            value={schedule[day].break_end}
-                            onChange={(e) => handleTimeChange(day, 'break_end', e.target.value)}
-                          />
-                        </div>
-                      </div>
+                        {dayError && (
+                          <div className="bg-red-50 border-r-4 border-red-500 p-3 mt-2 rounded">
+                            <p className="text-sm text-red-700 font-medium">
+                              ⚠️ {fieldErrors[dayError]}
+                            </p>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 );
