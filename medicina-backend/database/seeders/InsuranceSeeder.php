@@ -25,32 +25,31 @@ class InsuranceSeeder extends Seeder
         Storage::disk('public')->makeDirectory('insurance-logos');
 
         $insurancesData = [
-            ['name' => 'Jordan Insurance Company', 'logo_file' => 'jordaninsurance.jpg'],
-            ['name' => 'MetLife Jordan','logo_file' => 'metlifeinsurance.jpg'],
-            ['name' => 'Middle East Insurance Company','logo_file' => 'middleeastinsurance.jpg'],
-            ['name' => 'Watania National Insurance Company','logo_file' => 'wataniyainsurance.jpg'],
-            ['name' => 'United Insurance Company PLC','logo_file' => 'unitedinsurance.jpg'],
-            ['name' => 'Al Manara Insurance Company','logo_file' => 'almanarainsurance.jpg'],
-            ['name' => 'Arabia Insurance Company – Jordan','logo_file' => 'alarabiainsurance.jpg'],
-            ['name' => 'Jerusalem Insurance Company','logo_file' => 'jerusalem.jpg'],
-            ['name' => 'Al-Nisr Al-Arabi Insurance Company','logo_file' => 'alnisrinsurance.jpg'],
-            ['name' => 'Euro Arab Insurance Group','logo_file' => 'euroinsurance.jpg'],
-            ['name' => 'Arab Jordanian Insurance Group','logo_file' => 'arabinsurance.jpg'],
-            ['name' => 'Gulf Insurance Group – Jordan','logo_file' => 'gulf.jpg'],
-            ['name' => 'Arab Assurers Insurance Company','logo_file' => 'assurers.jpg'],
-            ['name' => 'Islamic Insurance Company','logo_file' => 'islamicinsurance.jpg'],
-            ['name' => 'Jordan French Insurance Company','logo_file' => 'frenchinsurance.jpg'],
-            ['name' => 'Delta Insurance Company','logo_file' => 'deltainsurance.jpg'],
-            ['name' => 'National Insurance Company','logo_file' => 'nationalinsurance.jpg'],
-            ['name' => 'Mediterranean & Gulf Insurance Company','logo_file' => 'medinsurance.jpg'],
-            ['name' => 'Solidarity First Insurance Company','logo_file' => 'solidarityinsurance.jpg'],
-            ['name' => 'Jordan International Insurance Company (Newton)','logo_file' => 'internationalinsurance.jpg'],
-            ['name' => 'Arab Union International Insurance Company','logo_file' => 'unioninsurance.png'],
-            ['name' => 'Al Safwa Insurance Company','logo_file' => 'alsafwainsurance.jpg'],
-            ['name' => 'Holy Land Insurance Company','logo_file' => 'holyinsurance.jpg'],
-            ['name' => 'Philadelphia Insurance Company','logo_file' => 'philadelphiainsurance.jpg']
+            ['name' => 'شركة التأمين الأردنية', 'logo_file' => 'jordaninsurance.jpg'],
+            ['name' => 'متلايف الأردنية', 'logo_file' => 'metlifeinsurance.jpg'],
+            ['name' => 'شركة الشرق الأوسط للتأمين', 'logo_file' => 'middleeastinsurance.jpg'],
+            ['name' => 'شركة وطنية للتأمين', 'logo_file' => 'wataniyainsurance.jpg'],
+            ['name' => 'شركة التأمين المتحدة', 'logo_file' => 'unitedinsurance.jpg'],
+            ['name' => 'شركة المنارة للتأمين', 'logo_file' => 'almanarainsurance.jpg'],
+            ['name' => 'شركة التأمين العربية - الأردن', 'logo_file' => 'alarabiainsurance.jpg'],
+            ['name' => 'شركة القدس للتأمين', 'logo_file' => 'jerusalem.jpg'],
+            ['name' => 'شركة النسر العربي للتأمين', 'logo_file' => 'alnisrinsurance.jpg'],
+            ['name' => 'المجموعة العربية الأوروبية للتأمين', 'logo_file' => 'euroinsurance.jpg'],
+            ['name' => 'المجموعة العربية الأردنية للتأمين', 'logo_file' => 'arabinsurance.jpg'],
+            ['name' => 'مجموعة الخليج للتأمين - الأردن', 'logo_file' => 'gulf.jpg'],
+            ['name' => 'شركة الضامنون العرب للتأمين', 'logo_file' => 'assurers.jpg'],
+            ['name' => 'شركة التأمين الإسلامية', 'logo_file' => 'islamicinsurance.jpg'],
+            ['name' => 'الشركة الأردنية الفرنسية للتأمين', 'logo_file' => 'frenchinsurance.jpg'],
+            ['name' => 'شركة دلتا للتأمين', 'logo_file' => 'deltainsurance.jpg'],
+            ['name' => 'شركة التأمين الوطنية', 'logo_file' => 'nationalinsurance.jpg'],
+            ['name' => 'شركة ميدغلف للتأمين', 'logo_file' => 'medinsurance.jpg'],
+            ['name' => 'شركة سوليدرتي - الأولى للتأمين', 'logo_file' => 'solidarityinsurance.jpg'],
+            ['name' => 'شركة الأردن الدولية للتأمين', 'logo_file' => 'internationalinsurance.jpg'],
+            ['name' => 'شركة الاتحاد العربي الدولي للتأمين', 'logo_file' => 'unioninsurance.png'],
+            ['name' => 'شركة الصفوة للتأمين', 'logo_file' => 'alsafwainsurance.jpg'],
+            ['name' => 'شركة الأراضي المقدسة للتأمين', 'logo_file' => 'holyinsurance.jpg'],
+            ['name' => 'شركة فيلادلفيا للتأمين', 'logo_file' => 'philadelphiainsurance.jpg']
         ];
-
         foreach ($insurancesData as $data) {
             $source = public_path('images/insurance-data/' . $data['logo_file']);
             $uniqueName = uniqid() . '_' . time() . '.' . pathinfo($data['logo_file'], PATHINFO_EXTENSION);

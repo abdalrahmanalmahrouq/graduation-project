@@ -80,6 +80,9 @@
                                         Address
                                     </th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Image
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
@@ -112,6 +115,18 @@
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-900">
                                             {{ $user['address'] }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        @php
+                                            $fallback = asset('images/profpic.png');
+                                            $img = $user['profile_image'] ?? $fallback;
+                                        @endphp
+                                        <img
+                                            src="{{ $img }}"
+                                            alt="Profile Image"
+                                            class="w-10 h-10 rounded-full"
+                                            onerror="this.onerror=null;this.src='{{ $fallback }}';"
+                                        />
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex space-x-3">

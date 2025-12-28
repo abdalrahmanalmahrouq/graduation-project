@@ -20,7 +20,7 @@ class AuthController extends Controller
         $userWithEmail = User::where('email', $request->email)->first();
         
         if (!$userWithEmail) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'خطأ في البريد الإلكتروني أو كلمة المرور'], 401);
         }
 
         // Check if user exists with this email and role
@@ -54,7 +54,7 @@ class AuthController extends Controller
 
         // Check password
         if (!Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'خطأ في البريد الإلكتروني أو كلمة المرور'], 401);
         }
 
         $token=$user->createToken('auth_token', ['*'], now()->addMinutes(config('sanctum.expiration', 480)))->plainTextToken;

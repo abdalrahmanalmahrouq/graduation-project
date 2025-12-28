@@ -161,6 +161,7 @@ Route::middleware(['auth:sanctum', 'role:clinic'])->group(function () {
     Route::get('clinic/dashboard', [DashboardController::class, 'clinicDashboard']);
     Route::get('clinic/get-five-insurances-companies', [DashboardController::class, 'getFiveInsurancesCompanies']);
     Route::get('clinic/get-five-patients', [DashboardController::class, 'getFivePatients']);
+    Route::get('clinic/get-count-status-appointments', [DashboardController::class, 'getCountStatusAppointments']);
 });
 
 

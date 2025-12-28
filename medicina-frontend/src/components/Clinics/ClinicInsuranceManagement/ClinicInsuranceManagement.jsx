@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddInsuranceModal from './AddInsuranceModal';
 import Loading from '../../Loading';
-
+import defaultImage from '../../../assets/img/profpic.png';
 const ClinicInsuranceManagement = () => {
   const [insurances, setInsurances] = useState([]);
   const [availableInsurances, setAvailableInsurances] = useState([]);
@@ -137,7 +137,7 @@ const ClinicInsuranceManagement = () => {
         <div className="insurance-header-content">
           <div className="insurance-title-section">
             <div className="insurance-icon-wrapper">
-              <img src={clinicLogo} alt="" className='profile-pic' style={{width:"70px" , height:"70px"}} />
+              <img src={clinicLogo || defaultImage} alt="" className='profile-pic' style={{width:"70px" , height:"70px"}} />
             </div>
             <div className="insurance-title-text">
               <h1 className="insurance-main-title">تأمينات العيادة</h1>

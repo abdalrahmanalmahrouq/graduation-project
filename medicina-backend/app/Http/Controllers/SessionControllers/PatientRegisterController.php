@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Patient;
 use Illuminate\Support\Facades\Hash;
-
+use App\Helpers\ValidationRules;
 class PatientRegisterController extends Controller
 {
     public function register(Request $request)
@@ -19,18 +19,36 @@ class PatientRegisterController extends Controller
             ->where('role', 'patient')
             ->first();
 
+
+            $messages = array_merge(
+                ValidationRules::passwordMessages(),
+                [
+                'full_name.required' => 'الاسم الكامل مطلوب',
+                'email.unique' => 'البريد الإلكتروني مستخدم بالفعل',
+                'date_of_birth.required' => 'تاريخ الميلاد مطلوب',
+                'date_of_birth.date' => 'تاريخ الميلاد غير صحيح',
+                'phone_number.required' => 'رقم الهاتف مطلوب',
+                'phone_number.unique' => 'رقم الهاتف مستخدم بالفعل',
+                'phone_number.regex' => 'رقم الهاتف غير صحيح يجب أن يكون 10 أرقام تبدأ بـ 07',
+                ]);
+
         if ($trashedUser) {
             $existingPatient = Patient::where('user_id', $trashedUser->id)->first();
 
             $validated = $request->validate([
                 'email' => 'required|email',
-                'password' => 'required|min:6|confirmed',
+                'password' => ValidationRules::password(),
                 'full_name' => 'required|string',
                 'date_of_birth' => 'required|date',
-                'phone_number' => 'required|string' . ($existingPatient ? ('|unique:patients,phone_number,' . $existingPatient->id) : '|unique:patients,phone_number'),
+                'phone_number' => array_merge(
+                    ValidationRules::phoneNumber(),
+                    ['unique:patients,phone_number,' . ($existingPatient ? $existingPatient->id : 'NULL')]
+                ),
                 'address' => 'nullable|string',
                 'insurance'=>'nullable|exists:insurances,name'
-            ]);
+            ],$messages);
+
+           
 
             $trashedUser->restore();
             $trashedUser->password = Hash::make($validated['password']);
@@ -60,13 +78,16 @@ class PatientRegisterController extends Controller
         } else {
             $validated = $request->validate([
                 'email' => 'required|email|unique:users,email,NULL,id,role,patient,deleted_at,NULL',
-                'password' => 'required|min:6|confirmed',
+                'password' => ValidationRules::password(),
                 'full_name' => 'required|string',
                 'date_of_birth' => 'required|date',
-                'phone_number' => 'required|string|unique:patients,phone_number',
+                'phone_number' => array_merge(
+                ValidationRules::phoneNumber(),
+                ['unique:patients,phone_number']
+                ),
                 'address' => 'nullable|string',
                 'insurance'=>'nullable|exists:insurances,name'
-            ]);
+            ],$messages);
 
             $user = User::create([
                 'email' => $validated['email'],

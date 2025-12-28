@@ -27,6 +27,8 @@ class UserController extends Controller
                     'email' => $user->email,
                     'phone_number' => optional($user->doctor)->phone_number ?? 'N/A',
                     'address' => 'N/A', // Doctors don't have address
+                    // Use accessor; keep null when missing so view can fallback
+                    'profile_image' => $user->profile_image_url,
                     'created_at' => $user->created_at,
                 ];
             });
@@ -43,6 +45,7 @@ class UserController extends Controller
                     'email' => $user->email,
                     'phone_number' => optional($user->patient)->phone_number ?? 'N/A',
                     'address' => optional($user->patient)->address ?? 'N/A',
+                    'profile_image' => $user->profile_image_url,
                     'created_at' => $user->created_at,
                 ];
             });
@@ -59,6 +62,7 @@ class UserController extends Controller
                     'email' => $user->email,
                     'phone_number' => optional($user->clinic)->phone_number ?? 'N/A',
                     'address' => optional($user->clinic)->address ?? 'N/A',
+                    'profile_image' => $user->profile_image_url,
                     'created_at' => $user->created_at,
                 ];
             });
@@ -75,6 +79,7 @@ class UserController extends Controller
                     'email' => $user->email,
                     'phone_number' => optional($user->lab)->phone_number ?? 'N/A',
                     'address' => optional($user->lab)->address ?? 'N/A',
+                    'profile_image' => $user->profile_image_url,
                     'created_at' => $user->created_at,
                 ];
             });

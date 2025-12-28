@@ -7,7 +7,7 @@ use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use App\Helpers\ValidationRules;
 
 class DoctorRegisterController extends Controller
 {
@@ -18,17 +18,30 @@ class DoctorRegisterController extends Controller
             ->where('role', 'doctor')
             ->first();
 
+        $messages = array_merge(
+            ValidationRules::passwordMessages(),
+            [
+                'full_name.required' => 'الاسم الكامل مطلوب',
+                'email.unique' => 'البريد الإلكتروني مستخدم بالفعل',
+                'phone_number.required' => 'رقم الهاتف مطلوب',
+                'phone_number.unique' => 'رقم الهاتف مستخدم بالفعل',
+                'phone_number.regex' => 'رقم الهاتف غير صحيح يجب أن يكون 10 أرقام تبدأ بـ 07',
+            ]);
+
         if ($trashedUser) {
             $existingDoctor = Doctor::where('user_id', $trashedUser->id)->first();
 
             $validated=$request->validate([
                 'email'=>'required|email',
-                'password'=>'required|min:6|confirmed',
+                'password' => ValidationRules::password(),
                 'full_name'=>'required|string',
-                'phone_number'=>'required|string' . ($existingDoctor ? ('|unique:doctors,phone_number,' . $existingDoctor->id) : '|unique:doctors,phone_number'),
+                'phone_number' => array_merge(
+                    ValidationRules::phoneNumber(),
+                    ['unique:doctors,phone_number,' . ($existingDoctor ? $existingDoctor->id : 'NULL')]
+                ),
                 'specialization'=>'required|string',
                 'consultation_duration'=>'required|integer|min:10|max:60',
-            ]);
+            ],$messages);
 
             $trashedUser->restore();
             $trashedUser->password = Hash::make($validated['password']);
@@ -54,12 +67,15 @@ class DoctorRegisterController extends Controller
         } else {
             $validated=$request->validate([
                 'email'=>'required|email|unique:users,email,NULL,id,role,doctor,deleted_at,NULL',
-                'password'=>'required|min:6|confirmed',
+                'password' => ValidationRules::password(),
                 'full_name'=>'required|string',
-                'phone_number'=>'required|string|unique:doctors,phone_number',
+                'phone_number' => array_merge(
+                    ValidationRules::phoneNumber(),
+                    ['unique:doctors,phone_number']
+                ),
                 'specialization'=>'required|string',
                 'consultation_duration'=>'required|integer|min:10|max:60',
-            ]);
+            ],$messages);
 
             $user=User::create([
                 'email'=>$validated['email'],

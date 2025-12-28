@@ -1,6 +1,7 @@
 import React ,{useState} from 'react';
 import { Link,useNavigate, Navigate } from 'react-router-dom';
 import AuthLayout from '../Authentication/AuthLayout';
+import PasswordInput from '../Authentication/PasswordInput';
 import axios from 'axios';
 export default function DoctorLogin() {
 
@@ -73,12 +74,17 @@ export default function DoctorLogin() {
                 onChange={(e)=>setEmail(e.target.value)}/>
               </div>
       
-              <div className="form-group">
-                <label htmlFor="password" className="mt-2">كلمة المرور</label>
-                <input type="password" className="form-control mt-2" name="password" placeholder="أدخل كلمة المرور" required
-                onChange={(e)=>setPassword(e.target.value)} />
-                {message && <div className="text-sm text-danger">{message}</div>}
-              </div>
+              <PasswordInput
+                label="كلمة المرور"
+                name="password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
+                placeholder="أدخل كلمة المرور"
+                error={message}
+                required
+                labelClassName="mt-2"
+                className="mt-2"
+              />
       
               <button type="submit" className="btn btn-primary" disabled={loading}>
                 {loading ? 'جاري التسجيل...' : 'تسجيل'}
