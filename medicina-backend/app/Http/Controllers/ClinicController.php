@@ -61,6 +61,29 @@ class ClinicController extends Controller
 
         $clinic = auth()->user()->id;
         
+        // Check for schedule conflicts FIRST before validating break times
+        $conflicts = $this->checkDoctorScheduleConflicts($validated['doctor_id'], $clinic, $validated['weekly_schedule']);
+        if (!empty($conflicts)) {
+            // Format conflict errors by day
+            $conflictsByDay = [];
+            foreach ($conflicts as $conflict) {
+                $day = $conflict['day'];
+                if (!isset($conflictsByDay[$day])) {
+                    $conflictsByDay[$day] = [
+                        'day' => $day,
+                        'field' => 'overlap',
+                        'reason' => 'يتعارض جدول الطبيب مع جدول آخر في عيادة أخرى'
+                    ];
+                }
+            }
+            return response()->json([
+                'success' => false,
+                'message' => 'يوجد تعارض في جدول الطبيب مع عيادات أخرى',
+                'invalid_days' => array_values($conflictsByDay),
+                'conflicts' => $conflicts
+            ], 400);
+        }
+        
         // Validate break times and get result
         $breakValidation = $this->validateBreakTime($validated['weekly_schedule']);
         if (isset($breakValidation['error'])) {
@@ -71,17 +94,6 @@ class ClinicController extends Controller
             ], 400);
         }
         $validated['weekly_schedule'] = $breakValidation['schedule'];
-        
-        // Check for schedule conflicts before adding
-        $conflicts = $this->checkDoctorScheduleConflicts($validated['doctor_id'], $clinic, $validated['weekly_schedule']);
-        if (!empty($conflicts)) {
-            return response()->json([
-                'success' => false,
-                // 'message' => "فشل في إضافة الطبيب بسبب تعارض في الجدول.\n" . json_encode($conflicts['day'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
-                'message' => "فشل في إضافة الطبيب بسبب تعارض في الجدول.\n" . ($conflicts[0]['day'] ?? json_encode($conflicts, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)),
-                'conflicts' => $conflicts,
-            ], 400);
-        }
 
         $assignedDoctor = ClinicDoctor::withTrashed()->where('clinic_id', $clinic)
             ->where('doctor_id', $request->doctor_id)
@@ -125,6 +137,29 @@ class ClinicController extends Controller
         ]);
 
         $clinicId = auth()->user()->clinic->user_id;
+        
+        // Check for schedule conflicts FIRST before validating break times
+        $conflicts = $this->checkDoctorScheduleConflicts($validated['doctor_id'], $clinicId, $validated['weekly_schedule']);
+        if (!empty($conflicts)) {
+            // Format conflict errors by day
+            $conflictsByDay = [];
+            foreach ($conflicts as $conflict) {
+                $day = $conflict['day'];
+                if (!isset($conflictsByDay[$day])) {
+                    $conflictsByDay[$day] = [
+                        'day' => $day,
+                        'field' => 'overlap',
+                        'reason' => 'يتعارض جدول الطبيب مع جدول آخر في عيادة أخرى'
+                    ];
+                }
+            }
+            return response()->json([
+                'success' => false,
+                'message' => 'يوجد تعارض في جدول الطبيب مع عيادات أخرى',
+                'invalid_days' => array_values($conflictsByDay),
+                'conflicts' => $conflicts
+            ], 400);
+        }
         
         // Validate break times and get result
         $breakValidation = $this->validateBreakTime($validated['weekly_schedule']);
@@ -304,6 +339,58 @@ class ClinicController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Internal helper: returns array of conflicts or empty array if no conflicts.
+     */
+    private function checkDoctorScheduleConflicts($doctorId, $clinicId, $weeklySchedule)
+    {
+        // Normalize incoming schedule
+        $incoming = is_array($weeklySchedule) ? $weeklySchedule : [];
+        $days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+
+        // Fetch other clinics where this doctor works (exclude current clinic, exclude soft-deleted)
+        $otherAssignments = ClinicDoctor::where('doctor_id', $doctorId)
+            ->where('clinic_id', '!=', $clinicId)
+            ->get();
+
+        $conflicts = [];
+        foreach ($otherAssignments as $assignment) {
+            $existing = (array) ($assignment->weekly_schedule ?? []);
+            foreach ($days as $day) {
+                $a = $incoming[$day] ?? [];
+                $b = $existing[$day] ?? [];
+
+                // Both have working intervals on the same day
+                if (!empty($a) && !empty($b) && isset($a['start_time'],$a['end_time'],$b['start_time'],$b['end_time'])) {
+                    if ($this->timesOverlap($a['start_time'], $a['end_time'], $b['start_time'], $b['end_time'])) {
+                        $conflicts[] = [
+                            'clinic_id' => $assignment->clinic_id,
+                            'day' => $day,
+                            'this' => ['start_time' => $a['start_time'], 'end_time' => $a['end_time']],
+                            'other' => ['start_time' => $b['start_time'], 'end_time' => $b['end_time']],
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $conflicts;
+    }
+
+    /**
+     * Check if two time intervals overlap. Times are in 'H:i' format.
+     */
+    private function timesOverlap($aStart, $aEnd, $bStart, $bEnd)
+    {
+        // Convert times to comparable format (strtotime returns seconds)
+        $aStartTime = strtotime($aStart);
+        $aEndTime = strtotime($aEnd);
+        $bStartTime = strtotime($bStart);
+        $bEndTime = strtotime($bEnd);
+        
+        return max($aStartTime, $bStartTime) < min($aEndTime, $bEndTime);
     }
 }
 
