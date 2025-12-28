@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Insurance;
 use App\Models\Doctor;
+use App\Models\Clinic;
 use App\Models\Patient;
 use App\Models\Appointment;
 use App\Models\Lab;
@@ -25,6 +26,7 @@ class DashboardController extends Controller
             $insurances = Insurance::count();
             $doctors = Doctor::count();
             $patients = Patient::count();
+            $clinics = Clinic::count();
             $labs = Lab::count();
             $appointments = Appointment::count();
             
@@ -99,6 +101,7 @@ class DashboardController extends Controller
                     'patients' => $patients,
                     'labs' => $labs,
                     'appointments' => $appointments,
+                    'clinics' => $clinics,
                     // Lab Statistics
                     'lab_statistics' => [
                         'total_labs' => $labs,

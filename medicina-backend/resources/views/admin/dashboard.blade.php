@@ -62,6 +62,32 @@
                         </div>
                     </div>
 
+                    <!-- Clinics Card -->
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600 mb-1">Total Clinics</p>
+                                <h3 class="text-3xl font-bold text-gray-900" id="clinics-count">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-100 rounded-full p-3">
+                            <i class="fas fa-hospital text-yellow-600 text-2xl"></i>
+                        </div>
+                    </div>
+
+                    <!-- Labs Card -->
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600 mb-1">Total Labs</p>
+                                <h3 class="text-3xl font-bold text-gray-900" id="labs-count">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-red-100 rounded-full p-3">
+                            <i class="fas fa-flask text-red-600 text-2xl"></i>
+                        </div>
+                    </div>
+
                     <!-- Appointments Card -->
                     <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border-l-4 border-purple-500">
                         <div class="flex items-center justify-between">
@@ -166,6 +192,7 @@
                     animateValue(document.getElementById('patients-count'), 0, data.patients, 1500);
                     animateValue(document.getElementById('doctors-count'), 0, data.doctors, 1500);
                     animateValue(document.getElementById('appointments-count'), 0, data.appointments, 1500);
+                    animateValue(document.getElementById('clinics-count'), 0, data.clinics, 1500);
                     animateValue(document.getElementById('insurances-count'), 0, data.insurances, 1500);
                     animateValue(document.getElementById('labs-count'), 0, data.labs, 1500);
                     // Create charts
@@ -186,13 +213,14 @@
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Patients', 'Doctors', 'Appointments', 'Insurances', 'Labs'],
+                    labels: ['Patients', 'Doctors', 'Appointments', 'Clinics', 'Insurances', 'Labs'],
                     datasets: [{
                         label: 'Count',
-                        data: [data.patients, data.doctors, data.appointments, data.insurances, data.labs],
+                        data: [data.patients, data.doctors, data.appointments, data.clinics, data.insurances, data.labs],
                         backgroundColor: [
                             'rgba(59, 130, 246, 0.8)',
                             'rgba(16, 185, 129, 0.8)',
+                            'rgba(255, 215, 0, 0.8)',
                             'rgba(139, 92, 246, 0.8)',
                             'rgba(249, 115, 22, 0.8)',
                             'rgba(100, 100, 100, 0.8)'
@@ -200,6 +228,7 @@
                         borderColor: [
                             'rgba(59, 130, 246, 1)',
                             'rgba(16, 185, 129, 1)',
+                            'rgba(255, 215, 0, 1)',
                             'rgba(139, 92, 246, 1)',
                             'rgba(249, 115, 22, 1)',
                             'rgba(100, 100, 100, 1)'
@@ -277,17 +306,19 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Patients', 'Doctors', 'Appointments', 'Insurances', 'Labs'],
+                    labels: ['Patients', 'Doctors', 'Appointments', 'Clinics', 'Insurances', 'Labs'],
                     datasets: [{
-                        data: [data.patients, data.doctors, data.appointments, data.insurances, data.labs],
+                        data: [data.patients, data.doctors, data.appointments, data.clinics, data.insurances, data.labs],
                         backgroundColor: [
                             'rgba(59, 130, 246, 0.8)',
                             'rgba(16, 185, 129, 0.8)',
+                            'rgba(255, 215, 0, 0.8)',
                             'rgba(139, 92, 246, 0.8)',
                             'rgba(249, 115, 22, 0.8)',
                             'rgba(100, 100, 100, 0.8)'
                         ],
                         borderColor: [
+                            'rgba(255, 255, 255, 1)',
                             'rgba(255, 255, 255, 1)',
                             'rgba(255, 255, 255, 1)',
                             'rgba(255, 255, 255, 1)',

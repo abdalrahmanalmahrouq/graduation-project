@@ -69,9 +69,9 @@ class InsuranceSeeder extends Seeder
         }
 
         // Only for testing purposes
-        Insurance::create([
-            'insurance_id' => 'ins1',
-            'name' => 'Example Insurance'
-        ]);
+        // Insurance::create([
+        //     'insurance_id' => 'ins1',
+        //     'name' => 'Example Insurance'
+        // ]);
     }
 }

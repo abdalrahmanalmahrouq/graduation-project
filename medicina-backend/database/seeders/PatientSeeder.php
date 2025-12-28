@@ -26,7 +26,7 @@ class PatientSeeder extends Seeder
                 case 'khalid@example.com':
                     $patientData = [
                         'user_id' => $user->id,
-                        'full_name' => 'Khalid Al-ali',
+                        'full_name' => 'Khalid Ali',
                         'phone_number' => '0791122333',
                         'date_of_birth' => '1990-05-15',
                         'address' => 'Amman, swaileh',
@@ -56,16 +56,16 @@ class PatientSeeder extends Seeder
                     ];
                     break;
 
-                case 'patient@example.com':
-                    $patientData = [
-                        'user_id' => $user->id,
-                        'full_name' => 'Example Patient',
-                        'phone_number' => '0790002222',
-                        'date_of_birth' => '1995-03-25',
-                        'address' => 'Irbid, Jordan',
-                        'insurance_id'=>$insurance ? $insurance->insurance_id : null 
-                    ];
-                    break;
+                // case 'patient@example.com':
+                //     $patientData = [
+                //         'user_id' => $user->id,
+                //         'full_name' => 'Example Patient',
+                //         'phone_number' => '0790002222',
+                //         'date_of_birth' => '1995-03-25',
+                //         'address' => 'Irbid, Jordan',
+                //         'insurance_id'=>$insurance ? $insurance->insurance_id : null 
+                //     ];
+                //     break;
 
                     // ====================================
                     //            PATIENT DATA
@@ -74,7 +74,7 @@ class PatientSeeder extends Seeder
                     case 'sara81@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Sara Al-Mansour',
+                            'full_name' => 'Sara Mansour',
                             'phone_number' => '0796811122',
                             'date_of_birth' => '1998-04-10',
                             'address' => 'Amman, Khalda',
@@ -85,7 +85,7 @@ class PatientSeeder extends Seeder
                     case 'yousef44@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Yousef Al-Qudah',
+                            'full_name' => 'Yousef Mohamad',
                             'phone_number' => '0789442211',
                             'date_of_birth' => '1988-11-20',
                             'address' => 'Zarqa, New Zarqa',
@@ -96,7 +96,7 @@ class PatientSeeder extends Seeder
                     case 'nada33@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Nada Al-Rawashdeh',
+                            'full_name' => 'Nada Khalid',
                             'phone_number' => '0797334411',
                             'date_of_birth' => '1995-03-12',
                             'address' => 'Amman, Jubeiha',
@@ -107,7 +107,7 @@ class PatientSeeder extends Seeder
                     case 'majdi27@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Majdi Al-Dabbas',
+                            'full_name' => 'Majdi Saleh',
                             'phone_number' => '0796275544',
                             'date_of_birth' => '1982-09-05',
                             'address' => 'Irbid, City Center',
@@ -118,7 +118,7 @@ class PatientSeeder extends Seeder
                     case 'farida66@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Farida Al-Atrash',
+                            'full_name' => 'Farida Khaled',
                             'phone_number' => '0786664522',
                             'date_of_birth' => '1999-07-25',
                             'address' => 'Amman, Dahyet Al-Rasheed',
@@ -129,7 +129,7 @@ class PatientSeeder extends Seeder
                     case 'ammar95@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Ammar Al-Zoubi',
+                            'full_name' => 'Ammar Ahmad',
                             'phone_number' => '0796958844',
                             'date_of_birth' => '1987-01-18',
                             'address' => 'Salt, Al-Tuwal',
@@ -140,7 +140,7 @@ class PatientSeeder extends Seeder
                     case 'reem58@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Reem Al-Hassan',
+                            'full_name' => 'Reem Hassan',
                             'phone_number' => '0787589901',
                             'date_of_birth' => '1993-10-03',
                             'address' => 'Amman, Shmeisani',
@@ -151,7 +151,7 @@ class PatientSeeder extends Seeder
                     case 'tareq71@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Tareq Al-Salem',
+                            'full_name' => 'Tareq Abdullah',
                             'phone_number' => '0797713202',
                             'date_of_birth' => '2000-06-14',
                             'address' => 'Jerash, Downtown',
@@ -162,7 +162,7 @@ class PatientSeeder extends Seeder
                     case 'hala54@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Hala Al-Hayari',
+                            'full_name' => 'Hala Khaleel',
                             'phone_number' => '0798544411',
                             'date_of_birth' => '1984-02-28',
                             'address' => 'Zarqa, Prince Hassan Street',
@@ -173,7 +173,7 @@ class PatientSeeder extends Seeder
                     case 'mohammed42@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Mohammed Abu Zaid',
+                            'full_name' => 'Mohammed Zaid',
                             'phone_number' => '0789421133',
                             'date_of_birth' => '1979-12-30',
                             'address' => 'Amman, Marka',
@@ -184,7 +184,7 @@ class PatientSeeder extends Seeder
                     case 'jasmine22@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Jasmine Al-Fayez',
+                            'full_name' => 'Jasmine Fayez',
                             'phone_number' => '0797228811',
                             'date_of_birth' => '2001-07-19',
                             'address' => 'Amman, Abu Nsair',
@@ -195,7 +195,7 @@ class PatientSeeder extends Seeder
                     case 'bilal69@example.com':
                         $patientData = [
                             'user_id' => $user->id,
-                            'full_name' => 'Bilal Al-Hammouri',
+                            'full_name' => 'Bilal Ahmad',
                             'phone_number' => '0787693302',
                             'date_of_birth' => '1991-05-09',
                             'address' => 'Madaba, Al-Fiha',
@@ -203,10 +203,31 @@ class PatientSeeder extends Seeder
                         ];
                         break;
 
+                default:
+                    $patientData = null;
+                    break;
             }
             
             if (!empty($patientData)) {
-                Patient::create($patientData);
+                // Check if patient already exists for this user
+                $existingPatient = Patient::where('user_id', $user->id)->first();
+                
+                if ($existingPatient) {
+                    // Update existing patient
+                    $existingPatient->update($patientData);
+                } else {
+                    // Check if phone number already exists
+                    $phoneExists = Patient::where('phone_number', $patientData['phone_number'])
+                        ->where('user_id', '!=', $user->id)
+                        ->exists();
+                    
+                    if (!$phoneExists) {
+                        Patient::create($patientData);
+                    } else {
+                        // Skip if phone number is already used by another patient
+                        $this->command->warn("Skipping patient for {$user->email}: phone number {$patientData['phone_number']} already exists");
+                    }
+                }
             }
         }
         
