@@ -133,37 +133,37 @@ class UserSeeder extends Seeder
         }
 
         // Only for testing purposes
-        User::create([
-            'id' => "pat1",
-            'email' => 'patient@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'patient',
-            'email_verified_at' => now(),
-            'profile_image' => null,
-        ]);
-        User::create([
-            'id' => "doc1",
-            'email' => 'doctor@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'doctor',
-            'email_verified_at' => now(),
-            'profile_image' => null,
-        ]);
-        User::create([
-            'id' => "cli1",
-            'email' => 'clinic@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'clinic',
-            'email_verified_at' => now(),
-            'profile_image' => null,
-        ]);
-        User::create([
-            'id' => "lab1",
-            'email' => 'lab@example.com',
-            'password' => Hash::make('password123'),
-            'role' => 'lab',
-            'email_verified_at' => now(),
-            'profile_image' => null,
-        ]);
+        // User::create([
+        //     'id' => "pat1",
+        //     'email' => 'patient@example.com',
+        //     'password' => Hash::make('password123'),
+        //     'role' => 'patient',
+        //     'email_verified_at' => now(),
+        //     'profile_image' => null,
+        // ]);
+        // User::create([
+        //     'id' => "doc1",
+        //     'email' => 'doctor@example.com',
+        //     'password' => Hash::make('password123'),
+        //     'role' => 'doctor',
+        //     'email_verified_at' => now(),
+        //     'profile_image' => null,
+        // ]);
+        // User::create([
+        //     'id' => "cli1",
+        //     'email' => 'clinic@example.com',
+        //     'password' => Hash::make('password123'),
+        //     'role' => 'clinic',
+        //     'email_verified_at' => now(),
+        //     'profile_image' => null,
+        // ]);
+        // User::create([
+        //     'id' => "lab1",
+        //     'email' => 'lab@example.com',
+        //     'password' => Hash::make('password123'),
+        //     'role' => 'lab',
+        //     'email_verified_at' => now(),
+        //     'profile_image' => null,
+        // ]);
     }
 }
