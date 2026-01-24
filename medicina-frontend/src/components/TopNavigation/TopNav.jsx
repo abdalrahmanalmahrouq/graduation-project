@@ -143,7 +143,7 @@ const TopNav = ({ token }) => {
              
               {/* Only show clinics link for patients or when not logged in */}
               {(!user || user.role === 'patient') && (
-                <li><NavLink to="/clinics" onClick={() => window.scrollTo(0, 0)}>العيادات</NavLink></li>
+                <li><NavLink to="/clinics" onClick={() => window.scrollTo(0, 0)}>التخصصات</NavLink></li>
               )}
               <li><NavLink to="/contact" onClick={() => window.scrollTo(0, 0)}>اتصل بنا</NavLink></li>
               {button}

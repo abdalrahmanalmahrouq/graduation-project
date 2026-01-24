@@ -12,7 +12,7 @@ const ClinicSpecialtiesGridPage = () => {
   return (
     <div>
       <TopNav />
-      <TopPageDetails pageTitle="العيادات"/>
+      <TopPageDetails pageTitle="التخصصات"/>
       <ClinicSpecialtiesGrid/>
       <Footer/>
     </div>

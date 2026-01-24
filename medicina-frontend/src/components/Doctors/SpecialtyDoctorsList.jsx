@@ -13,7 +13,7 @@ function SpecialtyDoctorsList() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const currentSpecialty = specialtyCards.find(card => card.directory === directory);
-    const pageTitle = currentSpecialty?.title || 'العيادات';
+    const pageTitle = currentSpecialty?.title || 'التخصصات';
 
     useEffect(() => {
         fetchDoctorsBySpecialization();

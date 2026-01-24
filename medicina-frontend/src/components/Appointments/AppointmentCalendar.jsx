@@ -53,7 +53,13 @@ const AppointmentCalendar = ({ workingDays, selectedDate, onDateSelect, minDate 
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const minDateObj = minDate ? new Date(minDate) : today;
+  // Parse minDate string to local time (not UTC) to avoid timezone issues
+  const minDateObj = minDate ? (() => {
+    const [year, month, day] = minDate.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  })() : today;
 
   // Get calendar days for current month
   const calendarDays = useMemo(() => {
@@ -80,7 +86,8 @@ const AppointmentCalendar = ({ workingDays, selectedDate, onDateSelect, minDate 
       const dateObj = new Date(current);
       dateObj.setHours(0, 0, 0, 0);
       
-      const isPast = dateObj < minDateObj;
+      // Use <= instead of < to allow today, and ensure proper date comparison
+      const isPast = dateObj.getTime() < minDateObj.getTime();
       const isCurrentMonth = current.getMonth() === currentMonth.getMonth() && current.getFullYear() === currentMonth.getFullYear();
       const dayOfWeekNum = current.getDay();
       const isWorkingDay = workingDayNumbers.length > 0 ? workingDayNumbers.includes(dayOfWeekNum) : false;

@@ -580,14 +580,14 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 																	? "border-2 border-red-500 bg-red-50"
 																	: ""
 															}`}
-															value={
-																schedule[day]
-																	.end_time
+														value={
+															schedule[day]
+																.end_time
 															}
 															onChange={(e) =>
 																handleTimeChange(
 																	day,
-																	"start_time",
+																	"end_time",
 																	e.target
 																		.value
 																)
