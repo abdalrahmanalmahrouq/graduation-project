@@ -322,7 +322,7 @@ class AppointmentController extends Controller
         }
         // return $clinicDoctorIds;
 
-        $validAppointments = AvailableAppointment::idsFor($startingTime, $endingTime, $tolerance, $clinicDoctorIds);
+        $validAppointments = AvailableAppointment::idsFor($clinicDoctorIds, $startingTime, $endingTime, $tolerance);
 
         // return [$validAppointments, 'clinicDoctorIds' => $clinicDoctorIds];
 

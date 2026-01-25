@@ -78,17 +78,17 @@ class AvailableAppointment extends Model
     /**
      * Find available appointment IDs that overlap or are close to a requested interval.
      *
+     * @param array|null $clinicDoctorIds
      * @param string|null $startingTime
      * @param string|null $endingTime
      * @param int|null $tolerance
-     * @param array|null $clinicDoctorIds
      * @return array
      */
     public static function idsFor(
+        array $clinicDoctorIds,
         ?string $startingTime = null,
         ?string $endingTime = null,
         ?int $tolerance = 15,
-        array $clinicDoctorIds,
     ): array {
         $query = self::query();
 

@@ -166,8 +166,8 @@ class AvailableAppointmentService
             'saturday' => ['sat', 'saturday'],
         ];
 
-    $created = 0;
-    $createdSlots = [];
+        $created = 0;
+        $createdSlots = [];
 
         foreach ($map as $dayKey => $variants) {
             // find schedule entry for this weekday (case-insensitive)
