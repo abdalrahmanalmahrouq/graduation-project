@@ -55,22 +55,22 @@ class ClinicController extends Controller
 
     public function rescheduleDoctorWeeklySchedule(Request $request)
     {
-            $validated = $request->validate([
-                'doctor_id' => 'required|exists:doctors,user_id',
-                'weekly_schedule' => 'required|array',
-            ]);
+        $validated = $request->validate([
+            'doctor_id' => 'required|exists:doctors,user_id',
+            'weekly_schedule' => 'required|array',
+        ]);
 
-            $clinicId = auth()->user()->clinic->user_id;
-            $this->clinicService->rescheduleDoctor(
-                $clinicId,
-                $validated['doctor_id'],
-                $validated['weekly_schedule']
-            );
+        $clinicId = auth()->user()->clinic->user_id;
+        $this->clinicService->rescheduleDoctor(
+            $clinicId,
+            $validated['doctor_id'],
+            $validated['weekly_schedule']
+        );
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Doctor weekly schedule re-scheduled successfully.'
-            ], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Doctor weekly schedule re-scheduled successfully.'
+        ], 200);
     }
 
     public function addDoctor(Request $request)
@@ -96,25 +96,16 @@ class ClinicController extends Controller
 
     public function deleteDoctor(Request $request)
     {
-        try {
-            $request->validate([
-                'doctor_id' => 'required|exists:doctors,user_id',
-            ]);
+        $request->validate([
+            'doctor_id' => 'required|exists:doctors,user_id',
+        ]);
 
-            $clinicId = auth()->user()->clinic->user_id;
-            $this->clinicService->removeDoctor($clinicId, $request->doctor_id);
+        $clinicId = auth()->user()->clinic->user_id;
+        $this->clinicService->removeDoctor($clinicId, $request->doctor_id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Doctor removed from clinic successfully.'
-            ], 200);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'error' => $e->getMessage()
-            ], $e->getCode() ?: 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Doctor removed from clinic successfully.'
+        ], 200);
     }
 }

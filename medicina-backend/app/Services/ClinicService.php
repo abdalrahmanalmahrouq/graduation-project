@@ -28,12 +28,13 @@ class ClinicService
      */
     public function getDoctorSchedule(string $doctorId, string $clinicId): array
     {
-        $doctor = Doctor::where('user_id', $doctorId)
-            ->orWhere('id', $doctorId)
-            ->firstOrFail();
+        $status = $this->checkDoctorStatus($clinicId, $doctorId);
+        if ($status !== 'active') {
+            throw new \Exception('Doctor must exist and be active in this clinic.', 404);
+        }
 
         $pivot = ClinicDoctor::where('clinic_id', $clinicId)
-            ->where('doctor_id', $doctor->user_id)
+            ->where('doctor_id', $doctorId)
             ->firstOrFail();
 
         return $pivot->weekly_schedule;
@@ -192,7 +193,7 @@ class ClinicService
         
         return max($aStartTime, $bStartTime) < min($aEndTime, $bEndTime);
     }
-    
+
     /**
      * Add a doctor to a clinic with schedule validation
      */
