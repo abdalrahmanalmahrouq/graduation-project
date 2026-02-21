@@ -266,5 +266,6 @@ TODO:
  - Update observer so it removes past valid appointments not removes it just loop on valid appointment and soft deletes them and generates new ones ✅ 
  - clinic can book appointments for any their patients but we should consider many things:
   - if the clinic want to book appointment a request will be sent to patient and displays in notifications page and this appointment row status it will be saved with pendding status if patient click accept it will be changed to booked if reject it will still pending ✅
+ - apply Laravel Policies for things like: Clinic can't delete an appointment in other clinic 
    
  
