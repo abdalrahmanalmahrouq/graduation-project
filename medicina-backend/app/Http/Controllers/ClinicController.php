@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\UpsertClinicDoctorRequest;
 use App\Http\Resources\ClinicDoctorResource;
 use App\Services\ClinicService;
 use Illuminate\Http\Request;
 
 class ClinicController extends Controller
 {
-    protected ClinicService $clinicService;
-    public function __construct(ClinicService $clinicService)
+    public function __construct(protected ClinicService $clinicService)
     {
-        $this->clinicService = $clinicService;
     }
 
     public function getDoctors()
@@ -53,18 +53,13 @@ class ClinicController extends Controller
         ]);
     }
 
-    public function rescheduleDoctorWeeklySchedule(Request $request)
+    public function rescheduleDoctorWeeklySchedule(UpsertClinicDoctorRequest $request)
     {
-        $validated = $request->validate([
-            'doctor_id' => 'required|exists:doctors,user_id',
-            'weekly_schedule' => 'required|array',
-        ]);
-
         $clinicId = auth()->user()->clinic->user_id;
         $this->clinicService->rescheduleDoctor(
             $clinicId,
-            $validated['doctor_id'],
-            $validated['weekly_schedule']
+            $request->doctor_id,
+            $request->weekly_schedule
         );
 
         return response()->json([
@@ -73,18 +68,13 @@ class ClinicController extends Controller
         ], 200);
     }
 
-    public function addDoctor(Request $request)
+    public function addDoctor(UpsertClinicDoctorRequest $request)
     {
-        $validated = $request->validate([
-            'doctor_id' => 'required|exists:doctors,user_id',
-            'weekly_schedule' => 'required|array',
-        ]);
-
         $clinicId = auth()->user()->id;
         $clinicDoctor = $this->clinicService->addDoctor(
             $clinicId,
-            $validated['doctor_id'],
-            $validated['weekly_schedule']
+            $request->doctor_id,
+            $request->weekly_schedule
         );
 
         return response()->json([
@@ -97,7 +87,7 @@ class ClinicController extends Controller
     public function deleteDoctor(Request $request)
     {
         $request->validate([
-            'doctor_id' => 'required|exists:doctors,user_id',
+            'doctor_id' => 'required|string|exists:doctors,user_id',
         ]);
 
         $clinicId = auth()->user()->clinic->user_id;
