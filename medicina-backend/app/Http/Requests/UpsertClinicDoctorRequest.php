@@ -8,7 +8,7 @@ class UpsertClinicDoctorRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->role === 'clinic';
+        return true;
     }
 
     public function rules(): array
