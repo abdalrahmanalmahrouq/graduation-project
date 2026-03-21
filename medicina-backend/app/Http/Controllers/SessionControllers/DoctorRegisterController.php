@@ -39,7 +39,7 @@ class DoctorRegisterController extends Controller
                     ValidationRules::phoneNumber(),
                     ['unique:doctors,phone_number,' . ($existingDoctor ? $existingDoctor->id : 'NULL')]
                 ),
-                'specialization'=>'required|string',
+                'specialty'=>'required|string',
                 'consultation_duration'=>'required|integer|min:10|max:60',
             ],$messages);
 
@@ -50,7 +50,7 @@ class DoctorRegisterController extends Controller
             if ($existingDoctor) {
                 $existingDoctor->full_name = $validated['full_name'];
                 $existingDoctor->phone_number = $validated['phone_number'];
-                $existingDoctor->specialization = $validated['specialization'];
+                $existingDoctor->specialty = $validated['specialty'];
                 $existingDoctor->consultation_duration = $validated['consultation_duration'];
                 $existingDoctor->save();
             } else {
@@ -58,7 +58,7 @@ class DoctorRegisterController extends Controller
                     'user_id' => $trashedUser->id,
                     'full_name'=>$validated['full_name'],
                     'phone_number'=>$validated['phone_number'],
-                    'specialization'=>$validated['specialization'],
+                    'specialty'=>$validated['specialty'],
                     'consultation_duration'=>$validated['consultation_duration'],
                 ]);
             }
@@ -73,7 +73,7 @@ class DoctorRegisterController extends Controller
                     ValidationRules::phoneNumber(),
                     ['unique:doctors,phone_number']
                 ),
-                'specialization'=>'required|string',
+                'specialty'=>'required|string',
                 'consultation_duration'=>'required|integer|min:10|max:60',
             ],$messages);
 
@@ -87,7 +87,7 @@ class DoctorRegisterController extends Controller
                 'user_id' => $user->id,
                 'full_name'=>$validated['full_name'],
                 'phone_number'=>$validated['phone_number'],
-                'specialization'=>$validated['specialization'],
+                'specialty'=>$validated['specialty'],
                 'consultation_duration'=>$validated['consultation_duration'],
             ]);
         }

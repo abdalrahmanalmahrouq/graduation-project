@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('full_name');
             $table->string('phone_number');
-            $table->string('specialization');
+            $table->string('specialty');
             $table->text('bio')->nullable();
             $table->integer('consultation_duration');
             $table->timestamps();

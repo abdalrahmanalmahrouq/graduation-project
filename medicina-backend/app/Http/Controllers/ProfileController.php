@@ -92,7 +92,7 @@ class ProfileController extends Controller
                 $validationRules = [
                     'full_name' => 'nullable|string|max:255',
                     'phone_number' => 'nullable|string|max:20|regex:/^[+]?[0-9\s\-\(\)]{7,20}$/|unique:doctors,phone_number,' . $user->doctor->id,
-                    'specialization' => 'nullable|string|max:255',
+                    'specialty' => 'nullable|string|max:255',
                     'consultation_duration' => 'integer|min:10|max:60',
                 ];
                 break;
@@ -122,7 +122,7 @@ class ProfileController extends Controller
             'phone_number.max' => 'Phone number cannot exceed 20 characters.',
             'full_name.max' => 'Full name cannot exceed 255 characters.',
             'clinic_name.max' => 'Clinic name cannot exceed 255 characters.',
-            'specialization.max' => 'Specialization cannot exceed 255 characters.',
+            'specialty.max' => 'Specialty cannot exceed 255 characters.',
             'address.max' => 'Address cannot exceed 500 characters.',
             'date_of_birth.date' => 'Date of birth must be a valid date.',
             'profile_image.image' => 'Profile image must be a valid image file.',
@@ -188,7 +188,7 @@ class ProfileController extends Controller
                 break;
             case 'doctor':
                 $updateData = array_filter($validated, function($key) {
-                    return in_array($key, ['full_name', 'phone_number', 'specialization', 'consultation_duration']);
+                    return in_array($key, ['full_name', 'phone_number', 'specialty', 'consultation_duration']);
                 }, ARRAY_FILTER_USE_KEY);
                 Log::info('Updating doctor profile:', $updateData);
                 if (!empty($updateData)) {

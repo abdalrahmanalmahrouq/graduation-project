@@ -37,7 +37,7 @@ Think of it as a smart assistant that helps everyone in healthcare work together
 ✅ **Stay Organized** - All your medical information in one place  
 ✅ **Secure** - Your data is protected and private  
 ✅ **Convenient** - Access everything from your computer or phone  
-✅ **Connected** - Doctors, clinics, labs, and patients all work together seamlessly  
+✅ **Connected** - Doctors, clinics, labs, and patients all work together seamlessly
 
 ---
 
@@ -46,7 +46,9 @@ Think of it as a smart assistant that helps everyone in healthcare work together
 Medicina serves five main types of users, each with their own needs and features:
 
 ### 1. **Patients** 👤
+
 Regular people who need healthcare services. They use Medicina to:
+
 - Find doctors and clinics
 - Book appointments
 - View their medical history
@@ -54,7 +56,9 @@ Regular people who need healthcare services. They use Medicina to:
 - Manage their health information
 
 ### 2. **Doctors** 👨‍⚕️
+
 Medical professionals who treat patients. They use Medicina to:
+
 - Manage their appointments across multiple clinics
 - View patient information
 - Create medical records after consultations
@@ -62,7 +66,9 @@ Medical professionals who treat patients. They use Medicina to:
 - Manage their professional profile
 
 ### 3. **Clinics** 🏥
+
 Healthcare facilities that host doctors. They use Medicina to:
+
 - Add and manage doctors working at their clinic
 - Set up appointment schedules
 - Track all clinic appointments
@@ -70,14 +76,18 @@ Healthcare facilities that host doctors. They use Medicina to:
 - View clinic statistics and performance
 
 ### 4. **Labs** 🔬
+
 Laboratory facilities that perform medical tests. They use Medicina to:
+
 - Request permission to share results with patients
 - Upload test results securely
 - Link results to specific appointments
 - Track which results are pending, approved, or rejected
 
 ### 5. **Administrators** 👨‍💼
+
 System managers who oversee the platform. They use Medicina to:
+
 - Manage insurance companies in the system
 - View all users and accounts
 - Ensure the system runs smoothly
@@ -90,6 +100,7 @@ System managers who oversee the platform. They use Medicina to:
 ### Creating Your Account
 
 **For Patients:**
+
 1. Go to the registration page
 2. Fill in your personal information (name, email, phone, date of birth, address)
 3. Choose a password
@@ -99,8 +110,9 @@ System managers who oversee the platform. They use Medicina to:
 7. You'll be automatically logged in and can start booking appointments!
 
 **For Doctors:**
+
 1. Go to the doctor registration page
-2. Enter your professional information (name, email, specialization, phone)
+2. Enter your professional information (name, email, specialty, phone)
 3. Add your bio and consultation duration
 4. Choose a password
 5. Upload a profile photo (optional)
@@ -108,6 +120,7 @@ System managers who oversee the platform. They use Medicina to:
 7. You can now be added to clinics and start seeing patients!
 
 **For Clinics:**
+
 1. Go to the clinic registration page
 2. Enter your clinic information (clinic name, address, phone)
 3. Choose a password
@@ -116,6 +129,7 @@ System managers who oversee the platform. They use Medicina to:
 6. You can now add doctors and start managing your clinic!
 
 **For Labs:**
+
 1. Go to the lab registration page
 2. Enter your lab information (lab name, address, phone)
 3. Choose a password
@@ -142,13 +156,15 @@ System managers who oversee the platform. They use Medicina to:
 #### 📅 **Appointment Management**
 
 **Finding a Doctor:**
-- Browse clinics by medical specialization (like Pediatrics, Cardiology, etc.)
+
+- Browse clinics by medical specialty (like Pediatrics, Cardiology, etc.)
 - Filter doctors by insurance company
 - View doctor profiles with their experience and bio
 - See which clinics each doctor works at
 - Check which insurance companies each clinic accepts
 
 **Booking an Appointment:**
+
 - Select a doctor and clinic
 - View available time slots
 - Choose a date and time that works for you
@@ -156,6 +172,7 @@ System managers who oversee the platform. They use Medicina to:
 - Receive confirmation immediately
 
 **Managing Your Appointments:**
+
 - View all your upcoming appointments
 - See past appointments and their details
 - Cancel appointments if needed (depending on clinic policy)
@@ -164,6 +181,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 📋 **Medical Records**
 
 **Viewing Your Medical History:**
+
 - See all your past consultations
 - Read doctor's notes from each visit
 - View prescriptions you've received
@@ -171,6 +189,7 @@ System managers who oversee the platform. They use Medicina to:
 - View associated lab results linked to each visit
 
 **What's in a Medical Record:**
+
 - Date and time of the appointment
 - Doctor's consultation notes
 - Prescription information (if any)
@@ -180,6 +199,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 🧪 **Lab Results**
 
 **Receiving Lab Results:**
+
 - Get notified when a lab wants to share results with you
 - Review the request and decide to approve or reject it
 - Once approved, the lab can upload your results
@@ -188,6 +208,7 @@ System managers who oversee the platform. They use Medicina to:
 - See which lab performed each test
 
 **Privacy Control:**
+
 - You have full control - labs must request permission first
 - You can approve or reject any request
 - Only approved results are shared with you
@@ -196,6 +217,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 👤 **Profile Management**
 
 **Updating Your Information:**
+
 - Change your personal details (name, phone, address)
 - Update your insurance information
 - Change your profile photo
@@ -209,12 +231,14 @@ System managers who oversee the platform. They use Medicina to:
 #### 🏥 **Clinic Management**
 
 **Viewing Your Clinics:**
+
 - See all clinics where you work
 - View clinic addresses and contact information
 - Access appointments for each clinic separately
 - Switch between clinics easily
 
 **Multi-Clinic Support:**
+
 - Work at multiple clinics simultaneously
 - Each clinic has its own schedule
 - View all appointments across all clinics in one place
@@ -223,12 +247,14 @@ System managers who oversee the platform. They use Medicina to:
 #### 📅 **Appointment Management**
 
 **Viewing Appointments:**
+
 - See all booked appointments for each clinic
 - View patient information before appointments
 - See appointment history (completed, cancelled)
 - Filter appointments by clinic, date, or status
 
 **Completing Appointments:**
+
 - Mark appointments as completed after seeing the patient
 - Once completed, you can create a medical record
 - Track which appointments still need records
@@ -236,6 +262,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 📝 **Medical Records**
 
 **Creating Medical Records:**
+
 - After completing an appointment, create a record
 - Fill in consultation notes (required)
 - Add prescription information (optional)
@@ -243,6 +270,7 @@ System managers who oversee the platform. They use Medicina to:
 - Save the record - patient can view it immediately
 
 **Viewing Your Records:**
+
 - See all medical records you've created
 - Filter by patient, clinic, or date
 - Review past consultations
@@ -251,8 +279,9 @@ System managers who oversee the platform. They use Medicina to:
 #### 👨‍⚕️ **Profile Management**
 
 **Professional Profile:**
+
 - Add or update your professional bio
-- Update your specialization
+- Update your specialty
 - Set your consultation duration
 - Update contact information
 - Change your profile photo
@@ -265,6 +294,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 👨‍⚕️ **Doctor Management**
 
 **Adding Doctors:**
+
 - Search for doctors in the system
 - Add doctors to your clinic
 - Set up their weekly schedules
@@ -272,20 +302,23 @@ System managers who oversee the platform. They use Medicina to:
 - Manage multiple doctors easily
 
 **Managing Doctor Schedules:**
+
 - Set when each doctor is available
 - Create appointment time slots
 - Adjust schedules as needed
 - Remove doctors (they can be restored later if needed)
 
 **Viewing Clinic Doctors:**
+
 - See all doctors currently at your clinic
-- View their specializations and information
+- View their specialtys and information
 - Access their schedules
 - Manage their appointment slots
 
 #### 📅 **Appointment Management**
 
 **Viewing All Appointments:**
+
 - See every appointment at your clinic
 - Filter by doctor, date, or status
 - View appointment details
@@ -293,6 +326,7 @@ System managers who oversee the platform. They use Medicina to:
 - See which appointments are booked, completed, or cancelled
 
 **Appointment Slots:**
+
 - Create available time slots for doctors
 - Set dates and times
 - These slots appear for patients to book
@@ -301,12 +335,14 @@ System managers who oversee the platform. They use Medicina to:
 #### 🏥 **Insurance Management**
 
 **Managing Insurance Companies:**
+
 - View all insurance companies your clinic accepts
 - Add new insurance companies
 - Remove insurance companies (can be restored later)
 - This helps patients filter clinics by their insurance
 
 **Why This Matters:**
+
 - Patients can find your clinic if they have matching insurance
 - Helps attract more patients
 - Easy to update as insurance partnerships change
@@ -314,6 +350,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 📊 **Dashboard & Statistics**
 
 **Viewing Your Clinic's Performance:**
+
 - See total number of doctors at your clinic
 - View total number of patients
 - See total number of appointments
@@ -322,6 +359,7 @@ System managers who oversee the platform. They use Medicina to:
 - See top 5 most frequent patients
 
 **Why This Helps:**
+
 - Understand your clinic's activity
 - Make informed business decisions
 - Track growth over time
@@ -330,6 +368,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 🏥 **Profile Management**
 
 **Updating Clinic Information:**
+
 - Change clinic name, address, or phone
 - Update clinic description
 - Change clinic logo
@@ -343,18 +382,21 @@ System managers who oversee the platform. They use Medicina to:
 #### 🧪 **Lab Result Management**
 
 **Creating Result Requests:**
+
 - Find a patient in the system
 - Create a request to share results with them
 - The request is sent to the patient
 - Patient must approve before you can upload results
 
 **Why Approval is Required:**
+
 - Protects patient privacy
 - Gives patients control over their data
 - Ensures compliance with privacy regulations
 - Builds trust with patients
 
 **Uploading Results:**
+
 - Once patient approves, you can upload results
 - Add examination title and notes
 - Upload result files (PDFs or images)
@@ -362,6 +404,7 @@ System managers who oversee the platform. They use Medicina to:
 - Results are immediately available to the patient
 
 **Tracking Requests:**
+
 - See all your result requests
 - View which are pending (waiting for approval)
 - See which are approved (ready to upload)
@@ -371,6 +414,7 @@ System managers who oversee the platform. They use Medicina to:
 #### 🔬 **Profile Management**
 
 **Updating Lab Information:**
+
 - Change lab name, address, or phone
 - Update lab description
 - Change lab logo
@@ -384,12 +428,14 @@ System managers who oversee the platform. They use Medicina to:
 #### 🏢 **Insurance Company Management**
 
 **Managing Insurance Companies:**
+
 - Add new insurance companies to the system
 - Update existing insurance information
 - Remove insurance companies (can be restored)
 - View all insurance companies in the system
 
 **Why This Matters:**
+
 - Ensures clinics can accept the right insurances
 - Helps patients find clinics that accept their insurance
 - Keeps the system up-to-date with available insurances
@@ -397,12 +443,14 @@ System managers who oversee the platform. They use Medicina to:
 #### 👥 **User Management**
 
 **Viewing All Users:**
+
 - See all patients, doctors, clinics, and labs
 - View user details and activity
 - Remove user accounts if needed (can be restored)
 - Monitor system usage
 
 **Account Management:**
+
 - Help users with account issues
 - Ensure system security
 - Maintain system integrity
@@ -414,39 +462,46 @@ System managers who oversee the platform. They use Medicina to:
 ### The Appointment Booking Process
 
 **Step 1: Patient Searches for a Doctor**
+
 - Patient goes to the clinics page
-- Selects a medical specialization (like "Cardiology")
+- Selects a medical specialty (like "Cardiology")
 - Optionally filters by insurance company
 - Sees a list of available doctors
 
 **Step 2: Patient Views Doctor Profile**
+
 - Clicks on a doctor to see their profile
-- Views doctor's bio, specialization, and experience
+- Views doctor's bio, specialty, and experience
 - Sees which clinics the doctor works at
 - Checks which insurance companies each clinic accepts
 
 **Step 3: Patient Selects a Clinic**
+
 - Chooses which clinic they want to visit
 - Views available appointment slots for that doctor at that clinic
 - Sees dates and times that are available
 
 **Step 4: Patient Books Appointment**
+
 - Selects a time slot that works for them
 - If not logged in, they're asked to log in
 - Once logged in, the appointment is booked instantly
 - Appointment appears in their "Upcoming Appointments"
 
 **Step 5: Doctor Sees the Appointment**
+
 - Doctor logs in and goes to their clinic
 - Sees the new appointment in "Booked Appointments"
 - Can view patient information before the appointment
 
 **Step 6: Appointment Day**
+
 - Patient arrives at the clinic
 - Doctor sees the patient
 - After consultation, doctor marks appointment as "completed"
 
 **Step 7: Medical Record Creation**
+
 - Doctor creates a medical record for the completed appointment
 - Adds consultation notes
 - Optionally adds prescription
@@ -458,36 +513,42 @@ System managers who oversee the platform. They use Medicina to:
 ### The Lab Results Process
 
 **Step 1: Lab Creates a Request**
+
 - Lab logs in and goes to "Lab Results"
 - Finds the patient in the system
 - Creates a request to share results
 - Request status is set to "pending"
 
 **Step 2: Patient Receives Notification**
+
 - Patient gets a notification about the lab request
 - Patient goes to their notifications page
 - Sees the lab that wants to share results
 - Can see what type of examination it is
 
 **Step 3: Patient Approves or Rejects**
+
 - Patient reviews the request
 - If approved: Lab can now upload results
 - If rejected: Lab cannot upload, request is closed
 - Patient has full control
 
 **Step 4: Lab Uploads Results (if approved)**
+
 - Lab adds examination title and notes
 - Uploads the result file (PDF or image)
 - Optionally links to a specific appointment
 - Results are saved and immediately available to patient
 
 **Step 5: Patient Views Results**
+
 - Patient can view all approved lab results
 - Can download result files
 - See which lab performed each test
 - View examination details and notes
 
 **Step 6: Doctor Can Link Results**
+
 - When creating a medical record, doctor can see approved lab results
 - Can link relevant results to the medical record
 - Creates a complete picture of patient's health
@@ -497,26 +558,31 @@ System managers who oversee the platform. They use Medicina to:
 ### The Clinic Management Process
 
 **Step 1: Clinic Adds a Doctor**
+
 - Clinic searches for a doctor in the system
 - Adds the doctor to their clinic
 - Doctor now appears in clinic's doctor list
 
 **Step 2: Clinic Sets Up Schedule**
+
 - Clinic creates appointment slots for the doctor
 - Sets dates and times when doctor is available
 - These slots appear for patients to book
 
 **Step 3: Patients Book Appointments**
+
 - Patients see available slots and book them
 - Appointments appear in clinic's appointment list
 - Clinic can track all activity
 
 **Step 4: Clinic Manages Insurance**
+
 - Clinic adds insurance companies they accept
 - Patients can filter and find the clinic
 - Clinic can update insurance list as needed
 
 **Step 5: Clinic Views Statistics**
+
 - Clinic dashboard shows key metrics
 - Tracks doctors, patients, appointments
 - Makes informed business decisions
@@ -528,6 +594,7 @@ System managers who oversee the platform. They use Medicina to:
 ### Scenario 1: A Patient Needs to See a Cardiologist
 
 **What Happens:**
+
 1. Patient goes to Medicina website
 2. Clicks "Clinics" and selects "Cardiology"
 3. Filters by their insurance company
@@ -548,6 +615,7 @@ System managers who oversee the platform. They use Medicina to:
 ### Scenario 2: A Doctor Works at Two Clinics
 
 **What Happens:**
+
 1. Doctor is added to Clinic A
 2. Clinic A creates appointment slots for the doctor
 3. Doctor is also added to Clinic B
@@ -565,6 +633,7 @@ System managers who oversee the platform. They use Medicina to:
 ### Scenario 3: A Lab Needs to Share Blood Test Results
 
 **What Happens:**
+
 1. Lab performs blood test for a patient
 2. Lab logs into Medicina
 3. Finds the patient and creates a result request
@@ -582,18 +651,19 @@ System managers who oversee the platform. They use Medicina to:
 ### Scenario 4: A Clinic Wants to Track Performance
 
 **What Happens:**
+
 1. Clinic logs into their dashboard
 2. Sees statistics:
-   - "We have 15 doctors"
-   - "We've served 500 patients"
-   - "We have 1,200 appointments"
-   - "We accept 8 insurance companies"
+    - "We have 15 doctors"
+    - "We've served 500 patients"
+    - "We have 1,200 appointments"
+    - "We accept 8 insurance companies"
 3. Views top 5 insurance companies used
 4. Sees top 5 most frequent patients
 5. Uses this information to:
-   - Plan staffing needs
-   - Understand patient preferences
-   - Make business decisions
+    - Plan staffing needs
+    - Understand patient preferences
+    - Make business decisions
 
 **Insight:** Data-driven decisions for better clinic management!
 
@@ -634,8 +704,8 @@ A: After completing an appointment, mark it as "completed." Then you'll see an o
 **Q: Can I link lab results to medical records?**  
 A: Yes! When creating a medical record, you'll see a linked lab result with this appointment so you don't have to link anything it handles it automatically .
 
-**Q: How do I update my bio or specialization?**  
-A: Go to "Bio Management" in your dashboard. You can add or update your professional bio and specialization there.
+**Q: How do I update my bio or specialty?**  
+A: Go to "Bio Management" in your dashboard. You can add or update your professional bio and specialty there.
 
 **Q: Can I see all my appointments across all clinics?**  
 A: Yes! You can view appointments by clinic, or see all appointments together in one view.
@@ -770,6 +840,7 @@ A: In your "Lab Results" page, you can see all requests with their status: pendi
 Medicina is designed to make healthcare management simple, efficient, and secure for everyone involved. Whether you're a patient booking your first appointment, a doctor managing a busy schedule, a clinic organizing operations, or a lab sharing results, Medicina provides the tools you need.
 
 **Remember:**
+
 - Take time to explore your dashboard and features
 - Keep your information updated
 - Use filters and search to find what you need quickly
@@ -780,5 +851,4 @@ Welcome to Medicina - where healthcare meets technology for a better experience 
 
 ---
 
-*This guide is designed to help you understand and use Medicina effectively. For technical implementation details, please refer to the Technical Guide.*
-
+_This guide is designed to help you understand and use Medicina effectively. For technical implementation details, please refer to the Technical Guide._

@@ -197,7 +197,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 	const [fieldErrors, setFieldErrors] = useState({});
 	// Initialize schedule: all days null
 	const [schedule, setSchedule] = useState(
-		DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {})
+		DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {}),
 	);
 	const mainErrorRef = useRef(null);
 
@@ -209,7 +209,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 			setError("");
 			setFieldErrors({});
 			setSchedule(
-				DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {})
+				DAYS.reduce((acc, day) => ({ ...acc, [day]: null }), {}),
 			);
 		}
 	}, [isOpen]);
@@ -289,7 +289,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 			// 5. Handle Errors (Doctor not found)
 			if (err.response && err.response.status === 404) {
 				setError(
-					"لم يتم العثور على طبيب بهذا الرقم. يرجى التحقق من الـ ID."
+					"لم يتم العثور على طبيب بهذا الرقم. يرجى التحقق من الـ ID.",
 				);
 			} else {
 				setError("حدث خطأ أثناء التحقق من بيانات الطبيب.");
@@ -312,10 +312,10 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 			const newDoctor = {
 				id: Date.now(),
 				name: foundDoctorName,
-				clinic: response.data.data?.specialization || "غير محدد",
+				clinic: response.data.data?.specialty || "غير محدد",
 				img: defaultImage,
 				profile_image_url: null,
-				specialty: response.data.data?.specialization,
+				specialty: response.data.data?.specialty,
 				doctorId: doctorId,
 				clinicId: response.data.data?.clinic_id,
 			};
@@ -343,10 +343,10 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 			const newDoctor = {
 				id: Date.now(),
 				name: foundDoctorName,
-				clinic: response.data.data?.specialization || "غير محدد",
+				clinic: response.data.data?.specialty || "غير محدد",
 				img: defaultImage,
 				profile_image_url: null,
-				specialty: response.data.data?.specialization,
+				specialty: response.data.data?.specialty,
 				doctorId: doctorId,
 				clinicId: response.data.data?.clinic_id,
 			};
@@ -387,8 +387,8 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 						{showRestorePrompt
 							? "استعادة طبيب"
 							: step === 1
-							? "إضافة طبيب - الخطوة 1"
-							: "تحديد الجدول - الخطوة 2"}
+								? "إضافة طبيب - الخطوة 1"
+								: "تحديد الجدول - الخطوة 2"}
 					</h2>
 					<button
 						onClick={onClose}
@@ -493,7 +493,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 
 								// Find error for this day (any field: overlap or break_time)
 								const dayError = Object.keys(fieldErrors).find(
-									(key) => key.startsWith(`${day}_`)
+									(key) => key.startsWith(`${day}_`),
 								);
 								const isOverlapError =
 									dayError?.endsWith("_schedule_overlap");
@@ -562,7 +562,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 																	day,
 																	"start_time",
 																	e.target
-																		.value
+																		.value,
 																)
 															}
 														/>
@@ -580,16 +580,16 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 																	? "border-2 border-red-500 bg-red-50"
 																	: ""
 															}`}
-														value={
-															schedule[day]
-																.end_time
+															value={
+																schedule[day]
+																	.end_time
 															}
 															onChange={(e) =>
 																handleTimeChange(
 																	day,
 																	"end_time",
 																	e.target
-																		.value
+																		.value,
 																)
 															}
 														/>
@@ -616,7 +616,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 																	day,
 																	"break_start",
 																	e.target
-																		.value
+																		.value,
 																)
 															}
 														/>
@@ -643,7 +643,7 @@ const AddDoctorDialog = ({ isOpen, onClose, onAddDoctor }) => {
 																	day,
 																	"break_end",
 																	e.target
-																		.value
+																		.value,
 																)
 															}
 														/>
@@ -741,10 +741,10 @@ const ClinicDoctorList = () => {
 			const clinicDoctors = response.data.data.map((doctor) => ({
 				id: doctor.doctor_id,
 				name: doctor.full_name,
-				clinic: doctor.specialization,
+				clinic: doctor.specialty,
 				img: doctor.profile_image_url || defaultImage,
 				profile_image_url: doctor.profile_image_url,
-				specialty: doctor.specialization,
+				specialty: doctor.specialty,
 				doctorId: doctor.user_id,
 				clinicId: doctor.clinic_id,
 			}));
@@ -770,7 +770,7 @@ const ClinicDoctorList = () => {
 
 	const handleDeleteDoctor = (doctorId) => {
 		setDoctors((prevDoctors) =>
-			prevDoctors.filter((doctor) => doctor.doctorId !== doctorId)
+			prevDoctors.filter((doctor) => doctor.doctorId !== doctorId),
 		);
 	};
 

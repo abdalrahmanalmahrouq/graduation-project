@@ -101,7 +101,7 @@ Route::middleware(['auth:sanctum'])->post('/change-password', [ProfileController
 Route::get('clinic-doctors/ids', [ClinicDoctor::class, 'idsForEndPoint']);
 Route::get('valid-appointments', [AvailableAppointmentController::class, 'getValidAppointmentForEndpoint']);
 
-Route::get('doctors/by-specialization/{specialization}', [DoctorController::class, 'getDoctorsBySpecialization']);
+Route::get('doctors/by-specialty/{specialty}', [DoctorController::class, 'getDoctorsBySpecialty']);
 Route::get('doctors/profile/{id}', [DoctorController::class, 'getDoctorProfile']);
 
 Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {

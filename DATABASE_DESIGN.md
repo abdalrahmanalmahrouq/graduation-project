@@ -1,9 +1,11 @@
 # Medicina Database Design
 
 ## Overview
+
 This document outlines the complete database schema for the Medicina healthcare platform, including all required tables, relationships, and constraints.
 
 ## Database Tables Summary
+
 **Total Tables Required: 21 tables**
 
 ---
@@ -11,7 +13,9 @@ This document outlines the complete database schema for the Medicina healthcare 
 ## 1. Core User Management Tables
 
 ### users
+
 Primary table for all system users (patients, doctors, clinics, labs, admins)
+
 ```sql
 CREATE TABLE users (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -29,7 +33,9 @@ CREATE TABLE users (
 ```
 
 ### patients
+
 Extended information for patient users
+
 ```sql
 CREATE TABLE patients (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -48,12 +54,14 @@ CREATE TABLE patients (
 ```
 
 ### doctors
+
 Extended information for doctor users
+
 ```sql
 CREATE TABLE doctors (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
-    specialization VARCHAR(255) NOT NULL,
+    specialty VARCHAR(255) NOT NULL,
     license_number VARCHAR(100) UNIQUE NOT NULL,
     years_of_experience INT DEFAULT 0,
     consultation_fee DECIMAL(10,2),
@@ -66,7 +74,9 @@ CREATE TABLE doctors (
 ```
 
 ### clinics
+
 Extended information for clinic users
+
 ```sql
 CREATE TABLE clinics (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -84,7 +94,9 @@ CREATE TABLE clinics (
 ```
 
 ### labs
+
 Extended information for lab users
+
 ```sql
 CREATE TABLE labs (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -106,7 +118,9 @@ CREATE TABLE labs (
 ## 2. Insurance Management Tables
 
 ### insurance_companies
+
 Master list of insurance companies
+
 ```sql
 CREATE TABLE insurance_companies (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -120,7 +134,9 @@ CREATE TABLE insurance_companies (
 ```
 
 ### clinic_insurance_companies
+
 Many-to-many relationship between clinics and insurance companies
+
 ```sql
 CREATE TABLE clinic_insurance_companies (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -135,7 +151,9 @@ CREATE TABLE clinic_insurance_companies (
 ```
 
 ### doctor_clinics
+
 Many-to-many relationship between doctors and clinics (a doctor can work at multiple clinics)
+
 ```sql
 CREATE TABLE doctor_clinics (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -161,7 +179,9 @@ CREATE TABLE doctor_clinics (
 ## 3. Appointment Management Tables
 
 ### appointments
+
 Core appointments table
+
 ```sql
 CREATE TABLE appointments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -188,7 +208,9 @@ CREATE TABLE appointments (
 ```
 
 ### doctor_schedules
+
 Doctor availability schedules (now supports multiple clinics per doctor)
+
 ```sql
 CREATE TABLE doctor_schedules (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -211,7 +233,9 @@ CREATE TABLE doctor_schedules (
 ## 4. Medical Records Management Tables
 
 ### medical_records
+
 Patient medical records with version control
+
 ```sql
 CREATE TABLE medical_records (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -236,7 +260,9 @@ CREATE TABLE medical_records (
 ```
 
 ### prescriptions
+
 Prescriptions linked to medical records
+
 ```sql
 CREATE TABLE prescriptions (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -253,7 +279,9 @@ CREATE TABLE prescriptions (
 ```
 
 ### lab_results
+
 Lab test results and reports
+
 ```sql
 CREATE TABLE lab_results (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -286,7 +314,9 @@ CREATE TABLE lab_results (
 ## 5. Laravel Framework Tables
 
 ### password_reset_tokens
+
 Laravel's built-in password reset functionality
+
 ```sql
 CREATE TABLE password_reset_tokens (
     email VARCHAR(255) PRIMARY KEY,
@@ -296,7 +326,9 @@ CREATE TABLE password_reset_tokens (
 ```
 
 ### personal_access_tokens
+
 Laravel Sanctum API authentication tokens
+
 ```sql
 CREATE TABLE personal_access_tokens (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -314,7 +346,9 @@ CREATE TABLE personal_access_tokens (
 ```
 
 ### failed_jobs
+
 Laravel's queue system failed jobs tracking
+
 ```sql
 CREATE TABLE failed_jobs (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -332,7 +366,9 @@ CREATE TABLE failed_jobs (
 ## 6. Additional Healthcare-Specific Tables
 
 ### doctor_reviews
+
 Patient reviews and ratings for doctors
+
 ```sql
 CREATE TABLE doctor_reviews (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -353,7 +389,9 @@ CREATE TABLE doctor_reviews (
 ```
 
 ### clinic_reviews
+
 Patient reviews and ratings for clinics
+
 ```sql
 CREATE TABLE clinic_reviews (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -378,7 +416,9 @@ CREATE TABLE clinic_reviews (
 ## 7. System Management Tables
 
 ### patient_blacklist
+
 Clinic blacklist management
+
 ```sql
 CREATE TABLE patient_blacklist (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -397,7 +437,9 @@ CREATE TABLE patient_blacklist (
 ```
 
 ### notifications
+
 System notifications for all users
+
 ```sql
 CREATE TABLE notifications (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -417,7 +459,9 @@ CREATE TABLE notifications (
 ```
 
 ### audit_logs
+
 System audit trail for important actions
+
 ```sql
 CREATE TABLE audit_logs (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -442,26 +486,29 @@ CREATE TABLE audit_logs (
 ## Key Relationships & Design Changes
 
 ### Many-to-Many Relationships:
+
 - **Doctor ↔ Clinic**: A doctor can work at multiple clinics, and a clinic can have multiple doctors
-  - Implemented via `doctor_clinics` pivot table
-  - Includes additional fields: `is_primary_clinic`, `consultation_fee`, `start_date`, `end_date`
+    - Implemented via `doctor_clinics` pivot table
+    - Includes additional fields: `is_primary_clinic`, `consultation_fee`, `start_date`, `end_date`
 - **Clinic ↔ Insurance Companies**: A clinic can accept multiple insurance companies
-  - Implemented via `clinic_insurance_companies` pivot table
+    - Implemented via `clinic_insurance_companies` pivot table
 
 ### One-to-Many Relationships:
+
 - **Patient → Appointments**: A patient can have many appointments
-- **Doctor → Appointments**: A doctor can have many appointments  
+- **Doctor → Appointments**: A doctor can have many appointments
 - **Clinic → Appointments**: A clinic can host many appointments
 - **Appointment → Medical Records**: An appointment can have multiple medical record versions
 - **Medical Record → Prescriptions**: A medical record can have multiple prescriptions
 - **Patient → Lab Results**: A patient can have many lab results
 
 ### Key Changes for Multi-Clinic Doctors:
+
 1. **Removed** `clinic_id` from `doctors` table
 2. **Added** `doctor_clinics` pivot table with enhanced fields:
-   - `is_primary_clinic`: Mark doctor's main clinic
-   - `consultation_fee`: Doctor's fee at each specific clinic
-   - `start_date/end_date`: Employment period at each clinic
+    - `is_primary_clinic`: Mark doctor's main clinic
+    - `consultation_fee`: Doctor's fee at each specific clinic
+    - `start_date/end_date`: Employment period at each clinic
 3. **Updated** `doctor_schedules` to reference `doctor_clinic_id` instead of separate doctor and clinic IDs
 4. **Enhanced** appointment booking to work with doctor-clinic combinations
 
@@ -557,6 +604,7 @@ CREATE TABLE audit_logs (
 ```
 
 ### Key Changes in the Diagram:
+
 1. **Removed** `clinic_id` from `doctors` table
 2. **Added** `doctor_clinics` pivot table showing many-to-many relationship
 3. **Updated** `doctor_schedules` to reference `doctor_clinic_id`
@@ -568,30 +616,36 @@ CREATE TABLE audit_logs (
 ## Key Features Supported
 
 ### 1. Role-Based Access Control
+
 - Users table with role enum supports all user types
 - Extended tables for each role with specific information
 
 ### 2. Appointment Management
+
 - Complete booking system with status tracking
 - Doctor schedule management
 - Conflict prevention through unique constraints
 
 ### 3. Medical Records with Version Control
+
 - Version tracking for medical record updates
 - Prescription management linked to records
 - Lab results integration
 
 ### 4. Insurance Management
+
 - Master insurance companies table
 - Many-to-many relationship with clinics
 - Coverage percentage tracking
 
 ### 5. System Administration
+
 - Patient blacklist management
 - Comprehensive notification system
 - Complete audit trail for security
 
 ### 6. Data Integrity
+
 - Foreign key constraints ensure referential integrity
 - Indexes for optimal query performance
 - Unique constraints prevent data duplication
@@ -599,14 +653,17 @@ CREATE TABLE audit_logs (
 ---
 
 ## Migration Order
+
 When creating these tables, follow this order to respect foreign key dependencies:
 
 ### Laravel Framework Tables (can be created first):
+
 1. `password_reset_tokens`
 2. `personal_access_tokens`
 3. `failed_jobs`
 
 ### Core Business Tables:
+
 4. `users`
 5. `insurance_companies`
 6. `patients`, `clinics`, `labs`
@@ -620,11 +677,13 @@ When creating these tables, follow this order to respect foreign key dependencie
 14. `lab_results`
 
 ### System Management Tables:
+
 15. `patient_blacklist`
 16. `notifications`
 17. `audit_logs`
 
 ### Review Tables (depend on appointments):
+
 18. `doctor_reviews`
 19. `clinic_reviews`
 

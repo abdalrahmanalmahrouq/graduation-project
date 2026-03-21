@@ -10,18 +10,18 @@ use Illuminate\Support\Facades\Log;
 
 class DoctorController extends Controller
 {
-    // Get all doctors by specialization for the frontend directory page
-    public function getDoctorsBySpecialization(Request $request, $specialization)
+    // Get all doctors by specialty for the frontend directory page
+    public function getDoctorsBySpecialty(Request $request, $specialty)
 {
             // Use the path parameter OR request body
-            $specialization = $specialization ?? $request->specialization;
+            $specialty = $specialty ?? $request->specialty;
 
             // 1. Normalize input
-            $input = trim(mb_strtolower($specialization));
+            $input = trim(mb_strtolower($specialty));
             $input = str_replace(['أ', 'إ', 'آ'], 'ا', $input);
 
             // 2. Map all common Arabic/English variations → search synonyms
-            $specializationMapping = [
+            $specialtyMapping = [
                 // Pediatrics
                 'pediatrics' => ['pediatrics', 'pediatric', 'طب اطفال', 'اخصائي اطفال', 'اطفال'],
                 'اخصائي اطفال' => ['pediatrics', 'اخصائي اطفال', 'اطفال'],
@@ -101,7 +101,7 @@ class DoctorController extends Controller
             ];
 
             // 3. Resolve synonyms (fallback: only input)
-            $searchTerms = $specializationMapping[$input] ?? [$input];
+            $searchTerms = $specialtyMapping[$input] ?? [$input];
 
             // Normalize each search term
             $searchTerms = array_map(function ($term) {
@@ -116,9 +116,9 @@ class DoctorController extends Controller
             })  //this will make sure that the doctor is not deleted 
             ->where(function ($query) use ($searchTerms) {
                 foreach ($searchTerms as $term) {
-                    $query->orWhereRaw("REPLACE(LOWER(specialization), 'أ', 'ا') LIKE ?", ["%{$term}%"]);
+                    $query->orWhereRaw("REPLACE(LOWER(specialty), 'أ', 'ا') LIKE ?", ["%{$term}%"]);
                 }
-            })  // this will make the query also search if the doctor specialization saved in arabic 
+            })  // this will make the query also search if the doctor specialty saved in arabic 
             ->with([
                 'user:id,profile_image',
                 'clinics:id,clinic_name,address,user_id'
@@ -130,7 +130,7 @@ class DoctorController extends Controller
                 return [
                     'id' => $doctor->id,
                     'name' => $doctor->full_name,
-                    'specialization' => $doctor->specialization,
+                    'specialty' => $doctor->specialty,
                     'profile_image_url' => $doctor->user->profile_image_url ?? null,
                     'clinics' => $doctor->clinics->map(function ($clinic) {
                         return [
@@ -179,7 +179,7 @@ class DoctorController extends Controller
         $doctorData = [
             'id' => $doctor->user_id,
             'name' => $doctor->full_name,
-            'specialization' => $doctor->specialization,
+            'specialty' => $doctor->specialty,
             'phone_number' => $doctor->phone_number,
             'bio' => $doctor->bio,
             'profile_image_url' => $doctor->user->profile_image_url ?? null,

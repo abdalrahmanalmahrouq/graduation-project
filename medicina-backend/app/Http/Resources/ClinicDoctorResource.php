@@ -44,7 +44,7 @@ class ClinicDoctorResource extends JsonResource
             'doctor_id' => $this->id,
             'user_id' => $this->user_id,
             'full_name' => $this->full_name,
-            'specialization' => $this->specialization,
+            'specialty' => $this->specialty,
             'phone_number' => $this->phone_number,
             'profile_image' => $this->user->profile_image ?? null,
             'profile_image_url' => $this->user->profile_image_url ?? null,
