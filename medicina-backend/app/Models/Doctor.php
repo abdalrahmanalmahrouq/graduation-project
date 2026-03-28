@@ -44,4 +44,11 @@ class Doctor extends Model
     public function availableAppointments(){
         return $this->hasMany(AvailableAppointment::class);
     }
+
+    // Each doctor can have multiple specialties
+    public function specialties()
+    {
+        return $this->belongsToMany(Specialty::class, 'doctor_specialty', 'doctor_id', 'specialty_id', 'user_id', 'id')
+            ->withTimestamps();
+    }
 }
