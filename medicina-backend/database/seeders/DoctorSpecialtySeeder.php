@@ -31,7 +31,7 @@ class DoctorSpecialtySeeder extends Seeder
             'hala16@example.com' => 'Cardiology',
             'hanan25@example.com' => 'General Dentistry',
             'hassan60@example.com' => 'Obstetrics & Gynecology',
-            'ibrahim15@example.com' => 'Internal Medicine',
+            'ibrahim15@example.com' => 'General Internal Medicine',
             'issam21@example.com' => 'Gastroenterology',
             'kareem19@example.com' => 'Gastroenterology',
             'khaled05@example.com' => 'Orthopedic Surgery',
@@ -49,20 +49,20 @@ class DoctorSpecialtySeeder extends Seeder
             'rana37@example.com' => 'Ophthalmology',
             'reem42@example.com' => 'Obstetrics & Gynecology',
             'saif33@example.com' => 'General Dentistry',
-            'salma81@example.com' => 'Internal Medicine',
+            'salma81@example.com' => 'General Internal Medicine',
             'sami44@example.com' => 'Pediatrics',
             'tamara84@example.com' => 'Otolaryngology (ENT)',
             'tareq67@example.com' => 'Pulmonology',
             'tasneem41@example.com' => 'Orthopedic Surgery',
             'ward99@example.com' => 'Obstetrics & Gynecology',
-            'yousef29@example.com' => 'Internal Medicine',
+            'yousef29@example.com' => 'General Internal Medicine',
             'ziad46@example.com' => 'Neurology',
         ];
 
         foreach ($doctorSpecialties as $email => $specialtyName) {
             // Find user by email
             $user = User::where('email', $email)->first();
-            
+
             if (!$user) {
                 $this->command->warn("User not found for email: {$email}");
                 continue;
@@ -70,7 +70,7 @@ class DoctorSpecialtySeeder extends Seeder
 
             // Find doctor by user_id
             $doctor = Doctor::where('user_id', $user->id)->first();
-            
+
             if (!$doctor) {
                 $this->command->warn("Doctor not found for user: {$email}");
                 continue;
@@ -78,7 +78,7 @@ class DoctorSpecialtySeeder extends Seeder
 
             // Find specialty by name_en
             $specialty = Specialty::where('name_en', $specialtyName)->first();
-            
+
             if (!$specialty) {
                 $this->command->error("Specialty not found: {$specialtyName}");
                 continue;
