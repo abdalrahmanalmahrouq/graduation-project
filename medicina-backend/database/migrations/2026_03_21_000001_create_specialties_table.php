@@ -16,13 +16,15 @@ return new class extends Migration
             $table->id();
             $table->string('name_en')->unique();
             $table->string('name_ar')->unique();
+            $table->string('slug')->unique();
             $table->enum('category', array_column(SpecialtyCategory::cases(), 'value'))->nullable();
             $table->text('description_en')->nullable();
             $table->text('description_ar')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->index('category');
+            $table->index(['category', 'slug']);
         });
     }
 
