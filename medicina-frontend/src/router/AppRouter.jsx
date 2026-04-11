@@ -109,7 +109,7 @@ const AppRouter = () => {
 					}
 				/>
 				<Route
-					path="/doctor/profile/:id"
+					path="/doctors/profile/:id"
 					element={<DoctorProfilePage />}
 				/>
 				<Route

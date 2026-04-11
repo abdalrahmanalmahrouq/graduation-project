@@ -27,7 +27,7 @@ function SpecialtyDoctorsList() {
 			setError(null);
 
 			const response = await axios.get(
-				`/doctors/by-specialty/${directory}`,
+				`/doctors?specialty=${directory}`,
 			);
 
 			if (response.data.success) {
@@ -136,7 +136,7 @@ function SpecialtyDoctorsList() {
 												</Card.Text>
 											)}
 										<Link
-											to={`/doctor/profile/${doctor.id}`}
+											to={`/doctors/profile/${doctor.id}`}
 										>
 											<Button variant="primary">
 												المزيد

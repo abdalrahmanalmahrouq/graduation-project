@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\Doctor;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\LabResult;
+use App\Policies\DoctorPolicy;
 use App\Policies\LabResultPolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -16,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         LabResult::class => LabResultPolicy::class,
+        Doctor::class => DoctorPolicy::class,
     ];
 
     /**
@@ -23,6 +27,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
     }
 }

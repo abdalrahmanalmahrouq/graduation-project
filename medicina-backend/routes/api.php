@@ -101,12 +101,12 @@ Route::middleware(['auth:sanctum'])->post('/change-password', [ProfileController
 Route::get('clinic-doctors/ids', [ClinicDoctor::class, 'idsForEndPoint']);
 Route::get('valid-appointments', [AvailableAppointmentController::class, 'getValidAppointmentForEndpoint']);
 
-Route::get('doctors/by-specialty/{specialty}', [DoctorController::class, 'getDoctorsBySpecialty']);
+Route::get('doctors', [DoctorController::class, 'getDoctors']);
 Route::get('doctors/profile/{id}', [DoctorController::class, 'getDoctorProfile']);
 
 Route::middleware(['auth:sanctum', 'role:doctor'])->group(function () {
     Route::get('doctors/get-clinics', [DoctorController::class, 'getClinics']);
-    Route::post('doctors/add-bio', [DoctorController::class, 'addBio']);
+    Route::post('doctors/add-bio', [DoctorController::class, 'updateBio']);
     Route::get('doctors/get-bio', [DoctorController::class, 'getBio']);
     Route::post('doctors/update-bio', [DoctorController::class, 'updateBio']);
     Route::get('doctors/get-all-patients-appointments-with-medical-record', [DoctorController::class, 'getAllPatientsAppointmentsWithMedicalRecord']);
