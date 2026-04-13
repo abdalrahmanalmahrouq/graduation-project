@@ -3,24 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Insurance;
-use App\Models\Clinic;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use App\Services\InsuranceService;
 
 class InsuranceController extends Controller
 {
-   
-    //  Get all insurance companies
+    protected $insuranceService;
+
+    public function __construct(InsuranceService $insuranceService)
+    {
+        $this->insuranceService = $insuranceService;
+    }
+
+    /**
+     * Get all insurance companies
+     */
     public function index()
     {
         try {
-            $insurances = Insurance::select('insurance_id', 'name', 'logo_path')
-                ->orderBy('name')
-                ->get()
-                ->makeHidden(['logo_path']);
-            
+            $insurances = $this->insuranceService->getAllInsurances();
+
             return response()->json([
                 'success' => true,
                 'data' => $insurances,
@@ -35,17 +36,14 @@ class InsuranceController extends Controller
         }
     }
 
-    public function getInsurancesForClinic(){
+    /**
+     * Get insurances for authenticated clinic
+     */
+    public function getInsurancesForClinic()
+    {
         try {
-            $user = auth()->user();
-            $clinic = $user->clinic;
-            
-            // Get only non-soft-deleted insurances
-            $insurances = $clinic->insurances()
-                ->wherePivotNull('deleted_at')
-                ->get(['insurances.insurance_id','insurances.name','insurances.logo_path'])
-                ->makeHidden(['logo_path']);
-                
+            $insurances = $this->insuranceService->getInsurancesForClinic(auth()->user()->clinic);
+
             return response()->json([
                 'success' => true,
                 'data' => $insurances,
@@ -60,85 +58,54 @@ class InsuranceController extends Controller
         }
     }
 
-    public function addInsurancesForClinic(Request $request){
+    /**
+     * Add insurance to clinic
+     */
+    public function addInsurancesForClinic(Request $request)
+    {
+        try {
+            $request->validate([
+                'insurance_id' => 'required|exists:insurances,insurance_id',
+            ]);
 
-        $request->validate([
-            'insurance_id' => 'required|exists:insurances,insurance_id',
-        ]);
+            $result = $this->insuranceService->addInsuranceForClinic(auth()->user()->clinic, $request->insurance_id);
 
-            $user = auth()->user();
-            $clinic = $user->clinic;
+            return response()->json([
+                'success' => $result['success'],
+                'message' => $result['message']
+            ], $result['success'] ? 200 : 409);
 
-            // prevent duplicates (including soft deleted ones)
-            $existingInsurance = $clinic->insurances()
-            ->wherepivot('insurance_id', $request->insurance_id)
-            ->first();
-                
-            if($existingInsurance){
-                // If it's soft deleted, restore it instead of creating a new one
-                if($existingInsurance->pivot->deleted_at){
-                    $clinic->insurances()->updateExistingPivot($request->insurance_id, [
-                        'deleted_at' => null,
-                        'updated_at' => now()
-                    ]);
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'تم استرجاع شركة التأمين بنجاح'
-                    ], 200);
-                } else {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Insurance already added.'
-                    ], 409);
-                }
-            }
-
-        $clinic->insurances()->attach($request->insurance_id,['created_at'=>now(),'updated_at'=>now()]);
-        return response()->json([
-            'success' => true,
-            'message' => 'تم إضافة شركة التأمين بنجاح'
-        ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to add insurance',
+                'error' => $e->getMessage()
+            ], 500);
         }
+    }
 
-        public function deleteInsuranceForClinic(Request $request){
-            try {
-                $request->validate([
-                    'insurance_id' => 'required|exists:insurances,insurance_id',
-                ]);
-                
-                $user = auth()->user();
-                $clinic = $user->clinic;
-                
-                // Check if the insurance is associated with this clinic
-                $insuranceClinic = $clinic->insurances()
-                    ->wherePivot('insurance_id', $request->insurance_id)
-                    ->first();
-                
-                if(!$insuranceClinic){
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Insurance not found or not associated with this clinic.'
-                    ], 404);
-                }
-                
-                // Soft delete the relationship
-                $clinic->insurances()->updateExistingPivot($request->insurance_id, [
-                    'deleted_at' => now()
-                ]);
-                
-                return response()->json([
-                    'success' => true,
-                    'message' => 'تم حذف شركة التأمين بنجاح'
-                ], 200);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to remove insurance',
-                    'error' => $e->getMessage()
-                ], 500);
-            }
+    /**
+     * Soft delete insurance from clinic
+     */
+    public function deleteInsuranceForClinic(Request $request)
+    {
+        try {
+            $request->validate([
+                'insurance_id' => 'required|exists:insurances,insurance_id',
+            ]);
+
+            $result = $this->insuranceService->deleteInsuranceForClinic(auth()->user()->clinic, $request->insurance_id);
+
+            return response()->json([
+                'success' => $result['success'],
+                'message' => $result['message']
+            ], $result['success'] ? 200 : 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to remove insurance',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-    
-
+    }
 }
