@@ -268,6 +268,7 @@ TODO:
  - if the clinic want to book appointment a request will be sent to patient and displays in notifications page and this appointment row status it will be saved with pendding status if patient click accept it will be changed to booked if reject it will still pending ✅
  - apply Laravel Policies for things like: Clinic can't delete an appointment in other clinic 
  - Change the relationships to use {Model}.id as the foreign key reference, allowing for standard Laravel relationship syntax.
-- Modify column names in the database (clinic_name => name)
-- Modfiy Pivot tables names to match the convention
-- Add image column to specialities table, and medicina-frontend/src/data/clinicSpecialties.js should get all it's data from the database.
+ - Modify column names in the database (clinic_name => name)
+ - Modfiy Pivot tables names to match the convention
+ - Add image column to specialities table, and medicina-frontend/src/data/clinicSpecialties.js should get all it's data from the database.
+ - Find a way to deal with all try/catch methods in controllers, to make the code shorter
